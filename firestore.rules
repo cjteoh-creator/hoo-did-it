@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Each family lives at /families/{familyCode}. The 12-character code is the key:
+    // you can read or write a family only if you know its exact code. Listing is blocked.
+    match /families/{fid} {
+      allow get, create, update: if request.auth != null && fid.size() == 12;
+      match /voice/{vid} {
+        allow get: if request.auth != null && fid.size() == 12;
+        allow create: if request.auth != null && fid.size() == 12
+                      && request.resource.data.data.size() < 900000;
+      }
+    }
+  }
+}

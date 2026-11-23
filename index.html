@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Hoo Did It?</title>
+<meta name="theme-color" content="#1b1b2f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hoo Did It">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b1b2f;--sky:#5ec8ff;--grass:#3ddc6a;--grassD:#1f9a45;--gold:#ffcc2e;--goldD:#d99a00;--red:#ff5a5a;--redD:#c22f2f;--purple:#8b5cff;--purpleD:#5b2fd1;--pink:#ff5fae;--pinkD:#c92f7c;--blue:#2fa8ff;--blueD:#0f6fc0;--orange:#ff8a2a;--orangeD:#c95a00;--card:#fff;--muted:#5c6080}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+body{font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);min-height:100vh;display:flex;justify-content:center;
+ background:#4dbdf5;background-image:linear-gradient(rgba(255,255,255,.12) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.12) 2px,transparent 2px);background-size:36px 36px;animation:scroll 12s linear infinite}
+@keyframes scroll{to{background-position:36px 36px}}
+.app{width:100%;max-width:440px;min-height:100vh;position:relative;padding-bottom:104px}
+.H{font-family:'Lilita One',sans-serif;letter-spacing:.5px}
+.proto{background:var(--ink);color:#ffe9a8;font-size:12px;text-align:center;padding:4px;font-weight:600}
+
+/* chunky blocks */
+.blk{background:var(--card);border:3px solid var(--ink);border-radius:18px;box-shadow:0 6px 0 var(--ink)}
+.btn{font-family:'Lilita One',sans-serif;font-size:20px;letter-spacing:.5px;color:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 18px;cursor:pointer;
+ background:var(--grass);box-shadow:inset 0 -6px 0 var(--grassD),0 5px 0 var(--ink);text-shadow:0 2px 0 rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(5px);box-shadow:inset 0 -3px 0 var(--grassD),0 0 0 var(--ink)}
+.btn.gold{background:var(--gold);color:var(--ink);text-shadow:none;box-shadow:inset 0 -6px 0 var(--goldD),0 5px 0 var(--ink)}
+.btn.red{background:var(--red);box-shadow:inset 0 -6px 0 var(--redD),0 5px 0 var(--ink)}
+.btn.blue{background:var(--blue);box-shadow:inset 0 -6px 0 var(--blueD),0 5px 0 var(--ink)}
+.btn.grey{background:#d9dcef;color:var(--ink);text-shadow:none;box-shadow:inset 0 -6px 0 #aab0d4,0 5px 0 var(--ink)}
+.btn.sm{font-size:16px;padding:7px 12px;border-radius:13px}
+.btn.full{width:100%;font-size:24px;padding:14px}
+.btn:disabled{filter:grayscale(.8);opacity:.6}
+
+/* header */
+header{padding:16px 16px 10px}
+.top{display:flex;align-items:center;gap:12px;padding:12px;}
+.top .nm{flex:1}
+.top .nm .H{font-size:26px;line-height:1}
+.badge{display:inline-block;margin-top:4px;font-weight:700;font-size:13px;background:var(--ink);color:#fff;border-radius:10px;padding:2px 9px}
+.sw{background:#eef0ff;border:3px solid var(--ink);border-radius:12px;font:inherit;font-weight:700;font-size:13px;padding:5px 9px;cursor:pointer}
+.chips{display:flex;gap:10px;margin-top:12px}
+.chip{flex:1;text-align:center;padding:8px 4px}
+.chip .H{font-size:26px;display:block;line-height:1.1}
+.chip small{font-weight:700;font-size:12px;color:var(--muted)}
+.chip.f{background:var(--gold)}
+.chip.s{background:#ffd9c9}
+.xp{margin-top:12px;padding:10px 12px}
+.xp .row{display:flex;justify-content:space-between;font-weight:700;font-size:14px}
+.bar{height:22px;background:#e3e6f7;border:3px solid var(--ink);border-radius:12px;margin-top:6px;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--grass) 0 14px,#57ea83 14px 28px);transition:width .6s cubic-bezier(.3,1.6,.5,1);animation:stripes 1s linear infinite;background-size:40px 40px}
+@keyframes stripes{to{background-position:40px 0}}
+
+main{padding:4px 16px}
+.banner{display:inline-block;font-family:'Lilita One';font-size:20px;color:#fff;background:var(--purple);border:3px solid var(--ink);border-radius:14px;padding:4px 14px;margin:18px 0 10px;box-shadow:0 4px 0 var(--ink);transform:rotate(-2deg);text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.tip{background:#fff7cf;border:3px solid var(--ink);border-radius:14px;padding:8px 12px;font-weight:600;font-size:14px;margin-bottom:10px;box-shadow:0 4px 0 var(--ink)}
+
+/* habit tiles */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{position:relative;text-align:center;padding:12px 8px 12px;cursor:pointer;transition:transform .1s}
+.tile:active{transform:scale(.94)}
+.tile .em{font-size:52px;line-height:1.1;display:block;filter:drop-shadow(0 3px 0 rgba(0,0,0,.15))}
+.tile .H{font-size:17px;line-height:1.1;margin-top:4px;display:block}
+.tile small{font-size:12px;color:var(--muted);font-weight:600;display:block;line-height:1.15;margin-top:2px}
+.tile.on{background:#c9ffd9}
+.tile.on .em{animation:wiggle 1.6s ease-in-out infinite}
+.tile .tick{position:absolute;top:-10px;right:-8px;width:36px;height:36px;border-radius:10px;background:var(--grass);border:3px solid var(--ink);color:#fff;font-family:'Lilita One';font-size:22px;display:flex;align-items:center;justify-content:center;transform:scale(0) rotate(-30deg);transition:transform .35s cubic-bezier(.3,1.8,.5,1)}
+.tile.on .tick{transform:scale(1) rotate(8deg)}
+.tile .fe{position:absolute;top:8px;left:10px;font-weight:700;font-size:12px;background:var(--gold);border:2px solid var(--ink);border-radius:8px;padding:0 5px}
+.tile.on .fe{display:none}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.pop{animation:pop .45s cubic-bezier(.3,1.8,.5,1)}
+@keyframes pop{0%{transform:scale(.7)}100%{transform:scale(1)}}
+
+/* mission cards */
+.mis{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:14px}
+.mis .em{font-size:48px;width:60px;text-align:center}
+.mis .tx{flex:1;min-width:0}
+.mis .tx .H{font-size:19px;line-height:1.1;display:block}
+.mis .tx small{font-weight:600;color:var(--muted);font-size:13px}
+.price{display:inline-block;font-family:'Lilita One';font-size:16px;background:var(--gold);border:2px solid var(--ink);border-radius:9px;padding:0 7px;margin-top:3px}
+.dots{margin-top:5px;display:flex;gap:4px}
+.dots i{width:18px;height:18px;border-radius:5px;border:2px solid var(--ink);background:#e3e6f7}
+.dots i.on{background:var(--grass)}
+.tag{font-family:'Lilita One';font-size:14px;border:2px solid var(--ink);border-radius:10px;padding:3px 8px;white-space:nowrap;background:#fff0b3}
+.tag.ok{background:#c9ffd9}
+.hot{display:inline-block;font-family:'Lilita One';font-size:13px;background:var(--red);color:#fff;border:2px solid var(--ink);border-radius:8px;padding:0 6px;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:38px;height:38px;border-radius:11px;border:3px solid var(--ink);background:#fff;font-family:'Lilita One';font-size:22px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.stepper button:active{transform:translateY(3px);box-shadow:none}
+.stepper b{font-family:'Lilita One';font-size:20px;min-width:46px;text-align:center}
+input[type=text]{width:100%;padding:12px;border-radius:14px;border:3px solid var(--ink);font:inherit;font-size:17px;font-weight:600;margin:4px 0 10px;user-select:text}
+.empty{text-align:center;font-family:'Lilita One';font-size:22px;color:#fff;padding:30px;text-shadow:0 3px 0 var(--ink)}
+
+/* nav */
+nav{position:fixed;bottom:10px;width:calc(100% - 20px);max-width:420px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:6px;background:var(--ink);border-radius:22px;z-index:5;margin-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;border-radius:16px;background:transparent;color:#c9cbe6;font-family:'Lilita One';font-size:13px;display:flex;flex-direction:column;align-items:center;padding:6px 0 5px;cursor:pointer;position:relative}
+nav button span{font-size:32px;line-height:1.1;transition:transform .2s}
+nav button.on{background:var(--gold);color:var(--ink)}
+nav button.on span{transform:scale(1.18) rotate(-6deg)}
+nav .dot{position:absolute;top:-6px;right:8px;background:var(--red);color:#fff;font-size:13px;border:2px solid #fff;border-radius:10px;padding:0 6px;animation:pulse 1s infinite}
+
+/* home */
+.logo{text-align:center;padding:26px 10px 6px}
+.logo .H{font-size:54px;line-height:.95;color:var(--gold);-webkit-text-stroke:3px var(--ink);text-shadow:0 6px 0 var(--ink);display:inline-block;animation:bob 2.4s ease-in-out infinite}
+.logo p{font-weight:700;color:#fff;font-size:17px;margin-top:10px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-2deg)}}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px}
+.who button{border:3px solid var(--ink);border-radius:22px;padding:14px 6px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#fff;box-shadow:0 7px 0 var(--ink);animation:bob 3s ease-in-out infinite}
+.who button:nth-child(2){animation-delay:.4s}.who button:nth-child(3){animation-delay:.8s}.who button:nth-child(4){animation-delay:1.2s}
+.who button:active{transform:translateY(6px);box-shadow:0 1px 0 var(--ink)}
+.who .H{font-size:26px;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.who small{font-weight:700;font-size:13px}
+
+/* owl avatar */
+.ico{display:inline-block;vertical-align:middle;overflow:visible}
+.tile .em .ico{width:64px;height:64px}
+.banner .ico,.H .ico{vertical-align:-6px}
+.owl .pupil{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.bounce{animation:bob 2s ease-in-out infinite}
+
+/* float +1 */
+.float{position:fixed;font-family:'Lilita One';font-size:30px;color:var(--gold);-webkit-text-stroke:2px var(--ink);pointer-events:none;z-index:30;animation:floatup 1s ease-out forwards}
+@keyframes floatup{0%{transform:translate(-50%,0) scale(.6);opacity:1}100%{transform:translate(-50%,-90px) scale(1.4);opacity:0}}
+
+/* celebration */
+.cel{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(27,27,47,.75);animation:fadein .2s}
+@keyframes fadein{from{opacity:0}}
+.rays{position:absolute;width:640px;height:640px;background:repeating-conic-gradient(rgba(255,214,46,.35) 0 12deg,transparent 12deg 24deg);border-radius:50%;animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cbox{position:relative;text-align:center;width:86%;max-width:360px;animation:zoom .5s cubic-bezier(.3,1.7,.5,1)}
+@keyframes zoom{0%{transform:scale(.2) rotate(-12deg)}100%{transform:scale(1)}}
+.cbox .big{font-size:120px;line-height:1;display:inline-block;animation:jump .8s ease-in-out infinite}
+@keyframes jump{0%,100%{transform:translateY(0) scale(1,1)}40%{transform:translateY(-26px) scale(.95,1.05)}60%{transform:translateY(0) scale(1.08,.92)}}
+.cbox .H.t{font-size:46px;color:var(--gold);-webkit-text-stroke:3px var(--ink);text-shadow:0 6px 0 var(--ink);line-height:1;margin-top:10px}
+.cbox .sub{color:#fff;font-weight:700;font-size:20px;margin-top:8px}
+.cbox .gain{display:inline-block;margin-top:12px;font-family:'Lilita One';font-size:34px;background:var(--gold);border:3px solid var(--ink);border-radius:16px;padding:2px 16px;box-shadow:0 5px 0 var(--ink);animation:pulse .8s infinite}
+.cbox .btn{margin-top:22px}
+.conf{position:fixed;top:-20px;width:12px;height:16px;border:2px solid var(--ink);z-index:41;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(27,27,47,.7);display:flex;align-items:center;justify-content:center;z-index:20}
+.modal .blk{padding:20px;width:86%;max-width:340px;text-align:center;animation:zoom .35s cubic-bezier(.3,1.7,.5,1)}
+.pin{display:flex;justify-content:center;gap:12px;margin:14px 0}
+.pin i{width:22px;height:22px;border-radius:7px;border:3px solid var(--ink)}
+.pin i.f{background:var(--gold)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pad button{padding:12px;border:3px solid var(--ink);border-radius:14px;background:#fff;font-family:'Lilita One';font-size:24px;cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.pad button:active{transform:translateY(4px);box-shadow:none}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-140px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:16px;font-family:'Lilita One';font-size:18px;transition:transform .35s cubic-bezier(.3,1.6,.5,1);z-index:50;max-width:90%;text-align:center;border:3px solid #fff}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+.chips .chip .H{font-size:24px}
+.chip.r{background:#f1e4ff}
+.mis.duo{background:linear-gradient(135deg,#fff7d1,#ffe3f2)}
+.dtag{display:inline-flex;align-items:center;gap:3px;font-family:'Lilita One';font-size:13px;background:var(--ink);color:var(--gold);border-radius:8px;padding:1px 8px;margin-bottom:3px}
+.slots{display:flex;align-items:center;gap:6px;margin:6px 0 2px}
+.slot{width:52px;height:52px;border:3px dashed #9aa0c8;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;background:#fff}
+.slot span{font-family:'Lilita One';font-size:24px;color:#9aa0c8}
+.slot.in{border:3px solid var(--ink);background:#c9ffd9}
+.slot i{position:absolute;right:-8px;bottom:-8px;background:var(--grass);color:#fff;border:2px solid var(--ink);border-radius:8px;font-style:normal;font-family:'Lilita One';font-size:14px;padding:0 5px}
+.plus{font-family:'Lilita One';font-size:22px}
+.segs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.seg{border:3px solid var(--ink);background:#fff;border-radius:12px;font-family:'Lilita One';font-size:14px;padding:5px 10px;cursor:pointer;box-shadow:0 3px 0 var(--ink);display:inline-flex;align-items:center;gap:4px;color:var(--ink)}
+.seg.on{background:var(--gold)}
+.seg.big{flex:1;justify-content:center;font-size:20px;padding:10px}
+.seg:active{transform:translateY(3px);box-shadow:none}
+.chart .ax{font-family:'Lilita One';font-size:11px;fill:#5c6080}
+.chart .lv{font-family:'Lilita One';font-size:12px;fill:#1b1b2f}
+.draw{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 1.1s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pt{opacity:0;animation:ptin .35s cubic-bezier(.3,1.8,.5,1) forwards;transform-box:fill-box;transform-origin:center}
+@keyframes ptin{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-weight:600;font-size:14px;margin-top:4px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;border:2px solid var(--ink);margin-right:5px;vertical-align:-2px}
+.studio{padding:14px;text-align:center}
+.stage{padding-top:10px;background:radial-gradient(circle at 50% 50%,#fff3c4 0 38%,transparent 39%)}
+.ped{width:150px;height:22px;margin:-12px auto 10px;background:#d9dcef;border:3px solid var(--ink);border-radius:50%}
+.studio .seg{font-size:13px;padding:5px 8px}
+.rbal{font-weight:700;font-size:17px;margin-bottom:10px}
+.items{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.item{border:3px solid var(--ink);border-radius:14px;background:#fff;padding:6px 2px 8px;cursor:pointer;box-shadow:0 4px 0 var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'Fredoka';color:var(--ink)}
+.item b{font-family:'Lilita One';font-size:13px;font-weight:400}
+.item.wear{background:#c9ffd9}
+.item:active{transform:translateY(4px);box-shadow:none}
+.item .tag,.item .price{font-size:12px;padding:0 6px;margin:0}
+.icpick{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.icpick button{border:3px solid var(--ink);border-radius:12px;background:#fff;padding:4px;cursor:pointer}
+.icpick button.on{background:var(--gold);transform:scale(1.06)}
+.cbox .big.duo{animation:none;display:flex;justify-content:center;gap:4px}
+.big.duo span{display:inline-block;animation:jump .8s ease-in-out infinite}
+.big.duo span:nth-child(2){animation-delay:.4s}
+.prop{animation:propspin .3s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes propspin{50%{transform:scaleX(.15)}}
+nav button span .owl{display:block}
+
+nav.n5 button{font-size:11px}
+nav.n5 button span{font-size:26px}
+.cnt{position:absolute;top:8px;right:10px;font-family:'Lilita One';font-size:14px;background:var(--ink);color:#fff;border-radius:8px;padding:0 6px}
+.tile.on .cnt{display:none}
+.pips{display:flex;justify-content:center;gap:4px;margin-top:5px}
+.pips i{width:14px;height:14px;border-radius:4px;border:2px solid var(--ink);background:#e3e6f7}
+.pips i.on{background:var(--grass)}
+.slotcap{font-size:14px;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:0 6px;margin-left:4px;text-shadow:none}
+.dot2{position:absolute;top:-8px;right:-6px;background:var(--red);color:#fff;font-family:'Lilita One';font-style:normal;font-size:16px;border:3px solid var(--ink);border-radius:12px;padding:0 8px;animation:pulse 1s infinite}
+.who button{position:relative}
+.livebox{background:#1b1b2f;border:3px solid var(--ink);border-radius:20px;box-shadow:0 6px 0 #000;overflow:hidden;margin-top:6px}
+.livehead{display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(90deg,#2b2350,#1b1b2f)}
+.livehead .H{color:#fff;font-size:22px;flex:1}
+.livepill{background:var(--red);color:#fff;font-family:'Lilita One';font-size:13px;border-radius:8px;padding:2px 8px;animation:pulse 1.2s infinite}
+.viewers{display:flex}.viewers .owl{margin-left:-6px}
+.feed{max-height:360px;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(circle at 30% 0%,#3a2f6b,#1b1b2f 70%)}
+.msg{display:flex;align-items:flex-end;gap:6px;animation:zoom .35s cubic-bezier(.3,1.7,.5,1)}
+.msg.me{flex-direction:row-reverse}
+.bub{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:6px 10px;max-width:76%;box-shadow:0 3px 0 #000}
+.msg.me .bub{background:#fff3c4}
+.msg.me .bub.sticker{background:transparent}
+.bub .mt{display:block;font-size:11px;color:var(--muted);font-weight:700}
+.bub.sticker{background:transparent;border:0;box-shadow:none;padding:0}
+.bub.sticker .mt{color:#c9cbe6}
+.stk{display:flex;flex-direction:column;align-items:center;animation:wiggle 2s ease-in-out infinite}
+.stk b{font-family:'Lilita One';font-size:16px;color:var(--gold);-webkit-text-stroke:1.5px var(--ink);letter-spacing:.5px}
+.txt{font-weight:600;font-size:15px}
+.voice{display:flex;align-items:center;gap:8px;background:var(--pink);border:2px solid var(--ink);border-radius:12px;padding:4px 10px;color:#fff;font-family:'Lilita One';font-size:16px;cursor:pointer}
+.wave{display:flex;align-items:center;gap:2px;height:22px}
+.wave i{width:3px;background:#fff;border-radius:2px;height:30%}
+.wave i:nth-child(3n){height:80%}.wave i:nth-child(3n+1){height:55%}
+.voice.play .wave i{animation:wv .5s ease-in-out infinite alternate}
+.voice.play .wave i:nth-child(2n){animation-delay:.2s}
+@keyframes wv{from{transform:scaleY(.3)}to{transform:scaleY(1.2)}}
+.bub.gift{background:linear-gradient(135deg,#fff3c4,#ffd6ec)}
+.giftb{display:flex;align-items:center;gap:8px}
+.giftb b{font-family:'Lilita One';display:block;font-size:16px;font-weight:400}
+.giftb small{font-weight:600;font-size:13px}
+.compose{padding:10px;background:#262645;border-top:3px solid var(--ink)}
+.compose .seg{font-size:13px}
+.stkrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stkrow button{background:#33335a;border:2px solid #4a4a7a;border-radius:14px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.stkrow button:active{transform:scale(.9)}
+.stkrow b{font-family:'Lilita One';font-weight:400;font-size:11px;color:#fff}
+.msgrow{display:flex;gap:6px;align-items:center;margin-top:10px}
+.msgrow input{margin:0;flex:1}
+.btn.pinkb{background:var(--pink);box-shadow:inset 0 -6px 0 var(--pinkD),0 5px 0 var(--ink);padding:5px 8px}
+.kidnote{color:#c9cbe6;font-weight:600;text-align:center;margin-top:8px;font-size:13px}
+.reasons{display:flex;flex-wrap:wrap;gap:6px}
+.reasons button{border:3px solid var(--ink);border-radius:12px;background:#fff;font-family:'Fredoka';font-weight:700;font-size:13px;padding:6px 10px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.reasons button.on{background:#ffd6ec}
+.rise{position:fixed;bottom:90px;z-index:45;pointer-events:none;animation:rise ease-out forwards}
+@keyframes rise{0%{transform:translate(0,0) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx),-70vh) scale(1.1);opacity:0}}
+.editor{width:92%!important;max-width:400px!important;max-height:88vh;overflow-y:auto;text-align:left!important}
+.editor .icpick{grid-template-columns:repeat(5,1fr)}
+.erow{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+.hrow{cursor:pointer}
+.hbtns{display:flex;flex-direction:column;gap:6px}
+.sw.help{font-family:'Lilita One';font-size:18px;background:var(--gold)}
+.tutbg{background:rgba(27,27,47,.85)!important}
+.tut{position:relative;width:90%;max-width:370px;background:var(--cream,#fff7e8);background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:0 8px 0 var(--ink);padding:18px;text-align:center;animation:zoom .35s cubic-bezier(.3,1.7,.5,1)}
+.tut.kid{background:linear-gradient(180deg,#e6f6ff,#fff)}
+.tut.parent{background:linear-gradient(180deg,#f3ecff,#fff)}
+.tskip{position:absolute;top:10px;right:12px;border:0;background:none;font-family:'Fredoka';font-weight:700;color:var(--muted);cursor:pointer}
+.tart{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:6px 0}
+.tart .mock{width:160px;cursor:default}
+.ttl{font-size:30px;line-height:1.05;color:var(--ink)}
+.tut.kid .ttl{color:var(--gold);-webkit-text-stroke:2px var(--ink);font-size:34px}
+.tdesc{font-weight:600;font-size:17px;margin:8px 0 12px;min-height:48px}
+.tut.parent .tdesc{font-size:15px}
+.tdots{display:flex;justify-content:center;gap:6px;margin-bottom:14px}
+.tdots i{width:12px;height:12px;border-radius:4px;border:2px solid var(--ink);background:#fff}
+.tdots i.on{background:var(--gold);width:26px}
+.hrow .tag{font-size:12px}
+
+header{padding-top:calc(16px + env(safe-area-inset-top))}
+.code{font-size:26px;letter-spacing:1px;white-space:nowrap;background:#fff3c4;border:3px solid var(--ink);border-radius:14px;padding:8px;margin:8px 0;user-select:all}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="rbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a5a"/><stop offset=".2" stop-color="#ff8a2a"/><stop offset=".4" stop-color="#ffcc2e"/><stop offset=".6" stop-color="#3ddc6a"/><stop offset=".8" stop-color="#2fa8ff"/><stop offset="1" stop-color="#8b5cff"/></linearGradient></defs></svg>
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+<div id="modal"></div>
+<div id="cel"></div>
+<script>
+/* ---------- chunky block-style icons ---------- */
+const K='#1b1b2f';
+const O=`stroke="${K}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"`;
+const HL=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w,h)/2}" fill="#fff" opacity=".6"/>`;
+const HEART=c=>`<g ${O}><path d="M32 58 L8 34 C0 26 2 10 16 8 C24 7 30 12 32 18 C34 12 40 7 48 8 C62 10 64 26 56 34 Z" fill="${c}"/></g>${HL(12,16,10,6)}`;
+const ICONS={
+sun:`<g ${O}>${[0,45,90,135,180,225,270,315].map(a=>`<rect x="28" y="1" width="8" height="12" rx="2" fill="#ffb000" transform="rotate(${a} 32 32)"/>`).join('')}<rect x="14" y="14" width="36" height="36" rx="10" fill="#ffcc2e"/><rect x="22" y="27" width="5" height="7" rx="2" fill="${K}" stroke="none"/><rect x="37" y="27" width="5" height="7" rx="2" fill="${K}" stroke="none"/><path d="M26 39 q6 5 12 0" fill="none"/></g>`,
+swords:`<g ${O}>${[45,-45].map(a=>`<g transform="rotate(${a} 32 32)"><rect x="28" y="2" width="8" height="40" rx="2" fill="#dfe6ef"/><rect x="20" y="40" width="24" height="7" rx="3" fill="#ffcc2e"/><rect x="28" y="47" width="8" height="13" rx="3" fill="#8a5a2b"/></g>`).join('')}</g>`,
+gavel:`<g ${O}><rect x="6" y="50" width="34" height="9" rx="3" fill="#8a5a2b"/><g transform="rotate(-35 32 28)"><rect x="29" y="22" width="8" height="36" rx="3" fill="#c98a4b"/><rect x="14" y="8" width="38" height="18" rx="5" fill="#c98a4b"/><rect x="10" y="6" width="8" height="22" rx="3" fill="#ffcc2e"/><rect x="48" y="6" width="8" height="22" rx="3" fill="#ffcc2e"/></g></g>`,
+gift:`<g ${O}><rect x="9" y="28" width="46" height="30" rx="4" fill="#ff5fae"/><rect x="5" y="18" width="54" height="13" rx="4" fill="#ff8ac4"/><rect x="28" y="18" width="8" height="40" fill="#ffcc2e"/><rect x="14" y="5" width="16" height="12" rx="5" fill="#ffcc2e" transform="rotate(20 22 11)"/><rect x="34" y="5" width="16" height="12" rx="5" fill="#ffcc2e" transform="rotate(-20 42 11)"/></g>`,
+feather:`<g ${O}><g transform="rotate(35 32 32)"><rect x="21" y="3" width="22" height="46" rx="11" fill="#ff8a2a"/><rect x="25" y="9" width="5" height="16" rx="2.5" fill="#ffd9a8" stroke="none"/><path d="M32 12 V61" fill="none"/></g></g>`,
+fire:`<g ${O}><path d="M32 3 C40 16 54 24 54 40 C54 53 44 61 32 61 C20 61 10 53 10 40 C10 30 17 25 20 15 C25 23 29 22 32 3Z" fill="#ff8a2a"/><path d="M32 30 C37 37 43 41 43 48 C43 54 38 58 32 58 C26 58 21 54 21 48 C21 42 27 39 32 30Z" fill="#ffcc2e"/></g>`,
+star:`<g ${O}><path d="M32 4 L40 22 L60 24 L45 37 L49 58 L32 47 L15 58 L19 37 L4 24 L24 22 Z" fill="#ffcc2e"/></g>${HL(26,18,10,5)}`,
+crown:`<g ${O}><path d="M6 50 V16 L20 30 L32 8 L44 30 L58 16 V50 Z" fill="#ffcc2e"/><rect x="6" y="46" width="52" height="12" rx="3" fill="#ffb000"/><rect x="27" y="32" width="10" height="10" rx="3" fill="#ff5a5a" transform="rotate(45 32 37)"/></g>`,
+bowl:`<g ${O}><rect x="40" y="2" width="7" height="30" rx="3" fill="#dfe6ef" transform="rotate(25 43 17)"/><path d="M4 28 H60 C60 46 48 58 32 58 C16 58 4 46 4 28Z" fill="#2fa8ff"/><rect x="4" y="24" width="56" height="8" rx="4" fill="#fff7e0"/></g>${HL(12,38,10,5)}`,
+noodle:`<g ${O}><rect x="30" y="0" width="5" height="34" rx="2" fill="#c98a4b" transform="rotate(15 32 17)"/><rect x="40" y="0" width="5" height="34" rx="2" fill="#c98a4b" transform="rotate(25 42 17)"/><path d="M4 28 H60 C60 46 48 58 32 58 C16 58 4 46 4 28Z" fill="#ff5a5a"/><path d="M8 28 q6-8 12 0 q6-8 12 0 q6-8 12 0 q6-8 12 0" fill="#ffe28a"/></g>`,
+rice:`<g ${O}><rect x="2" y="40" width="60" height="14" rx="7" fill="#e3e6f7"/><path d="M8 44 C8 16 42 16 42 44Z" fill="#fff"/><path d="M36 44 C36 28 58 28 58 44Z" fill="#ff8a2a"/></g>`,
+meat:`<g ${O}><g transform="rotate(-40 32 32)"><rect x="28" y="34" width="8" height="20" rx="3" fill="#fff7e0"/><rect x="21" y="50" width="10" height="10" rx="5" fill="#fff7e0"/><rect x="33" y="50" width="10" height="10" rx="5" fill="#fff7e0"/><rect x="13" y="4" width="38" height="34" rx="16" fill="#c9773b"/></g></g>${HL(16,20,10,5)}`,
+ninja:`<g ${O}><rect x="44" y="16" width="16" height="7" rx="3" fill="#ff5a5a" transform="rotate(-20 52 19)"/><rect x="44" y="26" width="16" height="7" rx="3" fill="#ff5a5a" transform="rotate(15 52 29)"/><rect x="8" y="8" width="44" height="48" rx="12" fill="#2b2b40"/><rect x="8" y="24" width="44" height="14" fill="#ffd7b0"/><rect x="16" y="28" width="9" height="6" rx="2" fill="${K}"/><rect x="35" y="28" width="9" height="6" rx="2" fill="${K}"/></g>`,
+target:`<g ${O}><circle cx="28" cy="36" r="25" fill="#ff5a5a"/><circle cx="28" cy="36" r="16" fill="#fff"/><circle cx="28" cy="36" r="7" fill="#ff5a5a"/><path d="M28 36 L54 10" fill="none"/><rect x="50" y="2" width="11" height="11" rx="2" fill="#3ddc6a" transform="rotate(45 55 7)"/></g>`,
+wave:`<g ${O}><path d="M32 3 C40 15 47 22 47 32 C47 41 40 47 32 47 C24 47 17 41 17 32 C17 22 24 15 32 3Z" fill="#2fa8ff"/><path d="M4 57 q7-7 14 0 q7-7 14 0 q7-7 14 0 q7-7 14 0" fill="none" stroke="#2fa8ff" stroke-width="7"/></g>${HL(23,26,6,11)}`,
+soap:`<g ${O}><circle cx="16" cy="15" r="7" fill="#bfe9fb"/><circle cx="31" cy="8" r="5" fill="#bfe9fb"/><circle cx="46" cy="16" r="8" fill="#bfe9fb"/><rect x="6" y="28" width="52" height="28" rx="10" fill="#ff8ac4"/></g>${HL(12,34,16,6)}`,
+brush:`<g ${O}><g transform="rotate(-35 32 32)"><rect x="6" y="34" width="52" height="9" rx="4" fill="#2fa8ff"/><rect x="40" y="20" width="16" height="14" rx="3" fill="#fff"/><path d="M40 20 q8 -11 16 0" fill="#3ddc6a"/></g></g>`,
+toilet:`<g ${O}><rect x="12" y="4" width="34" height="18" rx="4" fill="#fff"/><path d="M6 24 H54 C54 38 46 44 36 44 L38 58 H18 L20 44 C12 42 6 36 6 24Z" fill="#fff"/><rect x="4" y="22" width="52" height="7" rx="3" fill="#bfe9fb"/></g>`,
+bag:`<g ${O}><path d="M22 13 C22 1 42 1 42 13" fill="none"/><rect x="10" y="12" width="44" height="48" rx="12" fill="#3ddc6a"/><rect x="18" y="36" width="28" height="16" rx="5" fill="#1f9a45"/><rect x="18" y="22" width="28" height="6" rx="3" fill="#ffcc2e"/></g>`,
+basket:`<g ${O}><path d="M18 22 L26 8 H38 L46 22Z" fill="#2fa8ff"/><path d="M6 22 H58 L52 60 H12 Z" fill="#c98a4b"/><path d="M13 35 H51 M15 47 H49" fill="none"/></g>`,
+robot:`<g ${O}><rect x="4" y="28" width="56" height="26" rx="13" fill="#d9dcef"/><rect x="10" y="18" width="44" height="16" rx="8" fill="#fff"/><rect x="20" y="22" width="6" height="8" rx="2" fill="${K}"/><rect x="38" y="22" width="6" height="8" rx="2" fill="${K}"/><rect x="28" y="6" width="8" height="10" rx="3" fill="#3ddc6a"/></g>`,
+bin:`<g ${O}><rect x="24" y="2" width="16" height="8" rx="3" fill="#1f9a45"/><rect x="6" y="8" width="52" height="10" rx="4" fill="#3ddc6a"/><path d="M10 18 H54 L50 60 H14 Z" fill="#3ddc6a"/><path d="M24 26 V52 M32 26 V52 M40 26 V52" fill="none"/></g>`,
+plant:`<g ${O}><rect x="12" y="4" width="15" height="26" rx="7" fill="#3ddc6a" transform="rotate(-25 20 17)"/><rect x="37" y="4" width="15" height="26" rx="7" fill="#3ddc6a" transform="rotate(25 44 17)"/><rect x="28" y="16" width="8" height="20" fill="#1f9a45"/><path d="M10 36 H54 L48 60 H16 Z" fill="#ff8a2a"/><rect x="8" y="32" width="48" height="8" rx="3" fill="#c95a00"/></g>`,
+shirt:`<g ${O}><path d="M22 6 L4 16 L10 30 L16 27 V58 H48 V27 L54 30 L60 16 L42 6 C40 12 24 12 22 6Z" fill="#2fa8ff"/></g>${HL(20,32,7,14)}`,
+table:`<g ${O}><circle cx="32" cy="34" r="20" fill="#fff"/><circle cx="32" cy="34" r="11" fill="#e3e6f7"/><rect x="2" y="12" width="7" height="44" rx="3" fill="#dfe6ef"/><rect x="55" y="12" width="7" height="44" rx="3" fill="#dfe6ef"/></g>`,
+shoe:`<g ${O}><path d="M6 18 H26 L32 30 L52 34 C58 36 60 40 60 46 H6 Z" fill="#ff5a5a"/><rect x="4" y="44" width="58" height="11" rx="4" fill="#fff"/><path d="M28 32 L34 28 M34 35 L40 31" fill="none"/></g>`,
+sponge:`<g ${O}><rect x="6" y="16" width="52" height="16" rx="4" fill="#3ddc6a"/><rect x="6" y="30" width="52" height="26" rx="4" fill="#ffcc2e"/><circle cx="18" cy="43" r="3" fill="#ffb000"/><circle cx="34" cy="48" r="3" fill="#ffb000"/><circle cx="46" cy="40" r="3" fill="#ffb000"/></g>`,
+broom:`<g ${O}><g transform="rotate(20 32 32)"><rect x="28" y="2" width="8" height="36" rx="3" fill="#c98a4b"/><rect x="22" y="34" width="20" height="6" rx="2" fill="#ff5a5a"/><path d="M18 40 H46 L52 62 H12 Z" fill="#ffcc2e"/></g></g>`,
+icecream:`<g ${O}><path d="M18 36 H46 L32 62 Z" fill="#e0a95f"/><rect x="14" y="18" width="36" height="22" rx="11" fill="#ff8ac4"/><rect x="20" y="6" width="24" height="18" rx="9" fill="#fff7e0"/><rect x="28" y="1" width="8" height="8" rx="4" fill="#ff5a5a"/></g>`,
+moon:`<g ${O}><path d="M38 6 C22 8 12 20 12 34 C12 48 24 58 38 58 C46 58 52 54 56 48 C36 50 24 30 38 6Z" fill="#ffcc2e"/><path d="M44 12 H56 L44 24 H56" fill="none"/></g>`,
+ticket:`<g ${O}><path d="M4 16 H60 V26 C55 26 55 38 60 38 V48 H4 V38 C9 38 9 26 4 26 Z" fill="#ffcc2e"/><path d="M32 23 L35 29 L41 30 L36 34 L38 41 L32 37 L26 41 L28 34 L23 30 L29 29 Z" fill="#ff5a5a"/></g>`,
+flag:`<g ${O}><rect x="10" y="4" width="7" height="56" rx="3" fill="#c98a4b"/><path d="M17 8 H58 L49 20 L58 32 H17 Z" fill="#3ddc6a"/></g>`,
+cash:`<g ${O}><rect x="4" y="14" width="56" height="36" rx="5" fill="#3ddc6a"/><circle cx="32" cy="32" r="10" fill="#c9ffd9"/><rect x="10" y="20" width="6" height="6" rx="2" fill="#c9ffd9"/><rect x="48" y="38" width="6" height="6" rx="2" fill="#c9ffd9"/></g>`,
+heartM:HEART('#ff5fae'),heartP:HEART('#8b5cff'),heart:HEART('#ff5a5a'),
+tent:`<g ${O}><path d="M32 6 L60 56 H4 Z" fill="#ff8a2a"/><path d="M32 26 L42 56 H22 Z" fill="${K}"/></g>`,
+brick:`<g ${O}><rect x="10" y="8" width="12" height="10" rx="3" fill="#ff5a5a"/><rect x="26" y="8" width="12" height="10" rx="3" fill="#ff5a5a"/><rect x="42" y="8" width="12" height="10" rx="3" fill="#ff5a5a"/><rect x="4" y="16" width="56" height="38" rx="5" fill="#ff5a5a"/></g>${HL(10,22,20,6)}`,
+sparkle:`<g ${O}><path d="M30 4 C32 22 40 30 58 32 C40 34 32 42 30 60 C28 42 20 34 2 32 C20 30 28 22 30 4Z" fill="#ffcc2e"/><path d="M52 2 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#fff"/></g>`,
+bulb:`<g ${O}><path d="M32 4 C46 4 54 14 54 26 C54 36 46 40 44 48 H20 C18 40 10 36 10 26 C10 14 18 4 32 4Z" fill="#ffcc2e"/><rect x="20" y="48" width="24" height="12" rx="4" fill="#dfe6ef"/></g>${HL(17,14,6,12)}`,
+trophy:`<g ${O}><path d="M14 10 H4 C4 24 10 28 18 28 M50 10 H60 C60 24 54 28 46 28" fill="none"/><path d="M14 4 H50 V20 C50 32 42 38 32 38 C22 38 14 32 14 20Z" fill="#ffcc2e"/><rect x="28" y="38" width="8" height="10" fill="#ffb000"/><rect x="16" y="48" width="32" height="12" rx="3" fill="#8a5a2b"/></g>${HL(20,9,6,14)}`,
+camera:`<g ${O}><rect x="20" y="8" width="20" height="10" rx="3" fill="#5c6080"/><rect x="4" y="14" width="56" height="40" rx="8" fill="#5c6080"/><circle cx="32" cy="34" r="13" fill="#bfe9fb"/></g>`,
+chart:`<g ${O}><rect x="6" y="34" width="14" height="24" rx="3" fill="#2fa8ff"/><rect x="25" y="20" width="14" height="38" rx="3" fill="#3ddc6a"/><rect x="44" y="6" width="14" height="52" rx="3" fill="#ffcc2e"/></g>`,
+check:`<g ${O}><rect x="4" y="4" width="56" height="56" rx="14" fill="#3ddc6a"/><path d="M16 32 L28 44 L48 20" fill="none" stroke="#fff" stroke-width="8"/></g>`,
+lock:`<g ${O}><path d="M18 28 V20 C18 6 46 6 46 20 V28" fill="none"/><rect x="10" y="28" width="44" height="32" rx="7" fill="#ffcc2e"/><rect x="29" y="38" width="6" height="12" rx="3" fill="${K}"/></g>`,
+compass:`<g ${O}><circle cx="32" cy="32" r="28" fill="#fff7e0"/><path d="M32 8 L40 32 H24 Z" fill="#ff5a5a"/><path d="M24 32 H40 L32 56 Z" fill="#dfe6ef"/></g>`,
+bolt:`<g ${O}><path d="M36 2 L10 36 H28 L24 62 L54 24 H36 Z" fill="#ffcc2e"/></g>`,
+rocket:`<g ${O}><path d="M32 2 C44 12 46 30 42 46 H22 C18 30 20 12 32 2Z" fill="#dfe6ef"/><circle cx="32" cy="24" r="6" fill="#2fa8ff"/><path d="M22 36 L10 50 H22 Z M42 36 L54 50 H42 Z" fill="#ff5a5a"/><path d="M26 46 L32 62 L38 46 Z" fill="#ffcc2e"/></g>`
+};
+function I(n,s=52){return `<svg class="ico" width="${s}" height="${s}" viewBox="-2 -2 68 68">${ICONS[n]||ICONS.star}</svg>`}
+const F=I('feather',20),Fs=I('feather',15);
+
+
+
+/* extra icons */
+ICONS.car=`<g ${O}><path d="M10 34 L18 16 H44 L54 34 Z" fill="#bfe9fb"/><rect x="2" y="32" width="60" height="18" rx="6" fill="#ff5a5a"/><rect x="30" y="18" width="4" height="16" fill="#1b1b2f" stroke="none"/><rect x="9" y="44" width="14" height="14" rx="5" fill="#1b1b2f"/><rect x="41" y="44" width="14" height="14" rx="5" fill="#1b1b2f"/></g>`;
+ICONS.rbow=`<g ${O}><g transform="rotate(35 32 32)"><rect x="21" y="3" width="22" height="46" rx="11" fill="url(#rbw)"/><path d="M32 12 V61" fill="none"/></g></g>`;
+ICONS.duo=`<g ${O}><rect x="2" y="30" width="28" height="24" rx="8" fill="#2fa8ff"/><rect x="34" y="30" width="28" height="24" rx="8" fill="#ff8a2a"/><path d="M32 2 l4 9 9 1 -7 6 2 9 -8 -5 -8 5 2 -9 -7 -6 9 -1z" fill="#ffcc2e"/></g>`;
+ICONS.chest=`<g ${O}><rect x="6" y="28" width="52" height="30" rx="4" fill="#c98a4b"/><path d="M6 30 C6 10 58 10 58 30 Z" fill="#e0a95f"/><rect x="6" y="27" width="52" height="7" fill="#ffcc2e"/><rect x="27" y="30" width="10" height="13" rx="2" fill="#ffcc2e"/></g>`;
+ICONS.palette=`<g ${O}><path d="M32 4 C50 4 60 16 60 30 C60 40 52 42 46 40 C40 38 36 42 38 48 C40 56 34 60 28 60 C14 60 4 48 4 32 C4 16 16 4 32 4Z" fill="#fff7e0"/><circle cx="18" cy="26" r="5" fill="#ff5a5a"/><circle cx="30" cy="16" r="5" fill="#ffcc2e"/><circle cx="44" cy="20" r="5" fill="#3ddc6a"/><circle cx="18" cy="42" r="5" fill="#2fa8ff"/></g>`;
+ICONS.board=`<g ${O}><rect x="4" y="8" width="56" height="44" rx="6" fill="#c98a4b"/><rect x="10" y="14" width="20" height="16" rx="2" fill="#fff7e0"/><rect x="34" y="14" width="20" height="12" rx="2" fill="#ffcc2e"/><rect x="10" y="34" width="20" height="12" rx="2" fill="#bfe9fb"/><rect x="34" y="30" width="20" height="16" rx="2" fill="#c9ffd9"/><rect x="14" y="52" width="6" height="10" fill="#8a5a2b"/><rect x="44" y="52" width="6" height="10" fill="#8a5a2b"/></g>`;
+ICONS.live=`<g ${O}><rect x="4" y="12" width="56" height="40" rx="8" fill="#ff5a5a"/><path d="M26 22 L42 32 L26 42 Z" fill="#fff"/><rect x="20" y="52" width="24" height="8" rx="3" fill="#c22f2f"/></g>`;
+ICONS.mic=`<g ${O}><rect x="22" y="4" width="20" height="34" rx="10" fill="#ff5fae"/><path d="M12 30 C12 44 20 50 32 50 C44 50 52 44 52 30" fill="none"/><rect x="29" y="50" width="6" height="8" fill="${K}"/><rect x="20" y="56" width="24" height="6" rx="3" fill="#5c6080"/></g>`;
+ICONS.pencil=`<g ${O}><g transform="rotate(45 32 32)"><rect x="24" y="2" width="16" height="44" rx="3" fill="#ffcc2e"/><path d="M24 46 H40 L32 60 Z" fill="#f2d2a9"/><rect x="24" y="2" width="16" height="8" rx="3" fill="#ff8ac4"/></g></g>`;
+ICONS.gear=`<g ${O}>${[0,45,90,135].map(a=>`<rect x="27" y="2" width="10" height="60" rx="3" fill="#9aa0c8" transform="rotate(${a} 32 32)"/>`).join('')}<circle cx="32" cy="32" r="20" fill="#d9dcef"/><circle cx="32" cy="32" r="8" fill="#fff"/></g>`;
+const RB=I('rbow',20),RBs=I('rbow',15);
+
+/* ---------- customizable blocky owl ---------- */
+const AVOPT={
+ body:[{id:'blue',n:'Sky',c:'#2fa8ff',p:0},{id:'orange',n:'Mango',c:'#ff8a2a',p:0},{id:'green',n:'Slime',c:'#3ddc6a',p:2},{id:'red',n:'Lava',c:'#ff5a5a',p:2},{id:'purple',n:'Galaxy',c:'#8b5cff',p:3},{id:'pink',n:'Bubble',c:'#ff5fae',p:3},{id:'gold',n:'Gold',c:'#ffcc2e',p:6},{id:'black',n:'Shadow',c:'#3a3a55',p:6}],
+ eyes:[{id:'normal',n:'Classic',p:0},{id:'happy',n:'Happy',p:2},{id:'cool',n:'Shades',p:4},{id:'star',n:'Star eyes',p:5}],
+ hat:[{id:'none',n:'None',p:0},{id:'cap',n:'Cap',p:3},{id:'band',n:'Ninja band',p:3},{id:'phones',n:'Headphones',p:4},{id:'wizard',n:'Wizard',p:6},{id:'prop',n:'Propeller',p:6},{id:'crown',n:'Crown',p:10}],
+ extra:[{id:'none',n:'None',p:0},{id:'bowtie',n:'Bow tie',p:2},{id:'scarf',n:'Scarf',p:3},{id:'cape',n:'Hero cape',p:5}]
+};
+const AVCAT=[['body','palette','Colour'],['eyes','star','Eyes'],['hat','crown','Hats'],['extra','sparkle','Extras']];
+function starP(cx,cy,r){let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;p+=(i?'L':'M')+(cx+rr*Math.cos(a)).toFixed(1)+' '+(cy+rr*Math.sin(a)).toFixed(1)}return p+'Z'}
+function OWLC(cfg,s){
+ const c=(AVOPT.body.find(b=>b.id===cfg.body)||{c:cfg.body}).c;
+ const SO=`stroke="${K}" stroke-width="3" stroke-linejoin="round"`;
+ const eyes={
+  normal:`<rect x="22" y="30" width="24" height="24" rx="6" fill="#fff" ${SO}/><rect x="54" y="30" width="24" height="24" rx="6" fill="#fff" ${SO}/><rect class="pupil" x="31" y="36" width="10" height="13" rx="2" fill="${K}"/><rect class="pupil" x="59" y="36" width="10" height="13" rx="2" fill="${K}"/><rect x="33" y="37" width="4" height="4" fill="#fff"/><rect x="61" y="37" width="4" height="4" fill="#fff"/>`,
+  happy:`<path d="M22 46 Q34 28 46 46" fill="none" stroke="${K}" stroke-width="6" stroke-linecap="round"/><path d="M54 46 Q66 28 78 46" fill="none" stroke="${K}" stroke-width="6" stroke-linecap="round"/><ellipse cx="24" cy="56" rx="6" ry="4" fill="#ff8ac4"/><ellipse cx="76" cy="56" rx="6" ry="4" fill="#ff8ac4"/>`,
+  cool:`<rect x="15" y="32" width="31" height="19" rx="6" fill="${K}"/><rect x="54" y="32" width="31" height="19" rx="6" fill="${K}"/><rect x="44" y="36" width="12" height="5" fill="${K}"/><rect x="20" y="36" width="10" height="4" rx="2" fill="#fff" opacity=".75"/><rect x="59" y="36" width="10" height="4" rx="2" fill="#fff" opacity=".75"/>`,
+  star:`<path d="${starP(34,42,14)}" fill="#ffcc2e" ${SO}/><path d="${starP(66,42,14)}" fill="#ffcc2e" ${SO}/>`
+ }[cfg.eyes||'normal'];
+ const hats={
+  none:'',
+  cap:`<rect x="16" y="0" width="68" height="22" rx="11" fill="#ff5a5a" ${SO}/><rect x="58" y="14" width="40" height="9" rx="4" fill="#c22f2f" ${SO}/><rect x="44" y="-5" width="12" height="9" rx="4" fill="#ffcc2e" ${SO}/>`,
+  band:`<rect x="10" y="17" width="80" height="11" rx="3" fill="#ff5a5a" ${SO}/><rect x="86" y="13" width="18" height="7" rx="3" fill="#ff5a5a" ${SO} transform="rotate(-20 95 16)"/><rect x="86" y="22" width="18" height="7" rx="3" fill="#ff5a5a" ${SO} transform="rotate(15 95 25)"/>`,
+  phones:`<path d="M10 46 C10 -8 90 -8 90 46" fill="none" stroke="${K}" stroke-width="7"/><rect x="0" y="34" width="16" height="28" rx="6" fill="#ff5a5a" ${SO}/><rect x="84" y="34" width="16" height="28" rx="6" fill="#ff5a5a" ${SO}/>`,
+  wizard:`<path d="M26 20 L52 -15 L74 20 Z" fill="#8b5cff" ${SO}/><rect x="16" y="14" width="68" height="10" rx="5" fill="#5b2fd1" ${SO}/><path d="${starP(50,4,6)}" fill="#ffcc2e" ${SO}/>`,
+  prop:`<path d="M22 20 C22 0 78 0 78 20 Z" fill="#3ddc6a" ${SO}/><rect x="47" y="-6" width="6" height="10" fill="${K}"/><rect class="prop" x="28" y="-12" width="44" height="8" rx="4" fill="#ffcc2e" ${SO}/>`,
+  crown:`<path d="M22 22 V-4 L36 8 L50 -12 L64 8 L78 -4 V22 Z" fill="#ffcc2e" ${SO}/><rect x="45" y="6" width="10" height="10" rx="2" fill="#ff5a5a" ${SO} transform="rotate(45 50 11)"/>`
+ }[cfg.hat||'none'];
+ const ex=cfg.extra||'none';
+ const front={none:'',cape:'',bowtie:`<path d="M50 89 L35 81 V97 Z M50 89 L65 81 V97 Z" fill="#ff5a5a" ${SO}/><rect x="45" y="84" width="10" height="10" rx="2" fill="#c22f2f" ${SO}/>`,
+  scarf:`<rect x="12" y="72" width="76" height="12" rx="5" fill="#3ddc6a" ${SO}/><rect x="62" y="78" width="13" height="22" rx="4" fill="#1f9a45" ${SO}/>`}[ex];
+ return `<svg class="owl" width="${s}" height="${s}" viewBox="-8 -18 116 126">
+ ${ex==='cape'?`<path d="M16 40 L-4 106 H104 L84 40 Z" fill="#ff5a5a" ${SO}/>`:''}
+ <rect x="14" y="4" width="18" height="18" rx="3" fill="${c}" ${SO} transform="rotate(-12 23 13)"/>
+ <rect x="68" y="4" width="18" height="18" rx="3" fill="${c}" ${SO} transform="rotate(12 77 13)"/>
+ <rect x="2" y="44" width="14" height="34" rx="5" fill="${c}" ${SO}/><rect x="84" y="44" width="14" height="34" rx="5" fill="${c}" ${SO}/>
+ <rect x="12" y="14" width="76" height="78" rx="14" fill="${c}" stroke="${K}" stroke-width="3.5"/>
+ ${eyes}
+ <path d="M43 57 h14 l-7 9 z" fill="#ff8a2a" ${SO}/>
+ <rect x="32" y="68" width="36" height="16" rx="5" fill="#fff7e0" stroke="${K}" stroke-width="2.5"/>
+ <rect x="30" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/><rect x="56" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/>
+ ${front}${hats}</svg>`;
+}
+function P(k){return S.kids[k]||S.parents[k]}
+function AV(k,s=60){return OWLC(P(k).av,s)}
+
+/* ---------- sound ---------- */
+let AC;function beep(notes){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime;notes.forEach(([f,d])=>{const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);t+=d*.8})}catch(e){}}
+const SND={tick:[[660,.08],[990,.12]],win:[[523,.1],[659,.1],[784,.1],[1047,.3]],no:[[300,.15],[200,.2]],duo:[[523,.1],[784,.1],[659,.1],[1047,.1],[1319,.3]],pop:[[880,.06],[1320,.08]]};
+
+/* ---------- constants ---------- */
+const LEVELS=[[0,'Owlet'],[50,'Fledgling'],[150,'Night Owl'],[300,'Wise Owl'],[500,'Great Hoo-ned Owl']];
+function level(xp){let i=0;for(let k=0;k<LEVELS.length;k++)if(xp>=LEVELS[k][0])i=k;const n=LEVELS[i+1];return{name:LEVELS[i][1],n:i+1,pct:n?Math.round((xp-LEVELS[i][0])/(n[0]-LEVELS[i][0])*100):100,next:n?n[0]-xp:0,nextName:n?n[1]:null}}
+const HYPE=['OWL-SOME!','EPIC!','NAILED IT!','HOO-RAY!','LEGEND!','BOOM!','SUPER HOO!','WHOO-HOO!'];
+const SMALL=['Nice!','Yes!','Go go!','Cool!','Ding!','Woo!'];
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const clone=o=>JSON.parse(JSON.stringify(o));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const GROUPS=[{id:'meal',n:'Meal Time',i:'meat',c:'var(--orange)'},{id:'toilet',n:'Toilet Trio',i:'toilet',c:'var(--blue)'},{id:'bed',n:'Bedtime',i:'moon',c:'var(--purple)'},{id:'other',n:'Other',i:'star',c:'var(--grass)'}];
+const DAYS={all:'Every day',school:'School days',weekend:'Weekends'};
+const HICONS=['bowl','rice','meat','ninja','target','wave','soap','brush','toilet','bag','basket','shirt','shoe','plant','bin','table','sponge','broom','bulb','star'];
+const STK_P=[{id:'love',ic:'heart',t:'LOVE YOU!'},{id:'proud',ic:'trophy',t:'PROUD OF YOU!'},{id:'star',ic:'star',t:'SUPER STAR!'},{id:'fire',ic:'fire',t:'ON FIRE!'},{id:'king',ic:'crown',t:'KING OWL!'},{id:'night',ic:'moon',t:'GOOD NIGHT!'}];
+const STK_K=[{id:'love',ic:'heart',t:'LOVE YOU!'},{id:'thanks',ic:'gift',t:'THANK YOU!'},{id:'hi5',ic:'duo',t:'HIGH FIVE!'},{id:'did',ic:'trophy',t:'I DID IT!'},{id:'miss',ic:'heartM',t:'MISS YOU!'},{id:'knight',ic:'moon',t:'GOOD NIGHT!'}];
+const REASONS=[{id:'help',t:'Helped his brother without being asked'},{id:'kind',t:'Kindness'},{id:'share',t:'Shared without fuss'},{id:'tidy',t:'Tidied up without being told'},{id:'honest',t:'Honest'},{id:'brave',t:'Brave'},{id:'patient',t:'Patient'},{id:'sorry',t:'Said sorry first'}];
+const GIFTS=[{amt:5,cur:'f'},{amt:10,cur:'f'},{amt:1,cur:'r'},{amt:2,cur:'r'}];
+const KIDS=['lucas','etan'];
+const other=k=>k==='lucas'?'etan':'lucas';
+
+/* ---------- default family data ---------- */
+function H(g,ic,n,s,f=1,times=1,days='all'){return{id:uid(),g,ic,n,s,f,times,days}}
+function newKid(name,hex,body,eyes,habits,maxM){return{name,hex,feathers:0,rainbow:2,xp:0,streak:0,today:0,kindness:0,maxM,habits,draft:null,cnt:{},perfect:false,hist:{f:[],h:[]},events:[],av:{body,eyes,hat:'none',extra:'none'},owned:['body:blue','body:orange','eyes:normal','hat:none','extra:none']}}
+function defaultData(){
+ const LH=[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','rice','Lunch plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe + floor!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
+  H('toilet','target','Bullseye!','Pee IN the bowl',1,3),H('toilet','wave','Flush it!','Every time!',1,3),H('toilet','soap','Soap hands','Count to 20',1,3),
+  H('bed','brush','Brush teeth','Shiny!'),H('bed','bag','Bag ready','For tomorrow',1,1,'school'),H('bed','basket','Clothes in','Into the basket!')];
+ const EH=[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
+  H('toilet','target','Bullseye!','Pee IN the bowl',1,3),H('toilet','wave','Flush it!','Every time!',1,3),H('toilet','soap','Soap hands','Count to 20',1,3),
+  H('bed','brush','Brush teeth','Shiny!'),H('bed','toilet','Last pee','Before bed')];
+ return {
+  v:1,day:null,created:Date.now(),
+  kids:{lucas:newKid('Lucas','#2fa8ff','blue','normal',LH,3),etan:newKid('Ethan','#ff8a2a','orange','happy',EH,2)},
+  parents:{dad:{name:'Papa',hex:'#8b5cff',av:{body:'purple',eyes:'cool',hat:'cap',extra:'none'}},mum:{name:'Mama',hex:'#ff5fae',av:{body:'pink',eyes:'happy',hat:'crown',extra:'bowtie'}}},
+  pins:{dad:null,mum:null},seenTut:{},
+  team:{goal:300,prize:'Family movie night 🍿'},
+  throne:{streak:0,checkedToday:false},
+  shirt:{lucas:null,etan:null},
+  missions:[
+   {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Kitchen',price:3,owner:null,status:'open',runs:4,runsDone:0},
+   {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Living room',price:3,owner:null,status:'open',runs:4,runsDone:0},
+   {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Bedrooms',price:3,owner:null,status:'open',runs:4,runsDone:0},
+   {id:uid(),type:'solo',ic:'bin',n:'Rubbish out',price:4,owner:null,status:'open'},
+   {id:uid(),type:'solo',ic:'plant',n:'Water plants',price:3,owner:null,status:'open'},
+   {id:uid(),type:'duo',ic:'car',n:'Wash Papa\'s car',tip:'One soaps, one rinses',price:8,joined:{},parts:{},status:'open'},
+   {id:uid(),type:'duo',ic:'toilet',n:'Toilet team',tip:'One scrubs, one wipes',price:6,joined:{},parts:{},status:'open'},
+   {id:uid(),type:'duo',ic:'table',n:'Dinner crew',tip:'One sets, one clears',price:4,joined:{},parts:{},status:'open'}
+  ],
+  rewards:[
+   {id:1,ic:'noodle',n:'Pick dinner',p:20},{id:2,ic:'icecream',n:'Ice cream trip',p:30},
+   {id:3,ic:'moon',n:'Stay up late (Sat)',p:25},{id:4,ic:'flag',n:'Pick weekend fun',p:40},
+   {id:5,ic:'cash',n:'RM5 cash',p:30},{id:6,ic:'ticket',n:'Skip-a-chore pass',p:35},
+   {id:7,ic:'heartM',n:'Date with Mama',p:60},{id:8,ic:'heartP',n:'Date with Papa',p:60},
+   {id:9,ic:'tent',n:'Sleepover',p:80},{id:10,ic:'brick',n:'RM20 toy/Lego',p:120}
+  ],
+  ideas:[],suggestions:[],redeems:[],
+  live:[{id:uid(),from:'mum',to:'both',kind:'sticker',st:'love',t:'',ts:Date.now(),seen:[]}]
+ };
+}
+const SHARED=['v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
+
+/* ---------- state ---------- */
+const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'body',planTab:'habits',planKid:'etan',post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
+const $=id=>document.getElementById(id);
+function toast(t){const e=$('toast');e.innerHTML=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2400)}
+function isParent(){return S.user==='dad'||S.user==='mum'}
+function nightNow(){return new Date().getHours()>=19}
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
+
+/* ---------- dates & rollover ---------- */
+function dstr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function todayStr(){return dstr(new Date())}
+function parseD(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function daysBetween(a,b){return Math.round((parseD(b)-parseD(a))/864e5)}
+function weekKey(s){const d=parseD(s);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return dstr(d)}
+function habitsOn(k,ds){const d=ds?parseD(ds).getDay():new Date().getDay(),school=d>=1&&d<=5;return S.kids[k].habits.filter(h=>h.days==='all'||(h.days==='school'&&school)||(h.days==='weekend'&&!school))}
+function todayHabits(k){return habitsOn(k,S.day)}
+function hDone(k,h){return (S.kids[k].cnt[h.id]||0)>=h.times}
+function doneCount(k){return todayHabits(k).filter(h=>hDone(k,h)).length}
+function rollover(){
+ const t=todayStr();if(S.day===t)return false;
+ if(S.day){
+  const gap=Math.max(1,daysBetween(S.day,t));
+  KIDS.forEach(k=>{const Kd=S.kids[k],hs=habitsOn(k,S.day),pct=Math.round(hs.filter(h=>hDone(k,h)).length/(hs.length||1)*100);
+   Kd.hist.f.push(Kd.today);Kd.hist.h.push(pct);for(let i=1;i<gap;i++){Kd.hist.f.push(0);Kd.hist.h.push(0)}
+   Kd.hist.f=Kd.hist.f.slice(-35);Kd.hist.h=Kd.hist.h.slice(-35);
+   if(pct>=100&&gap===1){Kd.streak++;if(Kd.streak%5===0){Kd.feathers+=10;Kd.xp+=10;Kd.events.push({id:uid(),kind:'streak',n:Kd.streak,seen:false})}}else Kd.streak=0;
+   Kd.today=0;Kd.cnt={};Kd.perfect=false;if(Kd.draft){Kd.habits=Kd.draft;Kd.draft=null}
+   Kd.events=Kd.events.filter(e=>!e.seen).slice(-20);
+  });
+  if(S.throne.checkedToday===false&&gap>=1){}
+  S.shirt={lucas:null,etan:null};S.throne.checkedToday=false;
+  if(weekKey(S.day)!==weekKey(t))S.missions.forEach(m=>{if(m.runs>1){m.runsDone=0;if(m.status==='done'||m.status==='todo'){m.status='open';m.owner=null;if(m.type==='duo'){m.joined={};m.parts={}}}}});
+  S.missions=S.missions.filter(m=>!(m.status==='done'&&!(m.runs>1)&&m.doneDay&&daysBetween(m.doneDay,t)>=3));
+  S.live=S.live.slice(-120);
+ }
+ S.day=t;return true;
+}
+
+/* ---------- data layer (Firebase or demo) ---------- */
+function pack(){const o={};SHARED.forEach(k=>o[k]=S[k]);return JSON.parse(JSON.stringify(o))}
+function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{}}
+let BUSY=0;
+async function act(fn){
+ let res;try{res=fn()}catch(e){console.error(e)}
+ render();
+ if(!window.DB)return res;
+ BUSY++;
+ try{await DB.tx(S.fid,(data)=>{unpack(data);rollover();fn();return pack()})}
+ catch(e){console.error(e);toast('⚠️ Not saved. Check internet & try again')}
+ finally{BUSY--}
+ render();return res;
+}
+function onRemote(data){
+ unpack(data);
+ if(rollover()){act(()=>{});}
+ const typing=document.activeElement&&['INPUT','TEXTAREA'].includes(document.activeElement.tagName)&&document.activeElement.closest('#app');
+ if(!typing)render();
+ remoteFx();
+}
+// effects for things that happened on other phones
+function remoteFx(){
+ if(!S.user)return;
+ if(isParent()){
+  const pc=checkCount(false);if(S._lastPC!==undefined&&pc>S._lastPC){beep(SND.pop);toast('✅ New thing to check!')}S._lastPC=pc;
+  S.live.filter(m=>m.to==='parents'&&!S._shown.has(m.id)&&!(m.seen||[]).includes(S.user)).forEach(m=>{S._shown.add(m.id);if(S.tab==='live')return;beep(SND.pop);if(m.kind==='sticker'){const s=stkOf(m);burst(s.ic,10);toast(`${P(m.from).name}: ${s.t}`)}else toast(`💌 ${P(m.from).name}: ${esc((m.text||'').slice(0,40))}`)});
+  return;
+ }
+ const k=S.user,Kd=S.kids[k];const q=[];let mark=false;
+ Kd.events.filter(e=>!e.seen&&!S._shown.has(e.id)).forEach(e=>{S._shown.add(e.id);mark=true;
+  if(e.kind==='approve')q.push({who:k,title:rnd(HYPE),sub:e.sub,gain:`+${e.gain} ${F}`});
+  if(e.kind==='duo')q.push({duo:true,title:'DUO POWER!',sub:e.sub,gain:`+${e.gain} ${F} + 1 ${RB}`,btn:'HIGH FIVE!'});
+  if(e.kind==='redo')q.push({icon:'broom',title:'TRY AGAIN!',sub:`${e.sub}<br>Papa/Mama said: one more go 💪`,btn:'OK!'});
+  if(e.kind==='given')q.push({icon:'gift',title:'REWARD TIME!',sub:e.sub,btn:'YAY!'});
+  if(e.kind==='level')q.push({who:k,title:'LEVEL UP!',sub:`You are a ${e.sub} now!`,gain:`+2 ${RB}`,btn:'WOOHOO!'});
+  if(e.kind==='streak')q.push({icon:'fire',title:`${e.n}-DAY STREAK!`,sub:'Perfect days in a row!',gain:`+10 ${F}`});
+  if(e.kind==='throne')q.push({icon:'crown',title:'CLEAN THRONE!',sub:'Toilet clean tonight!',gain:`+3 ${F}`});
+  if(e.kind==='ninja')q.push({icon:'ninja',title:'NAPKIN NINJA!',sub:'Clean shirt today!',gain:`+2 ${F}`});
+ });
+ const lm=S.live.filter(m=>(m.from==='mum'||m.from==='dad')&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k)&&!S._shown.has(m.id));
+ lm.forEach(m=>{S._shown.add(m.id);mark=true;
+  if(m.kind==='gift')q.push({who:m.from,title:`GIFT FROM ${P(m.from).name.toUpperCase()}!`,sub:`💛 ${m.gift.reason}`,gain:`+${m.gift.amt} ${m.gift.cur==='f'?F:RB}`,btn:'THANK YOU!'});
+  else if(m.kind==='sticker'){const s=stkOf(m);setTimeout(()=>{burst(s.ic,14);beep(SND.pop);toast(`${P(m.from).name}: ${s.t}`)},300)}
+  else if(m.kind==='voice')setTimeout(()=>{beep(SND.pop);toast(`🎙 Voice note from ${P(m.from).name}! Open Live`)},300);
+  else setTimeout(()=>{beep(SND.pop);toast(`💌 ${P(m.from).name}: ${esc((m.text||'').slice(0,40))}`)},300);
+ });
+ if(q.length){const first=q.shift();S._queue.push(...q);if(!$('cel').innerHTML)setTimeout(()=>celebrate(first),400);else S._queue.unshift(first)}
+ if(mark&&!S._marking){S._marking=true;setTimeout(()=>{act(()=>{const Kd2=S.kids[k];Kd2.events.forEach(e=>{if(S._shown.has(e.id))e.seen=true});S.live.forEach(m=>{if(S._shown.has(m.id)&&(m.to===k||m.to==='both')){m.seen=m.seen||[];if(!m.seen.includes(k))m.seen.push(k)}})}).finally(()=>S._marking=false)},800)}
+}
+
+/* ---------- fx ---------- */
+function floatAt(x,y,t){const e=document.createElement('div');e.className='float';e.innerHTML=t;e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
+function confetti(n=60){const cols=['#ffcc2e','#3ddc6a','#2fa8ff','#ff5fae','#8b5cff','#ff8a2a','#ff5a5a'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=rnd(cols);c.style.animationDuration=(1.6+Math.random()*1.8)+'s';c.style.animationDelay=Math.random()*.4+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}}
+function burst(ic,n=12){for(let i=0;i<n;i++){const e=document.createElement('div');e.className='rise';e.innerHTML=I(ic,30+Math.random()*24);e.style.right=(10+Math.random()*70)+'px';e.style.animationDuration=(1.6+Math.random()*1.4)+'s';e.style.animationDelay=(Math.random()*.6)+'s';e.style.setProperty('--dx',(Math.random()*80-40)+'px');document.body.appendChild(e);setTimeout(()=>e.remove(),3800)}}
+function celebrate({who,duo,icon,title,sub,gain,btn}){
+ beep(duo?SND.duo:SND.win);confetti(duo?100:60);
+ const pic=duo?`<div class="big duo"><span>${AV('lucas',120)}</span><span>${AV('etan',120)}</span></div>`:who?`<div class="big">${AV(who,150)}</div>`:`<div class="big">${I(icon||'trophy',150)}</div>`;
+ $('cel').innerHTML=`<div class="cel" onclick="closeCel()"><div class="rays"></div><div class="cbox">${pic}
+ <div class="H t">${title||rnd(HYPE)}</div>${sub?`<div class="sub">${sub}</div>`:''}${gain?`<div class="gain">${gain}</div><br>`:''}
+ <button class="btn gold" onclick="closeCel()">${btn||rnd(['YEAH!','LET\'S GO!','AWESOME!'])}</button></div></div>`;
+}
+function closeCel(){$('cel').innerHTML='';if(S._queue.length){const n=S._queue.shift();setTimeout(()=>celebrate(n),250)}}
+function addXP(k,n){const Kd=S.kids[k],before=level(Kd.xp).n;Kd.feathers+=n;Kd.xp+=n;if(n>0)Kd.today+=n;const L=level(Kd.xp);if(L.n>before){Kd.rainbow+=2;Kd.events.push({id:uid(),kind:'level',sub:L.name,seen:false})}}
+function ev(k,o){S.kids[k].events.push(Object.assign({id:uid(),seen:false},o))}
+
+/* ---------- stats ---------- */
+function pad(a,n){a=a.slice(-n);while(a.length<n)a.unshift(0);return a}
+function dayVals(k,m){const v=S.kids[k].hist[m].slice();const th=todayHabits(k).length||1;v.push(m==='f'?S.kids[k].today:Math.round(doneCount(k)/th*100));return pad(v,28)}
+function weekSum(k){return dayVals(k,'f').slice(-7).reduce((a,b)=>a+b,0)}
+function teamWeek(){return KIDS.reduce((a,k)=>a+weekSum(k),0)}
+function chartData(k){
+ const m=S.chartMetric,v=dayVals(k,m);
+ if(S.chartMode==='week')return v.slice(-7);
+ const out=[];for(let w=3;w>=0;w--){const sl=v.slice(v.length-7*(w+1),v.length-7*w||undefined);const sum=sl.reduce((a,b)=>a+b,0);out.push(m==='h'?Math.round(sum/sl.length):sum)}return out;
+}
+function chartLabels(){if(S.chartMode==='month')return['3w ago','2w ago','Last wk','This wk'];const d=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],t=new Date().getDay(),o=[];for(let i=6;i>=0;i--)o.push(i===0?'Today':d[(t-i+7)%7]);return o}
+function lineChart(series){
+ const labels=chartLabels(),W=340,H2=200,L=34,R=28,T=18,B=34,n=labels.length;
+ const isPct=S.chartMetric==='h';let max=isPct?100:Math.max(10,...series.flatMap(s=>s.vals));if(!isPct)max=Math.ceil(max/10)*10;
+ const x=i=>L+i*(W-L-R)/(n-1),y=v=>T+(H2-T-B)*(1-v/max);
+ let g='';for(let i=0;i<=4;i++){const v=max*i/4,yy=y(v);g+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="#d9dcef" stroke-width="2" stroke-dasharray="${i?'5 5':''}"/><text x="${L-6}" y="${yy+4}" text-anchor="end" class="ax">${Math.round(v)}${isPct?'%':''}</text>`}
+ labels.forEach((l,i)=>g+=`<text x="${x(i)}" y="${H2-10}" text-anchor="middle" class="ax">${l}</text>`);
+ series.forEach((s,si)=>{const pts=s.vals.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+  g+=`<polyline points="${pts}" fill="none" stroke="${K}" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" class="draw"/><polyline points="${pts}" fill="none" stroke="${s.c}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" class="draw"/>`;
+  s.vals.forEach((v,i)=>g+=`<rect x="${x(i)-6}" y="${y(v)-6}" width="12" height="12" rx="3" fill="${s.c}" stroke="${K}" stroke-width="2.5" class="pt" style="animation-delay:${.6+i*.05}s"/>`);
+  const lv=s.vals[n-1],by=si?y(lv)+12:y(lv)-34;g+=`<g class="pt" style="animation-delay:1s"><rect x="${x(n-1)-22}" y="${by}" width="34" height="22" rx="6" fill="${s.c}" stroke="${K}" stroke-width="2.5"/><text x="${x(n-1)-5}" y="${by+16}" text-anchor="middle" class="lv">${lv}${isPct?'%':''}</text></g>`});
+ return `<svg viewBox="0 0 ${W} ${H2}" width="100%" class="chart">${g}</svg>`;
+}
+function chartCard(keys){
+ const tg=(v,cur,lab,f)=>`<button class="seg ${cur===v?'on':''}" onclick="${f}='${v}';render()">${lab}</button>`;
+ const series=keys.map(k=>({c:S.kids[k].hex,vals:chartData(k)}));
+ const tot=keys.map(k=>{const v=chartData(k);return S.chartMetric==='h'?Math.round(v.reduce((a,b)=>a+b,0)/v.length)+'%':v.reduce((a,b)=>a+b,0)});
+ return `<div class="blk" style="padding:12px">
+ <div class="segs">${tg('week',S.chartMode,'Week','S.chartMode')}${tg('month',S.chartMode,'Month','S.chartMode')}<span style="width:10px"></span>${tg('f',S.chartMetric,I('feather',18)+' Feathers','S.chartMetric')}${tg('h',S.chartMetric,I('check',18)+' Habits','S.chartMetric')}</div>
+ ${lineChart(series)}
+ <div class="legend">${keys.map((k,i)=>`<span><i style="background:${S.kids[k].hex}"></i>${S.kids[k].name}: <b>${tot[i]}</b> ${S.chartMetric==='f'?'feathers':'avg'}</span>`).join('')}</div></div>`;
+}
+function teamCard(){const t=teamWeek(),pct=Math.min(100,Math.round(t/S.team.goal*100));
+ return `<div class="blk mis" style="background:#fff3c4"><div class="em ${pct>=100?'bounce':''}">${I('chest')}</div><div class="tx"><span class="H">Team Chest</span><small>Earn ${S.team.goal} together this week → <b>${esc(S.team.prize)}</b></small>
+ <div class="bar"><i style="width:${pct}%;background:repeating-linear-gradient(45deg,#ffcc2e 0 14px,#ffe07a 14px 28px)"></i></div><small><b>${t} / ${S.team.goal}</b> · Lucas + Ethan</small></div></div>`}
+
+/* ---------- render ---------- */
+function render(){
+ const a=$('app');
+ if(!S.ready){a.innerHTML=`<div class="logo" style="padding-top:120px"><div class="H">HOO<br>DID IT?</div><p>Loading… 🦉</p></div>`;return}
+ if(!S.fid){a.innerHTML=joinView();return}
+ if(!S.user){a.innerHTML=homeView();return}
+ a.innerHTML=isParent()?parentView():kidView();
+ if(S.tab==='live'){const f=$('feed');if(f)f.scrollTop=f.scrollHeight}
+}
+
+/* join / create family */
+function joinView(){
+ return `<div class="logo"><div class="H">HOO<br>DID IT?</div><p>The Hoo family quest game</p></div>
+ <div style="padding:16px">
+ <div class="blk" style="padding:16px;margin-bottom:18px"><div class="H" style="font-size:22px">Join your family</div>
+ <p style="font-weight:600;margin:4px 0 8px">Type the family code (from Papa or Mama's phone).</p>
+ <input type="text" id="jcode" placeholder="XXXX-XXXX-XXXX" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:2px;font-family:'Lilita One'">
+ <button class="btn full" onclick="joinFamily()">JOIN!</button></div>
+ <div class="blk" style="padding:16px"><div class="H" style="font-size:20px">First time? (parents only)</div>
+ <p style="font-weight:600;margin:4px 0 10px">Create the family once, then join on the other phones with the code.</p>
+ <button class="btn full grey" onclick="createFamily()">CREATE NEW FAMILY</button></div></div>`;
+}
+const ALPH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function genCode(){let s='';const r=new Uint32Array(12);crypto.getRandomValues(r);for(let i=0;i<12;i++)s+=ALPH[r[i]%ALPH.length];return s}
+const fmt=c=>c.match(/.{1,4}/g).join('-');
+async function joinFamily(){
+ const c=$('jcode').value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+ if(c.length!==12){$('jcode').classList.add('shake');beep(SND.no);toast('Code has 12 letters/numbers');return}
+ toast('Checking…');
+ try{const d=await DB.get(c);if(!d){beep(SND.no);toast('❌ Family not found. Check the code');return}
+  S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);beep(SND.win);render();toast('🎉 Joined the Hoo family!')}
+ catch(e){console.error(e);toast('⚠️ Could not connect. Check internet')}
+}
+async function createFamily(){
+ const c=genCode();
+ try{const d=defaultData();d.day=todayStr();await DB.create(c,d);S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);render();showCode(true)}
+ catch(e){console.error(e);toast('⚠️ Could not create. Check internet / Firebase rules')}
+}
+function showCode(first){
+ $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" style="padding:20px">
+ <div class="H" style="font-size:24px">${first?'🎉 Family created!':'Family code'}</div>
+ <p style="font-weight:600;margin:6px 0">Enter this code once on every family phone:</p>
+ <div class="H code">${fmt(S.fid)}</div>
+ <p style="font-weight:600;font-size:13px;color:var(--muted);margin-bottom:12px">Keep it in the family. Anyone with the code can see your family's game. Write it down somewhere safe.</p>
+ <button class="btn blue full" onclick="copyCode()">COPY CODE</button><button class="btn full" style="margin-top:12px" onclick="closeModal()">DONE</button></div></div>`;
+}
+function copyCode(){try{navigator.clipboard.writeText(fmt(S.fid)).then(()=>toast('Copied ✓'),()=>toast('Copy failed, write it down'))}catch(e){toast('Write it down: '+fmt(S.fid))}}
+
+function homeView(){
+ return `<div class="logo"><div class="H">HOO<br>DID IT?</div><p>Who's ready to play?</p></div>
+ <div class="who">
+  <button style="background:var(--blue)" onclick="pick('lucas')">${AV('lucas',88)}<span class="H">Lucas</span><small>${I('compass',18)} Captain</small>${unseen('lucas').length?`<i class="dot2">${unseen('lucas').length}</i>`:''}</button>
+  <button style="background:var(--orange)" onclick="pick('etan')">${AV('etan',88)}<span class="H">Ethan</span><small>${I('bolt',18)} Speedy</small>${unseen('etan').length?`<i class="dot2">${unseen('etan').length}</i>`:''}</button>
+  <button style="background:var(--purple)" onclick="askPin('dad')">${AV('dad',88)}<span class="H">Papa</span><small>${I('lock',18)} Parent</small></button>
+  <button style="background:var(--pink)" onclick="askPin('mum')">${AV('mum',88)}<span class="H">Mama</span><small>${I('lock',18)} Parent</small></button>
+ </div><div style="display:flex;gap:12px;padding:0 16px"><button class="btn blue" style="flex:1;font-size:17px" onclick="showTut('kid')">❓ HOW TO PLAY</button><button class="btn grey" style="flex:1;font-size:17px" onclick="showTut('parent')">PARENT GUIDE</button></div>`;
+}
+function unseen(k){return S.live.filter(m=>(m.from==='mum'||m.from==='dad')&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k))}
+function pick(k){beep(SND.tick);S.user=k;S.tab='today';LS.set('hoo_user',k);render();
+ if(!S.seenTut[k]){S._afterTut=()=>remoteFx();setTimeout(()=>showTut('kid'),200)}else remoteFx();
+}
+function logout(){S.user=null;LS.set('hoo_user',null);render()}
+
+/* ---------- KID ---------- */
+function kidView(){
+ const k=S.kids[S.user],L=level(k.xp);
+ const tabs=[['today',I('sun',34),'Today'],['quests',I('board',34),'Missions'],['live',I('live',34),'Live'],['shop',I('gift',34),'Shop'],['me',AV(S.user,36),'Me']];
+ const body={today:kidToday,quests:kidMissions,live:liveView,shop:kidShop,me:kidMe}[S.tab](k);
+ return `<header>
+ <div class="blk top"><div class="bounce">${AV(S.user,76)}</div><div class="nm"><div class="H">Hi ${k.name}!</div><span class="badge">Lv ${L.n} · ${L.name}</span>${S.user==='lucas'?` <span class="badge" style="background:var(--gold);color:var(--ink)">${I('compass',16)} Captain</span>`:''}</div><div class="hbtns"><button class="sw help" onclick="showTut('kid')">?</button><button class="sw" onclick="logout()">🔄</button></div></div>
+ <div class="chips"><div class="blk chip f"><span class="H" id="fc">${I('feather',30)} ${k.feathers}</span><small>Feathers</small></div><div class="blk chip r"><span class="H">${I('rbow',30)} ${k.rainbow}</span><small>Rainbow</small></div><div class="blk chip s"><span class="H">${I('fire',30)} ${k.streak}</span><small>Streak</small></div></div>
+ <div class="blk xp"><div class="row"><span>${I('star',22)} ${k.xp} XP</span><span>${L.nextName?`${L.next} more → ${L.nextName}!`:'MAX LEVEL! 👑'}</span></div><div class="bar"><i style="width:${L.pct}%"></i></div></div>
+ </header><main>${body}</main>
+ <nav class="n5">${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="beep(SND.tick);S.tab='${t[0]}';render()"><span>${t[1]}</span>${t[2]}</button>`).join('')}</nav>`;
+}
+function kidToday(k){
+ const hs=todayHabits(S.user),n=doneCount(S.user),tot=hs.length;
+ return `<div class="banner">${I('sun',30)} Today ${n}/${tot}</div>
+ <div class="tip">Tap = feathers · All done = +1 ${RB} · 5 perfect days = <b>+10 BONUS!</b></div>
+ ${S.user==='lucas'?`<div class="tip" style="background:#ffe7a3">${I('compass',20)} Help Ethan finish ALL his = <b>+5 ${F}</b> for you! (Ethan: ${doneCount('etan')}/${todayHabits('etan').length})</div>`:''}
+ ${GROUPS.map(g=>{const items=hs.filter(h=>h.g===g.id);if(!items.length)return '';return `<div class="banner" style="background:${g.c}">${I(g.i,30)} ${g.n}</div>
+ <div class="grid">${items.map(h=>{const c=k.cnt[h.id]||0,d=c>=h.times;return `<div class="blk tile ${d?'on':''}" id="t_${h.id}" onclick="tick('${h.id}',event)"><span class="fe">+${h.f}${Fs}</span>${h.times>1?`<span class="cnt">${c}/${h.times}</span>`:''}<span class="em">${I(h.ic)}</span><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small>${h.times>1?`<div class="pips">${Array.from({length:h.times},(_,i)=>`<i class="${i<c?'on':''}"></i>`).join('')}</div>`:''}<span class="tick">✓</span></div>`}).join('')}</div>`}).join('')}
+ <div class="banner" style="background:var(--gold);color:var(--ink);text-shadow:none">${I('crown',30)} Team: Clean Throne</div>
+ <div class="blk mis"><div class="em">${I('toilet')}</div><div class="tx"><span class="H">${S.throne.streak} nights in a row!</span><small>Toilet clean tonight = +3 ${Fs} for BOTH!</small></div></div>`;
+}
+function tick(id,ev0){
+ const me=S.user,k=S.kids[me],h=k.habits.find(x=>x.id===id);if(!h)return;const c=k.cnt[id]||0;
+ if(c>=h.times){toast('Done already ✓');return}
+ const x=ev0.clientX,y=ev0.clientY;
+ const res=act(()=>{const Kd=S.kids[me],hh=Kd.habits.find(z=>z.id===id);if(!hh)return;const cc=Kd.cnt[id]||0;if(cc>=hh.times)return;Kd.cnt[id]=cc+1;addXP(me,hh.f);
+  if(doneCount(me)===todayHabits(me).length&&!Kd.perfect){Kd.perfect=true;Kd.rainbow++;if(me==='etan')addXP('lucas',5)}});
+ beep(SND.tick);floatAt(x,y,`+${h.f} `+I('feather',30));
+ const t=$('t_'+id);if(t)t.classList.add('pop');
+ toast(c+1<h.times?`${c+1}/${h.times}! ${rnd(SMALL)}`:rnd(SMALL));
+ if(c+1===h.times&&doneCount(me)===todayHabits(me).length)setTimeout(()=>celebrate({who:me,title:'PERFECT DAY!',sub:'Every habit done!',gain:`+1 ${RB}`}),400);
+}
+
+/* missions (kid) */
+function activeCount(k){return S.missions.filter(m=>(m.type==='solo'&&m.owner===k&&m.status!=='done')||(m.type==='duo'&&m.joined[k]&&m.status!=='done')).length}
+function duoSlots(m){return `<div class="slots">${KIDS.map(k=>`<div class="slot ${m.joined[k]?'in':''}">${m.joined[k]?AV(k,44):'<span>?</span>'}${m.parts&&m.parts[k]?'<i>✓</i>':''}</div>`).join('<b class="plus">+</b>')}</div>`}
+function kidMissions(){
+ const me=S.user,o=other(me),O2=S.kids[o].name,cap=S.kids[me].maxM,ac=activeCount(me);
+ const mine=S.missions.filter(m=>(m.type==='solo'&&m.owner===me)||(m.type==='duo'&&m.joined[me]&&m.status!=='open'));
+ const waiting=S.missions.filter(m=>m.type==='duo'&&m.status==='open'&&m.joined[me]);
+ const board=S.missions.filter(m=>m.status==='open'&&!(m.type==='duo'&&m.joined[me]));
+ const card=m=>{
+  const duo=m.type==='duo';let act0='';
+  if(m.type==='solo'){act0=m.status==='todo'?`<button class="btn" onclick="soloDone('${m.id}')">DONE!</button>`:m.status==='pending'?`<span class="tag">⏳ Checking</span>`:`<span class="tag ok">✅ ${m.runs>1?'Week<br>done!':'Paid!'}</span>`}
+  else{act0=m.status==='active'?(m.parts[me]?`<span class="tag">⏳ Waiting<br>${O2}</span>`:`<button class="btn" onclick="duoPart('${m.id}')">MY PART!</button>`):m.status==='pending'?`<span class="tag">⏳ Checking</span>`:m.status==='done'?`<span class="tag ok">✅ Paid!</span>`:''}
+  return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${dots(m)}${duo?duoSlots(m):''}</div>${act0}</div>`};
+ return `${teamCard()}
+ <div class="banner">${I('swords',30)} My Missions <span class="slotcap">${ac}/${cap}</span></div>
+ ${mine.length?mine.map(card).join(''):`<div class="tip">No missions yet. Grab one from the board!</div>`}
+ ${waiting.map(m=>`<div class="blk mis duo"><div class="em">${I(m.ic)}</div><div class="tx"><span class="dtag">${I('duo',16)} DUO</span><span class="H">${esc(m.n)}</span>${duoSlots(m)}<small>Waiting for ${O2} to join!</small></div><button class="btn sm blue" onclick="nudge('${o}','${m.id}')">CALL<br>${O2.toUpperCase()}!</button></div>`).join('')}
+ <div class="banner" style="background:var(--orange)">${I('board',30)} Mission Board</div>
+ <div class="tip">${I('duo',20)} <b>DUO</b> = do it together! Both get ${F} + ${RB} + bonus!${ac>=cap?`<br>🛑 You have ${cap} missions. Finish one first!`:''}</div>
+ ${board.map(m=>{const duo=m.type==='duo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${duo?duoSlots(m):''}${duo&&m.joined[o]?`<small style="color:var(--grassD)"><b>${O2} is waiting for you!</b></small>`:''}</div>
+ <button class="btn ${duo?'gold':'blue'}" ${ac>=cap?'disabled':''} onclick="${duo?`joinDuo('${m.id}')`:`claim('${m.id}')`}">${duo?'JOIN!':"I'LL DO IT!"}</button></div>`}).join('')||`<div class="empty">Board is empty! 🎉</div>`}
+ <div class="banner" style="background:var(--grass)">${I('bulb',30)} Mission idea?</div>
+ <div class="blk" style="padding:14px"><input type="text" id="csug" maxlength="60" placeholder="e.g. Clean fish tank">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><b>Worth:</b><div class="stepper"><button onclick="S._ask=Math.max(1,(S._ask||5)-1);keep('csug')">−</button><b>${F}${S._ask||5}</b><button onclick="S._ask=(S._ask||5)+1;keep('csug')">+</button></div></div>
+ <button class="btn full" onclick="suggestIdea()">SEND IDEA!</button>
+ ${S.ideas.filter(s=>s.kid===me).length?`<p style="margin-top:10px;font-weight:600">⏳ Waiting: ${S.ideas.filter(s=>s.kid===me).map(s=>esc(s.n)).join(' · ')}</p>`:''}</div>`;
+}
+function dots(c){if(!(c.runs>1))return '';let d='';for(let i=0;i<c.runs;i++)d+=`<i class="${i<c.runsDone?'on':''}"></i>`;return `<div class="dots">${d}</div>`}
+function M(id){return S.missions.find(x=>x.id===id)}
+function claim(id){const me=S.user;if(activeCount(me)>=S.kids[me].maxM){beep(SND.no);toast('Finish a mission first! 💪');return}const m=M(id);if(!m||m.status!=='open'){toast('Too late, taken!');return}
+ act(()=>{const mm=M(id);if(mm&&mm.status==='open'&&mm.type==='solo'){mm.owner=me;mm.status='todo'}});celebrate({icon:m.ic,title:'MISSION ON!',sub:esc(m.n),btn:'GO GO GO!'})}
+function soloDone(id){const m=M(id);act(()=>{const mm=M(id);if(mm&&mm.status==='todo')mm.status='pending'});celebrate({icon:m.ic,title:'MISSION DONE!',sub:esc(m.n),gain:`+${m.price} ${F} soon!`,btn:'SEND IT!'})}
+function joinDuo(id){const me=S.user;if(activeCount(me)>=S.kids[me].maxM){beep(SND.no);toast('Finish a mission first! 💪');return}
+ act(()=>{const m=M(id);if(!m)return;m.joined[me]=true;if(KIDS.every(k=>m.joined[k]))m.status='active'});
+ const m=M(id);if(m&&m.status==='active')celebrate({duo:true,title:'DUO READY!',sub:`${esc(m.n)}<br>${esc(m.tip||'')}`,btn:'TEAM UP!'});else{toast(`Joined! Waiting for ${S.kids[other(me)].name} 🤝`);beep(SND.tick)}}
+function duoPart(id){const me=S.user;act(()=>{const m=M(id);if(!m)return;m.parts[me]=true;if(KIDS.every(k=>m.parts[k]))m.status='pending'});
+ const m=M(id);if(m&&m.status==='pending')celebrate({duo:true,title:'DUO DONE!',sub:esc(m.n),gain:`+${m.price} ${F} + ${RB} each!`,btn:'HIGH FIVE!'});else{toast(`Your part done! ${S.kids[other(me)].name}'s turn 💪`);beep(SND.tick)}}
+function nudge(k,id){const m=M(id);beep(SND.tick);act(()=>{S.live.push({id:uid(),from:S.user,to:k,kind:'text',text:`🤝 Join me for DUO: ${m?m.n:'a mission'}!`,ts:Date.now(),seen:[]})});toast(`📣 Called ${S.kids[k].name}!`)}
+function keep(id){const v=$(id)?$(id).value:'';render();if($(id))$(id).value=v}
+function suggestIdea(){const v=$('csug').value.trim();if(!v){$('csug').classList.add('shake');beep(SND.no);return}const me=S.user,ask=S._ask||5;act(()=>S.ideas.push({id:uid(),kid:me,n:v,ask}));S._ask=5;celebrate({icon:'bulb',title:'GREAT IDEA!',sub:`"${esc(v)}" sent to Papa & Mama`})}
+
+/* shop */
+function kidShop(k){
+ const myReq=S.redeems.filter(r=>r.kid===S.user&&r.status==='pending');
+ const mySug=S.suggestions.filter(s=>s.kid===S.user);
+ return `<div class="banner" style="background:var(--pink)">${I('gift',30)} Feather Shop</div>
+ <div class="tip">Spend ${F} here. ${RB} Rainbow feathers are for your owl look → <b>Me</b> tab!</div>
+ ${myReq.length?`<div class="tip">⏳ Coming soon: ${myReq.map(r=>{const w=S.rewards.find(x=>x.id===r.rid);return w?esc(w.n):'reward'}).join(', ')}</div>`:''}
+ <div class="grid">${S.rewards.map(r=>{const can=k.feathers>=r.p;return `<div class="blk tile" style="${can?'':'opacity:.75'}"><span class="em">${I(r.ic)}</span><span class="H">${esc(r.n)}</span><span class="price">${F} ${r.p}</span><br>
+ <button class="btn sm ${can?'gold':'grey'}" style="margin-top:8px" ${can?'':'disabled'} onclick="redeem(${typeof r.id==='string'?`'${r.id}'`:r.id})">${can?'GET IT!':'Need '+(r.p-k.feathers)}</button></div>`}).join('')}</div>
+ <div class="banner" style="background:var(--grass)">${I('sparkle',30)} Wish for a reward</div>
+ <div class="blk" style="padding:14px"><input type="text" id="sug" maxlength="60" placeholder="e.g. Trampoline park"><button class="btn full" onclick="suggest()">MAKE A WISH!</button>
+ ${mySug.length?`<p style="margin-top:10px;font-weight:600">${mySug.map(s=>esc(s.n)+(s.p===null?' ⏳':' ✅')).join(' · ')}</p>`:''}</div>`;
+}
+function redeem(id){const me=S.user,r=S.rewards.find(x=>x.id===id);if(!r||S.kids[me].feathers<r.p)return;act(()=>{const Kd=S.kids[me],rr=S.rewards.find(x=>x.id===id);if(Kd.feathers<rr.p)return;Kd.feathers-=rr.p;S.redeems.push({id:uid(),kid:me,rid:id,status:'pending'})});celebrate({icon:r.ic,title:'UNLOCKED!',sub:esc(r.n),gain:`-${r.p} ${F}`,btn:'YESSS!'})}
+function suggest(){const v=$('sug').value.trim();if(!v){$('sug').classList.add('shake');beep(SND.no);return}const me=S.user;act(()=>S.suggestions.push({id:uid(),kid:me,n:v,p:null}));celebrate({icon:'sparkle',title:'WISH SENT!',sub:`"${esc(v)}" → Papa & Mama`})}
+
+/* me */
+function kidMe(k){
+ const cat=S.avTab,opts=AVOPT[cat];
+ return `<div class="banner" style="background:var(--purple)">${I('palette',30)} Owl Studio</div>
+ <div class="blk studio"><div class="stage"><div class="bounce">${AV(S.user,170)}</div><div class="ped"></div></div>
+ <div class="rbal">${I('rbow',26)} <b>${k.rainbow}</b> rainbow feathers · 💛 ${k.kindness} kindness</div>
+ <div class="segs" style="justify-content:center">${AVCAT.map(c=>`<button class="seg ${cat===c[0]?'on':''}" onclick="S.avTab='${c[0]}';render()">${I(c[1],18)} ${c[2]}</button>`).join('')}</div>
+ <div class="items">${opts.map(o=>{const key=cat+':'+o.id,own=k.owned.includes(key)||o.p===0,wear=k.av[cat]===o.id;const prev=Object.assign({},k.av,{[cat]:o.id});
+  return `<button class="item ${wear?'wear':''}" onclick="avPick('${cat}','${o.id}',${o.p})">${OWLC(prev,62)}<b>${o.n}</b>${wear?'<span class="tag ok">Wearing</span>':own?'<span class="tag">Owned</span>':`<span class="price">${RBs} ${o.p}</span>`}</button>`}).join('')}</div></div>
+ <div class="tip">Earn ${RB}: <b>Perfect day +1 · Duo mission +1 · Level up +2 · Kindness gifts</b></div>
+ <div class="banner">${I('chart',30)} My Progress</div>
+ ${chartCard([S.user])}`;
+}
+function avPick(cat,id,p){
+ const me=S.user,k=S.kids[me],key=cat+':'+id,own=k.owned.includes(key)||p===0;
+ if(own){act(()=>{S.kids[me].av[cat]=id});beep(SND.tick);return}
+ if(k.rainbow<p){beep(SND.no);toast(`Need ${p-k.rainbow} more ${RBs}! Try a DUO mission 🤝`);return}
+ act(()=>{const Kd=S.kids[me];if(Kd.rainbow<p||Kd.owned.includes(key))return;Kd.rainbow-=p;Kd.owned.push(key);Kd.av[cat]=id});
+ celebrate({who:me,title:'NEW LOOK!',sub:(AVOPT[cat].find(o=>o.id===id)||{}).n+' unlocked!',gain:`-${p} ${RB}`,btn:'LOOKING GOOD!'});
+}
+
+/* ---------- HOO LIVE ---------- */
+function stkOf(m){return [...STK_P,...STK_K].find(s=>s.id===m.st)||STK_P[0]}
+function timeOf(m){if(!m.ts)return '';const d=new Date(m.ts),t=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});return dstr(d)===todayStr()?t:d.toLocaleDateString([],{day:'numeric',month:'short'})+' '+t}
+function bubble(m){
+ const mine=m.from===S.user,who=P(m.from),toTxt=m.to==='both'?'Lucas & Ethan':m.to==='parents'?'Papa & Mama':P(m.to).name;
+ let body='';
+ if(m.kind==='sticker'){const s=stkOf(m);body=`<div class="stk">${I(s.ic,64)}<b>${s.t}</b></div>`}
+ if(m.kind==='text')body=`<div class="txt">${esc(m.text)}</div>`;
+ if(m.kind==='voice')body=`<button class="voice" onclick="playVoice(this,'${m.vid}')">▶<span class="wave">${'<i></i>'.repeat(14)}</span><b>0:${String(m.dur).padStart(2,'0')}</b></button>`;
+ if(m.kind==='gift')body=`<div class="giftb">${I(m.gift.cur==='f'?'feather':'rbow',44)}<div><b>KINDNESS GIFT +${m.gift.amt}</b><small>💛 ${esc(m.gift.reason)}</small></div></div>`;
+ return `<div class="msg ${mine?'me':''}">${AV(m.from,40)}<div class="bub ${m.kind}"><small class="mt">${who.name} → ${toTxt} · ${timeOf(m)}</small>${body}</div></div>`;
+}
+function liveView(){
+ const me=S.user,par=isParent();
+ const feed=S.live.filter(m=>par||m.from===me||m.to===me||m.to==='both');
+ const stk=par?STK_P:STK_K;
+ const toSeg=par?`<div class="segs" style="margin-bottom:8px"><b style="align-self:center;color:#fff">To:</b>${['lucas','etan','both'].map(t=>`<button class="seg ${S.liveTo===t?'on':''}" onclick="S.liveTo='${t}';keep('lmsg')">${t==='both'?'Both':S.kids[t].name}</button>`).join('')}</div>`:'';
+ return `<div class="livebox">
+ <div class="livehead"><span class="livepill">● LIVE</span><span class="H">Hoo Live</span><span class="viewers">${AV('lucas',26)}${AV('etan',26)}${AV('dad',26)}${AV('mum',26)}</span></div>
+ <div class="feed" id="feed">${feed.slice(-60).map(bubble).join('')||'<p class="kidnote">Say hi! 👋</p>'}</div>
+ <div class="compose">${toSeg}
+ <div class="stkrow">${stk.map(s=>`<button onclick="sendSticker('${s.id}')">${I(s.ic,40)}<b>${s.t}</b></button>`).join('')}</div>
+ ${par?`<div class="msgrow"><input type="text" id="lmsg" maxlength="200" placeholder="Say something sweet…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div>`:`<div class="msgrow"><input type="text" id="lmsg" maxlength="120" placeholder="Message Papa & Mama…"><button class="btn sm" onclick="sendText()">SEND</button></div><p class="kidnote">Stickers or a message, it goes to Papa & Mama 💌</p>`}
+ </div></div>
+ ${par?giftPanel():''}`;
+}
+function giftPanel(){
+ const to=S.liveTo;
+ return `<div class="banner" style="background:var(--pink)">💛 Kindness Gift</div>
+ <div class="blk" style="padding:14px">
+ <div class="tip" style="box-shadow:none">Spotted something special, done without being asked? Pick the reason. The boys see it pop up big.</div>
+ <div class="reasons">${REASONS.map(r=>`<button class="${S.liveReason===r.id?'on':''}" onclick="S.liveReason='${r.id}';keep('lmsg')">${r.t}</button>`).join('')}</div>
+ <div class="segs" style="margin:10px 0">${GIFTS.map((g,i)=>`<button class="seg ${S.liveGift===i?'on':''}" onclick="S.liveGift=${i};keep('lmsg')">+${g.amt} ${g.cur==='f'?I('feather',18):I('rbow',18)}</button>`).join('')}</div>
+ <button class="btn full gold" onclick="sendGift()">SEND GIFT TO ${to==='both'?'BOTH':S.kids[to].name.toUpperCase()} 🎁</button></div>`;
+}
+function liveTarget(){return isParent()?S.liveTo:'parents'}
+function sendSticker(id){const s=[...STK_P,...STK_K].find(x=>x.id===id);beep(SND.pop);burst(s.ic,14);const m={id:uid(),from:S.user,to:liveTarget(),kind:'sticker',st:id,ts:Date.now(),seen:[]};S._shown.add(m.id);act(()=>S.live.push(clone(m)))}
+function sendText(){const v=$('lmsg').value.trim();if(!v){$('lmsg').classList.add('shake');beep(SND.no);return}beep(SND.pop);const m={id:uid(),from:S.user,to:liveTarget(),kind:'text',text:v,ts:Date.now(),seen:[]};S._shown.add(m.id);act(()=>S.live.push(clone(m)))}
+function sendGift(){
+ if(!S.liveReason){beep(SND.no);toast('Pick a reason first 💛');return}
+ const r=REASONS.find(x=>x.id===S.liveReason).t,g=GIFTS[S.liveGift],to=S.liveTo,tos=to==='both'?KIDS:[to],me=S.user,id=uid();
+ S._shown.add(id);
+ act(()=>{tos.forEach(k=>{if(g.cur==='f')addXP(k,g.amt);else S.kids[k].rainbow+=g.amt;S.kids[k].kindness++});S.live.push({id,from:me,to,kind:'gift',gift:{amt:g.amt,cur:g.cur,reason:r},ts:Date.now(),seen:[]})});
+ S.liveReason=null;burst('heart',18);
+ celebrate({icon:'gift',title:'GIFT SENT!',sub:`💛 ${r}<br><small>${to==='both'?'The boys':S.kids[to].name} will see it pop up!</small>`,gain:`+${g.amt} ${g.cur==='f'?F:RB}`,btn:'SO PROUD!'});
+}
+/* voice notes */
+let REC=null;
+async function startRec(){
+ if(!navigator.mediaDevices||!window.MediaRecorder){toast('Voice notes not supported on this phone');return}
+ let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){toast('🎙 Please allow the microphone');return}
+ const types=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/aac'];const mime=types.find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'';
+ const mr=new MediaRecorder(stream,mime?{mimeType:mime,audioBitsPerSecond:32000}:{audioBitsPerSecond:32000});const chunks=[];const t0=Date.now();
+ mr.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+ mr.onstop=async()=>{stream.getTracks().forEach(t=>t.stop());clearInterval(REC.iv);const dur=Math.max(1,Math.round((Date.now()-t0)/1000));$('modal').innerHTML='';
+  if(REC.cancel){REC=null;return}REC=null;
+  const blob=new Blob(chunks,{type:mr.mimeType||mime||'audio/mp4'});if(blob.size>700000){toast('Too long, try again');return}
+  const data=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(blob)});
+  toast('Sending…');const vid=uid();
+  try{await DB.putVoice(S.fid,vid,{data,mime:blob.type,dur});const m={id:uid(),from:S.user,to:S.liveTo,kind:'voice',vid,dur,ts:Date.now(),seen:[]};S._shown.add(m.id);await act(()=>S.live.push(clone(m)));beep(SND.pop);burst('heart',10)}
+  catch(e){console.error(e);toast('⚠️ Voice not sent')}};
+ REC={mr,iv:null,cancel:false};mr.start();
+ $('modal').innerHTML=`<div class="modal"><div class="blk" style="padding:22px;text-align:center"><div class="bounce">${I('mic',90)}</div><div class="H" style="font-size:26px">Recording…</div><div class="H" id="rect" style="font-size:40px;color:var(--pink)">0:00</div><p style="font-weight:600">Max 10 seconds · To: ${S.liveTo==='both'?'Both':S.kids[S.liveTo].name}</p>
+ <div style="display:flex;gap:10px;margin-top:12px"><button class="btn grey" onclick="REC.cancel=true;REC.mr.stop()">Cancel</button><button class="btn" style="flex:1" onclick="REC.mr.stop()">SEND ✓</button></div></div></div>`;
+ REC.iv=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);const e=$('rect');if(e)e.textContent='0:'+String(s).padStart(2,'0');if(s>=10&&mr.state==='recording')mr.stop()},250);
+}
+const VCACHE={};
+async function playVoice(b,vid){
+ b.classList.add('play');
+ try{let v=VCACHE[vid];if(!v){v=await DB.getVoice(S.fid,vid);VCACHE[vid]=v}if(!v)throw 0;const a=new Audio(v.data);a.onended=()=>b.classList.remove('play');await a.play()}
+ catch(e){b.classList.remove('play');toast('Could not play')}
+}
+
+/* ---------- PIN ---------- */
+async function hashPin(who,pin){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(S.fid+':'+who+':'+pin));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+function askPin(who){S.pin='';S._who=who;S._pinMode=S.pins[who]?'enter':'new';S._pin1=null;drawPin()}
+function drawPin(){
+ const t=S._pinMode==='enter'?`${P(S._who).name} PIN`:S._pinMode==='new'?`Set ${P(S._who).name}'s PIN`:'Type it again';
+ $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" id="pinbox"><div>${AV(S._who,80)}</div><div class="H" style="font-size:24px">${t}</div>
+ ${S._pinMode!=='enter'?'<p style="font-weight:600;font-size:13px">4 numbers only you know (not the boys!)</p>':''}
+ <div class="pin">${[0,1,2,3].map(i=>`<i class="${i<S.pin.length?'f':''}"></i>`).join('')}</div>
+ <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="pinKey('${n}')">${n}</button>`).join('')}</div></div></div>`;
+}
+async function pinKey(n){beep([[800,.05]]);if(n==='⌫')S.pin=S.pin.slice(0,-1);else if(S.pin.length<4)S.pin+=n;
+ if(S.pin.length===4){const who=S._who,pin=S.pin;S.pin='';
+  if(S._pinMode==='enter'){const h=await hashPin(who,pin);if(h===S.pins[who]){enterParent(who)}else{drawPin();$('pinbox').classList.add('shake');beep(SND.no);toast('Wrong PIN')}return}
+  if(S._pinMode==='new'){S._pin1=pin;S._pinMode='confirm';drawPin();return}
+  if(S._pinMode==='confirm'){if(pin!==S._pin1){S._pinMode='new';drawPin();beep(SND.no);toast("Didn't match, try again");return}const h=await hashPin(who,pin);await act(()=>{S.pins[who]=h});toast('PIN set ✓');enterParent(who);return}
+ }drawPin()}
+function enterParent(who){closeModal();S.user=who;S.tab='check';LS.set('hoo_user',who);render();S._lastPC=checkCount(false);if(!S.seenTut[who])setTimeout(()=>showTut('parent'),200)}
+function closeModal(){$('modal').innerHTML='';S.editing=null}
+
+/* ---------- PARENT ---------- */
+function checkCount(withNight=true){return S.missions.filter(m=>m.status==='pending').length+S.redeems.filter(r=>r.status==='pending').length+S.suggestions.filter(s=>s.p===null).length+S.ideas.length+(withNight&&nightNow()?(S.throne.checkedToday?0:1)+KIDS.filter(k=>S.shirt[k]===null).length:0)}
+function parentView(){
+ if(S.tab==='live'){const un=S.live.filter(m=>m.to==='parents'&&!(m.seen||[]).includes(S.user));if(un.length&&!S._markP){S._markP=true;const me=S.user;un.forEach(m=>S._shown.add(m.id));setTimeout(()=>act(()=>S.live.forEach(m=>{if(m.to==='parents'){m.seen=m.seen||[];if(!m.seen.includes(me))m.seen.push(me)}})).finally(()=>S._markP=false),500)}}
+ const pc=checkCount(),me=P(S.user),kreply=S.live.filter(m=>m.to==='parents'&&!(m.seen||[]).includes(S.user)).length;
+ const tabs=[['check','check','Check',pc],['plan','board','Plan'],['live','live','Live',S.tab==='live'?0:kreply],['stats','chart','Stats']];
+ const body={check:pCheck,plan:pPlan,live:liveView,stats:pStats}[S.tab]();
+ return `<header><div class="blk top"><div class="bounce">${AV(S.user,72)}</div><div class="nm"><div class="H">${me.name}</div><span class="badge">Parent</span></div><div class="hbtns"><button class="sw help" onclick="showTut('parent')">?</button><button class="sw" onclick="logout()">🔄</button></div></div></header>
+ <main>${body}</main>
+ <nav>${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="beep(SND.tick);S.tab='${t[0]}';render()"><span>${I(t[1],38)}</span>${t[2]}${t[3]?`<i class="dot">${t[3]}</i>`:''}</button>`).join('')}</nav>`;
+}
+function nightBlock(){
+ return `<div class="banner" style="background:var(--purple)">${I('moon',30)} Tonight's check ${nightNow()?'':'<small style="font-size:12px">(jumps to top after 7pm)</small>'}</div>
+ <div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('toilet')}</div><div class="tx"><span class="H">Toilet clean?</span><small>Flushed + floor dry · team streak ${S.throne.streak}</small></div>
+ ${S.throne.checkedToday?`<span class="tag ok">✅ Done</span>`:`<div style="display:flex;gap:8px"><button class="btn sm" onclick="throne(1)">👑 YES</button><button class="btn sm red" onclick="throne(0)">NO</button></div>`}</div>
+ ${KIDS.map(k=>`<div class="blk mis"><div>${AV(k,56)}</div><div class="tx"><span class="H">${S.kids[k].name}'s shirt?</span><small>Clean = +2 ${Fs}</small></div>
+ ${S.shirt[k]===null?`<div style="display:flex;flex-direction:column;gap:8px"><button class="btn sm" onclick="shirt('${k}',1)">🥷 Clean</button><button class="btn sm grey" onclick="shirt('${k}',0)">Messy</button></div>`:`<span class="tag ${S.shirt[k]?'ok':''}">${S.shirt[k]?'✅ Ninja!':'Tomorrow!'}</span>`}</div>`).join('')}`;
+}
+function pCheck(){
+ const ms=S.missions.filter(m=>m.status==='pending'),rd=S.redeems.filter(r=>r.status==='pending'),sg=S.suggestions.filter(s=>s.p===null),cs=S.ideas;
+ const main=`${ms.length?`<div class="banner">${I('swords',30)} Missions done</div>${ms.map(m=>{const duo=m.type==='duo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${duo?duoSlots(m):`<small>${S.kids[m.owner].name}</small> `}<span class="price">${F} ${m.price}${duo?' each + '+RBs:''}</span></div><div style="display:flex;flex-direction:column;gap:10px"><button class="btn sm" onclick="approve('${m.id}',1)">👍 OK</button><button class="btn sm grey" onclick="approve('${m.id}',0)">🔁 Redo</button></div></div>`}).join('')}`:''}
+ ${rd.length?`<div class="banner" style="background:var(--pink)">${I('gift',30)} Rewards to give</div>${rd.map(r=>{const w=S.rewards.find(x=>x.id===r.rid)||{ic:'gift',n:'Reward'};return `<div class="blk mis"><div class="em">${I(w.ic)}</div><div class="tx"><span class="H">${esc(w.n)}</span><small>${S.kids[r.kid].name}</small></div><button class="btn gold sm" onclick="appRedeem('${r.id}')">GIVE 🎉</button></div>`}).join('')}`:''}
+ ${cs.length?`<div class="banner" style="background:var(--grass)">${I('bulb',30)} Mission ideas from the boys</div>${cs.map(s=>`<div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('bulb')}</div><div class="tx"><span class="H">${esc(s.n)}</span><small>From ${S.kids[s.kid].name}</small></div><div class="stepper"><button onclick="ideaAsk('${s.id}',-1)">−</button><b>${F}${s.ask}</b><button onclick="ideaAsk('${s.id}',1)">+</button></div><div style="width:100%;display:flex;gap:8px;margin-top:10px"><button class="btn sm blue" style="flex:1" onclick="ideaAdd('${s.id}','solo')">+ SOLO</button><button class="btn sm gold" style="flex:1" onclick="ideaAdd('${s.id}','duo')">+ DUO</button><button class="btn sm grey" onclick="ideaDel('${s.id}')">✕</button></div></div>`).join('')}`:''}
+ ${sg.length?`<div class="banner" style="background:var(--purple)">${I('sparkle',30)} Reward wishes</div>${sg.map(s=>`<div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('sparkle')}</div><div class="tx"><span class="H">${esc(s.n)}</span><small>From ${S.kids[s.kid].name}</small></div><div class="stepper"><button onclick="S['_p'+'${s.id}']=Math.max(10,(S['_p'+'${s.id}']||50)-10);render()">−</button><b>${F}${S['_p'+s.id]||50}</b><button onclick="S['_p'+'${s.id}']=(S['_p'+'${s.id}']||50)+10;render()">+</button></div><div style="width:100%;display:flex;gap:8px;margin-top:10px"><button class="btn sm" style="flex:1" onclick="sgAdd('${s.id}')">ADD TO SHOP ✓</button><button class="btn sm grey" onclick="sgDel('${s.id}')">✕</button></div></div>`).join('')}`:''}`;
+ const empty=!ms.length&&!rd.length&&!sg.length&&!cs.length?`<div class="tip">✨ No approvals waiting.</div>`:'';
+ return nightNow()?nightBlock()+main+empty:main+empty+nightBlock();
+}
+function approve(id,ok){const m=M(id);if(!m)return;
+ if(!ok){act(()=>{const mm=M(id);if(!mm)return;if(mm.type==='duo'){mm.status='active';mm.parts={};KIDS.forEach(k=>ev(k,{kind:'redo',sub:mm.n}))}else{mm.status='todo';ev(mm.owner,{kind:'redo',sub:mm.n})}});beep(SND.no);toast('🔁 Sent back. They\'ll see it');return}
+ if(m.type==='duo'){act(()=>{const mm=M(id);if(!mm||mm.status!=='pending')return;mm.status='done';mm.doneDay=todayStr();KIDS.forEach(k=>{addXP(k,mm.price+2);S.kids[k].rainbow++;ev(k,{kind:'duo',sub:mm.n,gain:mm.price+2})});if(mm.runs>1){mm.runsDone=(mm.runsDone||0)+1;if(mm.runsDone<mm.runs){mm.status='active';mm.parts={}}}});celebrate({duo:true,title:'DUO POWER!',sub:esc(m.n),gain:`+${m.price+2} ${F} + 1 ${RB} each`,btn:'HIGH FIVE!'});return}
+ act(()=>{const mm=M(id);if(!mm||mm.status!=='pending')return;if(mm.runs>1){mm.runsDone=(mm.runsDone||0)+1;mm.status=mm.runsDone>=mm.runs?'done':'todo'}else mm.status='done';mm.doneDay=todayStr();addXP(mm.owner,mm.price);ev(mm.owner,{kind:'approve',sub:mm.n,gain:mm.price})});
+ celebrate({who:m.owner,title:rnd(HYPE),sub:`${S.kids[m.owner].name}: ${esc(m.n)}`,gain:`+${m.price} ${F}`});
+}
+function appRedeem(id){act(()=>{const r=S.redeems.find(x=>x.id===id);if(!r)return;r.status='given';const w=S.rewards.find(x=>x.id===r.rid);ev(r.kid,{kind:'given',sub:w?w.n:'Your reward'});S.redeems=S.redeems.filter(x=>x.status==='pending')});celebrate({icon:'trophy',title:'GIVEN!',sub:'Enjoy, little owl!'})}
+function sgAdd(id){const p=S['_p'+id]||50;act(()=>{const s=S.suggestions.find(x=>x.id===id);if(!s)return;S.rewards.push({id:uid(),ic:'sparkle',n:s.n,p});S.suggestions=S.suggestions.filter(x=>x.id!==id)});toast('Added to the shop 🎁')}
+function sgDel(id){act(()=>{S.suggestions=S.suggestions.filter(x=>x.id!==id)})}
+function ideaAsk(id,d){act(()=>{const s=S.ideas.find(x=>x.id===id);if(s)s.ask=Math.max(1,s.ask+d)})}
+function ideaDel(id){act(()=>{S.ideas=S.ideas.filter(x=>x.id!==id)})}
+function ideaAdd(id,type){act(()=>{const s=S.ideas.find(x=>x.id===id);if(!s)return;S.ideas=S.ideas.filter(x=>x.id!==id);S.missions.push(type==='duo'?{id:uid(),type:'duo',ic:'broom',n:s.n,price:s.ask,joined:{},parts:{},status:'open'}:{id:uid(),type:'solo',ic:'broom',n:s.n,price:s.ask,owner:null,status:'open'})});toast('Posted to the board!')}
+function throne(ok){act(()=>{if(S.throne.checkedToday)return;S.throne.checkedToday=true;if(ok){S.throne.streak++;KIDS.forEach(k=>{addXP(k,3);ev(k,{kind:'throne'})})}else S.throne.streak=0});if(ok)celebrate({icon:'crown',title:'CLEAN THRONE!',sub:`${S.throne.streak} nights in a row!`,gain:`+3 ${F} each`});else{beep(SND.no);toast('Streak reset. Tomorrow! 💪')}}
+function shirt(k,ok){act(()=>{if(S.shirt[k]!==null)return;S.shirt[k]=!!ok;if(ok){addXP(k,2);ev(k,{kind:'ninja'})}});if(ok){beep(SND.tick);toast(`🥷 ${S.kids[k].name} +2 ${Fs}`)}}
+
+/* PLAN */
+function pPlan(){
+ const t=S.planTab,tg=(v,lab)=>`<button class="seg big ${t===v?'on':''}" onclick="S.planTab='${v}';render()">${lab}</button>`;
+ return `<div class="segs">${tg('habits',I('sun',22)+' Habits')}${tg('board',I('board',22)+' Missions')}${tg('shop',I('gift',22)+' Shop')}</div>
+ ${{habits:planHabits,board:planBoard,shop:planShop}[t]()}`;
+}
+function planHabits(){
+ const k=S.planKid,K2=S.kids[k],list=K2.draft||K2.habits,changed=!!K2.draft;
+ return `<div class="segs">${KIDS.map(x=>`<button class="seg big ${k===x?'on':''}" onclick="S.planKid='${x}';render()">${AV(x,30)} ${S.kids[x].name}</button>`).join('')}</div>
+ ${changed?`<div class="tip" style="background:#e9ecff">🌅 <b>Changes start tomorrow</b> so today stays fair.<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm grey" onclick="undoDraft('${k}')">Undo changes</button><button class="btn sm blue" onclick="applyNow('${k}')">Start now instead</button></div></div>`:''}
+ <div class="tip" style="box-shadow:none">${list.length} habits · aim for 8–10 max. Tap one to edit.</div>
+ ${GROUPS.map(g=>{const items=list.filter(h=>h.g===g.id);if(!items.length)return '';return `<div class="banner" style="background:${g.c}">${I(g.i,26)} ${g.n}</div>${items.map(h=>`<div class="blk mis hrow" onclick="editHabit('${k}','${h.id}')"><div class="em">${I(h.ic,44)}</div><div class="tx"><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small><br><span class="price">${F} ${h.f}</span> <span class="tag">${h.times}× a day</span> <span class="tag">${DAYS[h.days]}</span></div><div>${I('pencil',30)}</div></div>`).join('')}`}).join('')}
+ <div style="display:flex;gap:10px;margin-top:6px"><button class="btn blue" style="flex:1" onclick="editHabit('${k}',null)">+ ADD HABIT</button><button class="btn grey" onclick="copyHabits('${k}')">Copy to ${S.kids[other(k)].name}</button></div>`;
+}
+function undoDraft(k){act(()=>{S.kids[k].draft=null})}
+function applyNow(k){act(()=>{const K2=S.kids[k];if(K2.draft){K2.habits=K2.draft;K2.draft=null}});toast('Applied ✓')}
+function copyHabits(k){const o=other(k);act(()=>{const src=clone(S.kids[k].draft||S.kids[k].habits).map(h=>Object.assign(h,{id:uid()}));S.kids[o].draft=src});toast(`Copied to ${S.kids[o].name} (starts tomorrow)`)}
+function editHabit(k,id){const d=id?(S.kids[k].draft||S.kids[k].habits).find(h=>h.id===id):null;S.editing={k,id,h:d?clone(d):{g:'other',ic:'star',n:'',s:'',f:1,times:1,days:'all'}};drawEditor()}
+function drawEditor(){
+ const e=S.editing,h=e.h,st=(f,v)=>`S.editing.h.${f}=${typeof v==='string'?`'${v}'`:v};saveEd();drawEditor()`;
+ $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk editor">
+ <div class="H" style="font-size:22px">${e.id?'Edit':'New'} habit · ${S.kids[e.k].name}</div>
+ <input type="text" id="en" maxlength="30" placeholder="Name, e.g. Make bed" value="${esc(h.n)}"><input type="text" id="es" maxlength="40" placeholder="Hint, e.g. Pillow + blanket" value="${esc(h.s||'')}">
+ <div class="icpick">${HICONS.map(n=>`<button class="${h.ic===n?'on':''}" onclick="${st('ic',n)}">${I(n,34)}</button>`).join('')}</div>
+ <div class="segs" style="margin-top:10px">${GROUPS.map(g=>`<button class="seg ${h.g===g.id?'on':''}" onclick="${st('g',g.id)}">${g.n}</button>`).join('')}</div>
+ <div class="erow"><b>${F} Feathers each</b><div class="stepper"><button onclick="S.editing.h.f=Math.max(1,S.editing.h.f-1);saveEd();drawEditor()">−</button><b>${h.f}</b><button onclick="S.editing.h.f=Math.min(5,S.editing.h.f+1);saveEd();drawEditor()">+</button></div></div>
+ <div class="erow"><b>Times a day</b><div class="stepper"><button onclick="S.editing.h.times=Math.max(1,S.editing.h.times-1);saveEd();drawEditor()">−</button><b>${h.times}×</b><button onclick="S.editing.h.times=Math.min(5,S.editing.h.times+1);saveEd();drawEditor()">+</button></div></div>
+ <div class="segs">${Object.entries(DAYS).map(([v,l])=>`<button class="seg ${h.days===v?'on':''}" onclick="${st('days',v)}">${l}</button>`).join('')}</div>
+ <div style="display:flex;gap:8px;margin-top:12px">${e.id?`<button class="btn sm red" onclick="delHabit()">Delete</button>`:''}<button class="btn grey sm" onclick="closeModal()">Cancel</button><button class="btn sm" style="flex:1" onclick="saveHabit()">SAVE</button></div>
+ </div></div>`;
+}
+function saveEd(){const n=$('en'),s=$('es');if(n)S.editing.h.n=n.value;if(s)S.editing.h.s=s.value}
+function saveHabit(){saveEd();const e=clone(S.editing);if(!e.h.n.trim()){$('en').classList.add('shake');beep(SND.no);return}
+ act(()=>{const K2=S.kids[e.k];if(!K2.draft)K2.draft=clone(K2.habits);const d=K2.draft;if(e.id){const i=d.findIndex(x=>x.id===e.id);if(i>=0)d[i]=Object.assign(clone(e.h),{id:e.id})}else d.push(Object.assign(clone(e.h),{id:e.newId||(e.newId=uid())}))});
+ closeModal();beep(SND.tick);toast('Saved · starts tomorrow 🌅')}
+function delHabit(){const e=clone(S.editing);act(()=>{const K2=S.kids[e.k];if(!K2.draft)K2.draft=clone(K2.habits);K2.draft=K2.draft.filter(x=>x.id!==e.id)});closeModal();toast('Removed · from tomorrow')}
+
+function planBoard(){
+ const p=S.post,icons=['broom','robot','bin','plant','shirt','table','toilet','shoe','sponge','car'];
+ const live=S.missions.filter(m=>m.status!=='done'||m.runs>1);
+ const st=m=>m.type==='duo'?(m.status==='open'?`${KIDS.filter(k=>m.joined[k]).length}/2 joined`:m.status==='active'?'In progress':m.status==='done'?'Done this week':'⏳ Check'):m.status==='open'?'On board':m.status==='todo'?S.kids[m.owner].name:m.status==='done'?'Done this week':'⏳ Check';
+ return `<div class="banner" style="background:var(--orange)">${I('board',30)} Post a mission</div>
+ <div class="blk" style="padding:14px">
+ <div class="segs" style="margin-bottom:10px"><button class="seg big ${p.type==='duo'?'on':''}" onclick="S.post.type='duo';keep2()">${I('duo',22)} DUO</button><button class="seg big ${p.type==='solo'?'on':''}" onclick="S.post.type='solo';keep2()">${I('star',22)} SOLO</button></div>
+ <div class="tip" style="box-shadow:none">${p.type==='duo'?'DUO = both boys together. Each gets the feathers + 1 rainbow + 2 bonus.':'SOLO = first boy to grab it.'}</div>
+ <input type="text" id="pn" maxlength="40" placeholder="${p.type==='duo'?'e.g. Wash Papa\'s car together':'e.g. Feed the fish'}">
+ ${p.type==='duo'?`<input type="text" id="ptip" maxlength="40" placeholder="Roles, e.g. One soaps, one rinses">`:''}
+ <div class="icpick">${icons.map(n=>`<button class="${p.ic===n?'on':''}" onclick="S.post.ic='${n}';keep2()">${I(n,40)}</button>`).join('')}</div>
+ <div class="erow"><b>Reward each:</b><div class="stepper"><button onclick="S.post.price=Math.max(1,S.post.price-1);keep2()">−</button><b>${F}${p.price}</b><button onclick="S.post.price++;keep2()">+</button></div></div>
+ <div class="segs" style="margin-bottom:12px"><button class="seg ${p.runs===1?'on':''}" onclick="S.post.runs=1;keep2()">Once</button><button class="seg ${p.runs===4?'on':''}" onclick="S.post.runs=4;keep2()">Every 2 days (4× a week)</button></div>
+ <button class="btn full" onclick="postMission()">POST TO BOARD!</button></div>
+ <div class="banner" style="background:var(--blue)">${I('swords',30)} Max missions at once</div>
+ <div class="blk" style="padding:12px">${KIDS.map(k=>`<div class="erow">${AV(k,40)}<b style="flex:1;margin-left:8px">${S.kids[k].name}</b><div class="stepper"><button onclick="setMax('${k}',-1)">−</button><b>${S.kids[k].maxM}</b><button onclick="setMax('${k}',1)">+</button></div></div>`).join('')}
+ <small style="font-weight:600;color:var(--muted)">Stops one boy grabbing everything. Duo missions count for both.</small></div>
+ <div class="banner">${I('swords',30)} On the board now</div>
+ ${live.map(m=>`<div class="blk mis ${m.type==='duo'?'duo':''}" style="flex-wrap:wrap"><div class="em">${I(m.ic,44)}</div><div class="tx">${m.type==='duo'?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span><small>${st(m)}${m.runs>1?` · ${m.runsDone||0}/${m.runs} this week`:''}</small></div>
+ <div class="stepper"><button onclick="mPrice('${m.id}',-1)">−</button><b>${F}${m.price}</b><button onclick="mPrice('${m.id}',1)">+</button></div><button class="btn sm grey" style="margin-left:6px" onclick="mDel('${m.id}')">✕</button></div>`).join('')}`;
+}
+function setMax(k,d){act(()=>{S.kids[k].maxM=Math.min(6,Math.max(1,S.kids[k].maxM+d))})}
+function mPrice(id,d){act(()=>{const m=M(id);if(m)m.price=Math.max(1,m.price+d)})}
+function mDel(id){act(()=>{S.missions=S.missions.filter(x=>x.id!==id)})}
+function keep2(){const a=$('pn')?$('pn').value:'',b=$('ptip')?$('ptip').value:'';render();if($('pn'))$('pn').value=a;if($('ptip'))$('ptip').value=b}
+function postMission(){const n=$('pn').value.trim();if(!n){$('pn').classList.add('shake');beep(SND.no);return}const p=clone(S.post),tip=$('ptip')?$('ptip').value.trim():'',id=uid();
+ const base={id,ic:p.ic,n,price:p.price,status:'open'};if(p.runs>1){base.runs=p.runs;base.runsDone=0}
+ act(()=>S.missions.unshift(p.type==='duo'?Object.assign({type:'duo',tip,joined:{},parts:{}},base):Object.assign({type:'solo',owner:null},base)));
+ celebrate({icon:p.type==='duo'?'duo':p.ic,title:'POSTED!',sub:`"${esc(n)}" is on the board`,btn:'NICE!'})}
+function planShop(){
+ const ricons=['noodle','icecream','moon','flag','cash','ticket','heartM','heartP','tent','brick','gift','star','car','trophy'];
+ S._ric=S._ric||'gift';
+ return `<div class="banner" style="background:var(--pink)">${I('gift',30)} Shop rewards</div>
+ ${S.rewards.map(r=>{const rid=typeof r.id==='string'?`'${r.id}'`:r.id;return `<div class="blk mis"><div class="em">${I(r.ic,44)}</div><div class="tx"><span class="H">${esc(r.n)}</span></div><div class="stepper"><button onclick="rwP(${rid},-5)">−</button><b>${F}${r.p}</b><button onclick="rwP(${rid},5)">+</button></div><button class="btn sm grey" style="margin-left:6px" onclick="rwDel(${rid})">✕</button></div>`}).join('')}
+ <div class="banner" style="background:var(--grass)">+ New reward</div>
+ <div class="blk" style="padding:14px"><input type="text" id="rn" maxlength="30" placeholder="e.g. Bubble tea">
+ <div class="icpick">${ricons.map(n=>`<button class="${S._ric===n?'on':''}" onclick="S._ric='${n}';keep('rn')">${I(n,36)}</button>`).join('')}</div>
+ <div class="erow"><b>Price:</b><div class="stepper"><button onclick="S._rp=Math.max(5,(S._rp||30)-5);keep('rn')">−</button><b>${F}${S._rp||30}</b><button onclick="S._rp=(S._rp||30)+5;keep('rn')">+</button></div></div>
+ <button class="btn full" onclick="addReward()">ADD TO SHOP</button></div>`;
+}
+function rwP(id,d){act(()=>{const r=S.rewards.find(x=>x.id===id);if(r)r.p=Math.max(5,r.p+d)})}
+function rwDel(id){act(()=>{S.rewards=S.rewards.filter(x=>x.id!==id)})}
+function addReward(){const n=$('rn').value.trim();if(!n){$('rn').classList.add('shake');beep(SND.no);return}const ic=S._ric,p=S._rp||30;act(()=>S.rewards.push({id:uid(),ic,n,p}));toast(`"${esc(n)}" added 🎁`)}
+
+function pStats(){
+ const other0=S.user==='dad'?'mum':'dad';
+ return `<div class="banner">${I('chart',30)} Progress</div>${chartCard(KIDS)}
+ ${teamCard()}
+ ${KIDS.map(k=>{const K2=S.kids[k],L=level(K2.xp);return `<div class="blk" style="padding:12px;margin-bottom:14px;border-left:12px solid ${K2.hex}">
+ <div style="display:flex;align-items:center;gap:10px">${AV(k,64)}<div style="flex:1"><span class="H" style="font-size:22px">${K2.name}</span><br><span class="badge">Lv ${L.n} ${L.name}</span></div><span class="tag" style="background:#fff3c4">💛 ${K2.kindness} kindness</span></div>
+ <p style="font-weight:600;margin-top:8px">${F} ${K2.feathers} · ${RB} ${K2.rainbow} · ${I('fire',18)} ${K2.streak} days · today ${doneCount(k)}/${todayHabits(k).length}</p>
+ <div class="bar"><i style="width:${L.pct}%"></i></div></div>`}).join('')}
+ <div class="banner" style="background:#5c6080">${I('gear',30)} Family settings</div>
+ <div class="blk" style="padding:14px">
+ <div class="erow"><b>Team Chest goal / week</b><div class="stepper"><button onclick="act(()=>S.team.goal=Math.max(50,S.team.goal-50))">−</button><b>${S.team.goal}</b><button onclick="act(()=>S.team.goal+=50)">+</button></div></div>
+ <b>Team Chest prize</b><input type="text" id="tprize" maxlength="40" value="${esc(S.team.prize)}"><button class="btn sm blue" onclick="const v=$('tprize').value.trim();if(v)act(()=>S.team.prize=v);toast('Saved ✓')">Save prize</button>
+ <hr style="margin:14px 0;border:0;border-top:2px dashed #d9dcef">
+ <div class="erow"><b>Family code</b><button class="btn sm grey" onclick="showCode(false)">SHOW</button></div>
+ <div class="erow"><b>My PIN</b><button class="btn sm grey" onclick="S._who='${S.user}';S._pinMode='new';S.pin='';drawPin()">CHANGE</button></div>
+ <div class="erow"><b>${P(other0).name}'s PIN</b><button class="btn sm grey" onclick="resetPin('${other0}')">RESET</button></div>
+ <small style="font-weight:600;color:var(--muted)">Reset lets ${P(other0).name} set a new PIN next time.</small>
+ <div class="erow" style="margin-top:14px"><b>This phone</b><button class="btn sm red" onclick="leaveFamily()">LOG OUT OF FAMILY</button></div></div>`;
+}
+function resetPin(w){act(()=>{S.pins[w]=null});toast(`${P(w).name}'s PIN reset`)}
+function leaveFamily(){$('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" style="padding:20px;text-align:center"><div class="H" style="font-size:22px">Log out this phone?</div><p style="font-weight:600;margin:8px 0 14px">You'll need the family code to come back. Nothing is deleted.</p><div style="display:flex;gap:10px"><button class="btn grey" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn red" style="flex:1" onclick="LS.set('hoo_fid',null);LS.set('hoo_user',null);location.reload()">Log out</button></div></div></div>`}
+
+/* ---------- TUTORIAL ---------- */
+const TUT_K=[
+ {art:()=>`<div class="bounce">${AV(S.user&&!isParent()?S.user:'lucas',150)}</div>`,t:'HI, LITTLE OWL!',d:'Do good stuff → earn feathers → level up!'},
+ {art:()=>`<div class="blk tile mock"><span class="cnt">2/3</span><span class="em">${I('target')}</span><span class="H">Bullseye!</span><div class="pips"><i class="on"></i><i class="on"></i><i></i></div></div>`,t:'TAP YOUR HABITS',d:'Did it? Tap it! Some need 3 taps a day.'},
+ {art:()=>`<div class="blk tile mock" style="width:220px"><span class="em">${I('board')}</span><span class="H">Mission Board</span><br><span class="btn sm blue" style="display:inline-block;margin-top:6px">I'LL DO IT!</span></div>`,t:'GRAB A MISSION',d:'Pick one → do it → tap DONE! Papa or Mama checks it.'},
+ {art:()=>`<div class="slots" style="justify-content:center">${AV('lucas',80)}<b class="plus">+</b>${AV('etan',80)}</div>`,t:'DUO MISSIONS',d:'Team up with your brother. You BOTH win + a rainbow feather!'},
+ {art:()=>`<div>${I('gift',120)}</div><span class="price" style="font-size:22px">${F} 30</span>`,t:'FEATHER SHOP',d:'Spend feathers on real treats. Make a wish for new ones!'},
+ {art:()=>`<div class="bounce">${OWLC({body:'gold',eyes:'star',hat:'crown',extra:'cape'},150)}</div>`,t:'DRESS YOUR OWL',d:'Rainbow feathers buy hats, eyes, capes and colours.'},
+ {art:()=>`<div>${I('live',110)}</div><div>${I('heart',50)}${I('heartM',50)}${I('star',50)}</div>`,t:'HOO LIVE',d:'Send stickers and messages to Papa & Mama. Be kind → surprise gifts!'}
+];
+const TUT_P=[
+ {art:()=>`<div class="slots" style="justify-content:center">${AV('dad',100)}${AV('mum',100)}</div>`,t:'Welcome, Parent Owl',d:'Papa and Mama have the same powers. It takes about 1 minute a day.'},
+ {art:()=>I('check',110),t:'1 · Check',d:'Approve missions (OK or Redo), hand out rewards, price the boys\' ideas, and do the 1-min night check. After 7pm the night check jumps to the top.'},
+ {art:()=>I('sun',110),t:'2 · Plan → Habits',d:'Set each boy\'s own daily habits: feathers, times a day, which days. Changes start tomorrow so today stays fair.'},
+ {art:()=>I('duo',110),t:'3 · Plan → Missions',d:'Post missions to the board. Prefer DUO: they must cooperate and both earn a rainbow feather. Set a max per boy so nobody hogs.'},
+ {art:()=>I('gift',110),t:'4 · Plan → Shop',d:'Set reward prices or add new ones. Wishes from the boys land in Check for you to price.'},
+ {art:()=>I('live',110),t:'5 · Hoo Live',d:'Stickers, messages and voice notes. Catch them being kind without being asked → send a Kindness Gift with the reason.'},
+ {art:()=>I('chart',110),t:'6 · Stats',d:'Week and month charts for both boys, kindness count, and the shared Team Chest goal.'},
+ {art:()=>I('heart',110),t:'Golden rules',d:'Praise more than you correct. Never take feathers away as punishment. Keep screen-time rules outside the game.'}
+];
+function showTut(role){S.tut={role,i:0};drawTut()}
+function drawTut(){
+ const T=S.tut,L=T.role==='kid'?TUT_K:TUT_P,sl=L[T.i],last=T.i===L.length-1;
+ $('modal').innerHTML=`<div class="modal tutbg"><div class="tut ${T.role}" id="tutc">
+ <button class="tskip" onclick="endTut()">Skip ✕</button>
+ <div class="tag" style="display:inline-block;margin-bottom:4px">${T.role==='kid'?'HOW TO PLAY':'PARENT GUIDE'} · ${T.i+1}/${L.length}</div>
+ <div class="tart">${sl.art()}</div>
+ <div class="H ttl">${sl.t}</div><p class="tdesc">${sl.d}</p>
+ <div class="tdots">${L.map((_,i)=>`<i class="${i===T.i?'on':''}"></i>`).join('')}</div>
+ <div style="display:flex;gap:10px">${T.i?`<button class="btn grey" onclick="tutGo(-1)">BACK</button>`:''}<button class="btn ${last?'gold':''}" style="flex:1" onclick="${last?'endTut()':'tutGo(1)'}">${last?(T.role==='kid'?"LET'S PLAY!":'GOT IT!'):'NEXT →'}</button></div>
+ </div></div>`;
+ const c=$('tutc');let x0=null;c.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});c.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)tutGo(dx<0?1:-1);x0=null});
+}
+function tutGo(d){const L=S.tut.role==='kid'?TUT_K:TUT_P,n=S.tut.i+d;if(n<0||n>=L.length)return;S.tut.i=n;beep(SND.tick);drawTut()}
+function endTut(){$('modal').innerHTML='';S.tut=null;if(S.user&&S.fid&&!S.seenTut[S.user]){const u=S.user;act(()=>{S.seenTut[u]=true})}beep(SND.win);const f=S._afterTut;S._afterTut=null;if(f)f()}
+
+
+
+/* ---------- demo store (?demo) for testing without Firebase ---------- */
+function mockDB(){
+ const key=id=>'hoo_demo_'+id,subs={};
+ const read=id=>{try{return JSON.parse(localStorage.getItem(key(id)))}catch(e){return null}};
+ const write=(id,d)=>{localStorage.setItem(key(id),JSON.stringify(d));(subs[id]||[]).forEach(cb=>setTimeout(()=>cb(clone(d)),30))};
+ window.addEventListener('storage',e=>{Object.keys(subs).forEach(id=>{if(e.key===key(id)){const d=read(id);if(d)subs[id].forEach(cb=>cb(d))}})});
+ return{get:async id=>read(id),create:async(id,d)=>write(id,d),tx:async(id,fn)=>{const d=read(id);if(!d)throw new Error('gone');write(id,fn(clone(d)))},
+  listen:(id,cb)=>{(subs[id]=subs[id]||[]).push(cb)},putVoice:async(id,vid,d)=>localStorage.setItem('hoo_v_'+vid,JSON.stringify(d)),getVoice:async(id,vid)=>JSON.parse(localStorage.getItem('hoo_v_'+vid)||'null')};
+}
+async function boot(){
+ const fid=LS.get('hoo_fid');
+ if(fid){try{const d=await DB.get(fid);if(d){S.fid=fid;unpack(d);DB.listen(fid,onRemote);const u=LS.get('hoo_user');if(u&&(S.kids[u]||S.parents[u])){S.user=u;S.tab=(u==='dad'||u==='mum')?'check':'today'}}else LS.set('hoo_fid',null)}catch(e){console.error(e);toast('⚠️ Could not load. Check internet')}}
+ S.ready=true;render();
+ if(S.fid&&S.day!==todayStr())act(()=>{});
+ if(S.user){S._lastPC=checkCount(false);remoteFx()}
+ setInterval(()=>{if(S.fid&&S.day!==todayStr()&&!BUSY)act(()=>{})},60000);
+}
+function bootFail(msg){S.ready=true;$('app').innerHTML=`<div class="logo" style="padding-top:100px"><div class="H">HOO<br>DID IT?</div><p>${msg}</p><button class="btn" style="margin-top:20px" onclick="location.reload()">TRY AGAIN</button></div>`}
+
+render();
+</script>
+<script type="module">
+const DEMO=new URLSearchParams(location.search).has('demo');
+if(DEMO){window.DB=mockDB();boot();}
+else{
+ try{
+ const [{initializeApp},{getAuth,signInAnonymously,onAuthStateChanged},{initializeFirestore,persistentLocalCache,doc,getDoc,setDoc,onSnapshot,runTransaction}]=await Promise.all([
+  import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+  import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js'),
+  import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')]);
+ const firebaseConfig={
+  apiKey:"AIzaSyDy1Q9sMLN1Ztx2-2BpMa3pFelb9jzcxG8",
+  authDomain:"hoo-did-it.firebaseapp.com",
+  projectId:"hoo-did-it",
+  storageBucket:"hoo-did-it.firebasestorage.app",
+  messagingSenderId:"507015741803",
+  appId:"1:507015741803:web:b5c5cc9306b40544150c2e"
+ };
+ const app=initializeApp(firebaseConfig);const auth=getAuth(app);
+ let db;try{db=initializeFirestore(app,{localCache:persistentLocalCache()})}catch(e){db=initializeFirestore(app,{})}
+ const fam=id=>doc(db,'families',id);
+ window.DB={
+  get:async id=>{const s=await getDoc(fam(id));return s.exists()?s.data():null},
+  create:(id,d)=>setDoc(fam(id),d),
+  tx:(id,fn)=>runTransaction(db,async t=>{const s=await t.get(fam(id));if(!s.exists())throw new Error('family gone');t.set(fam(id),fn(s.data()))}),
+  listen:(id,cb)=>onSnapshot(fam(id),s=>{if(s.exists())cb(s.data())},e=>{console.error(e);toast('⚠️ Sync problem: '+e.code)}),
+  putVoice:(id,vid,d)=>setDoc(doc(db,'families',id,'voice',vid),d),
+  getVoice:async(id,vid)=>{const s=await getDoc(doc(db,'families',id,'voice',vid));return s.exists()?s.data():null}
+ };
+ let started=false;
+ onAuthStateChanged(auth,u=>{if(u&&!started){started=true;boot()}});
+ signInAnonymously(auth).catch(e=>{console.error(e);bootFail('Could not sign in ('+(e.code||'error')+'). Check internet.')});
+ }catch(e){console.error(e);bootFail('Could not load. Check internet.')}
+}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
