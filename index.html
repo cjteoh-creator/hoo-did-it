@@ -106,7 +106,7 @@ nav button.on span{transform:scale(1.18) rotate(-6deg)}
 nav .dot{position:absolute;top:-6px;right:8px;background:var(--red);color:#fff;font-size:13px;border:2px solid #fff;border-radius:10px;padding:0 6px;animation:pulse 1s infinite}
 
 /* home */
-.logo{text-align:center;padding:26px 10px 6px}
+.logo{text-align:center;padding:calc(30px + env(safe-area-inset-top)) 10px 6px}
 .logo .H{font-size:54px;line-height:.95;color:var(--gold);-webkit-text-stroke:3px var(--ink);text-shadow:0 6px 0 var(--ink);display:inline-block;animation:bob 2.4s ease-in-out infinite}
 .logo p{font-weight:700;color:#fff;font-size:17px;margin-top:10px;text-shadow:0 2px 0 rgba(0,0,0,.25)}
 @keyframes bob{50%{transform:translateY(-8px) rotate(-2deg)}}
@@ -612,7 +612,7 @@ function teamCard(){const t=teamWeek(),pct=Math.min(100,Math.round(t/S.team.goal
 /* ---------- render ---------- */
 function render(){
  const a=$('app');
- if(!S.ready){a.innerHTML=`<div class="logo" style="padding-top:120px"><div class="H">HOO<br>DID IT?</div><p>Loading… 🦉</p></div>`;return}
+ if(!S.ready){a.innerHTML=`<div class="logo" style="padding-top:calc(120px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>Loading… 🦉</p></div>`;return}
  if(!S.fid){a.innerHTML=joinView();return}
  if(!S.user){a.innerHTML=homeView();return}
  a.innerHTML=isParent()?parentView():kidView();
@@ -1076,7 +1076,7 @@ async function boot(){
  if(S.user){S._lastPC=checkCount(false);remoteFx()}
  setInterval(()=>{if(S.fid&&S.day!==todayStr()&&!BUSY)act(()=>{})},60000);
 }
-function bootFail(msg){S.ready=true;$('app').innerHTML=`<div class="logo" style="padding-top:100px"><div class="H">HOO<br>DID IT?</div><p>${msg}</p><button class="btn" style="margin-top:20px" onclick="location.reload()">TRY AGAIN</button></div>`}
+function bootFail(msg){S.ready=true;$('app').innerHTML=`<div class="logo" style="padding-top:calc(100px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>${msg}</p><button class="btn" style="margin-top:20px" onclick="location.reload()">TRY AGAIN</button></div>`}
 
 render();
 </script>
