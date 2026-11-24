@@ -551,7 +551,7 @@ function remoteFx(){
  if(!S.user)return;
  if(isParent()){
   const pc=checkCount(false);if(S._lastPC!==undefined&&pc>S._lastPC){beep(SND.pop);toast('✅ New thing to check!')}S._lastPC=pc;
-  S.live.filter(m=>m.to==='parents'&&!S._shown.has(m.id)&&!(m.seen||[]).includes(S.user)).forEach(m=>{S._shown.add(m.id);if(S.tab==='live')return;beep(SND.pop);if(m.kind==='sticker'){const s=stkOf(m);burst(s.ic,10);toast(`${P(m.from).name}: ${s.t}`)}else toast(`💌 ${P(m.from).name}: ${esc((m.text||'').slice(0,40))}`)});
+  S.live.filter(m=>m.to==='parents'&&!S._shown.has(m.id)&&!(m.seen||[]).includes(S.user)).forEach(m=>{S._shown.add(m.id);if(S.tab==='live')return;beep(SND.pop);if(m.kind==='sticker'){const s=stkOf(m);burst(s.ic,10);toast(`${P(m.from).name}: ${s.t}`)}else if(m.kind==='voice')toast(`🎙 Voice note from ${P(m.from).name}! Open Live`);else toast(`💌 ${P(m.from).name}: ${esc((m.text||'').slice(0,40))}`)});
   return;
  }
  const k=S.user,Kd=S.kids[k];const q=[];let mark=false;
@@ -832,7 +832,7 @@ function liveView(){
  <div class="feed" id="feed">${feed.slice(-60).map(bubble).join('')||'<p class="kidnote">Say hi! 👋</p>'}</div>
  <div class="compose">${toSeg}
  <div class="stkrow">${stk.map(s=>`<button onclick="sendSticker('${s.id}')">${I(s.ic,40)}<b>${s.t}</b></button>`).join('')}</div>
- ${par?`<div class="msgrow"><input type="text" id="lmsg" maxlength="200" placeholder="Say something sweet…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div>`:`<div class="msgrow"><input type="text" id="lmsg" maxlength="120" placeholder="Message Papa & Mama…"><button class="btn sm" onclick="sendText()">SEND</button></div><p class="kidnote">Stickers or a message, it goes to Papa & Mama 💌</p>`}
+ ${par?`<div class="msgrow"><input type="text" id="lmsg" maxlength="200" placeholder="Say something sweet…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div>`:`<div class="msgrow"><input type="text" id="lmsg" maxlength="120" placeholder="Message Papa & Mama…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div><p class="kidnote">Sticker, message or 🎙 voice, it goes to Papa & Mama 💌</p>`}
  </div></div>
  ${par?giftPanel():''}`;
 }
@@ -871,10 +871,10 @@ async function startRec(){
   const blob=new Blob(chunks,{type:mr.mimeType||mime||'audio/mp4'});if(blob.size>700000){toast('Too long, try again');return}
   const data=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(blob)});
   toast('Sending…');const vid=uid();
-  try{await DB.putVoice(S.fid,vid,{data,mime:blob.type,dur});const m={id:uid(),from:S.user,to:S.liveTo,kind:'voice',vid,dur,ts:Date.now(),seen:[]};S._shown.add(m.id);await act(()=>S.live.push(clone(m)));beep(SND.pop);burst('heart',10)}
+  try{await DB.putVoice(S.fid,vid,{data,mime:blob.type,dur});const m={id:uid(),from:S.user,to:liveTarget(),kind:'voice',vid,dur,ts:Date.now(),seen:[]};S._shown.add(m.id);await act(()=>S.live.push(clone(m)));beep(SND.pop);burst('heart',10)}
   catch(e){console.error(e);toast('⚠️ Voice not sent')}};
  REC={mr,iv:null,cancel:false};mr.start();
- $('modal').innerHTML=`<div class="modal"><div class="blk" style="padding:22px;text-align:center"><div class="bounce">${I('mic',90)}</div><div class="H" style="font-size:26px">Recording…</div><div class="H" id="rect" style="font-size:40px;color:var(--pink)">0:00</div><p style="font-weight:600">Max 10 seconds · To: ${S.liveTo==='both'?'Both':S.kids[S.liveTo].name}</p>
+ $('modal').innerHTML=`<div class="modal"><div class="blk" style="padding:22px;text-align:center"><div class="bounce">${I('mic',90)}</div><div class="H" style="font-size:26px">Recording…</div><div class="H" id="rect" style="font-size:40px;color:var(--pink)">0:00</div><p style="font-weight:600">Max 10 seconds · To: ${liveTarget()==='parents'?'Papa & Mama':liveTarget()==='both'?'Both':S.kids[liveTarget()].name}</p>
  <div style="display:flex;gap:10px;margin-top:12px"><button class="btn grey" onclick="REC.cancel=true;REC.mr.stop()">Cancel</button><button class="btn" style="flex:1" onclick="REC.mr.stop()">SEND ✓</button></div></div></div>`;
  REC.iv=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);const e=$('rect');if(e)e.textContent='0:'+String(s).padStart(2,'0');if(s>=10&&mr.state==='recording')mr.stop()},250);
 }
