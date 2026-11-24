@@ -280,6 +280,15 @@ nav.n5 button span{font-size:26px}
 
 header{padding-top:calc(16px + env(safe-area-inset-top))}
 .code{font-size:26px;letter-spacing:1px;white-space:nowrap;background:#fff3c4;border:3px solid var(--ink);border-radius:14px;padding:8px;margin:8px 0;user-select:all}
+
+.xseg{background:#c9ffd9}.xseg.on{background:#ff5a5a;color:#fff}
+.item.xitem{background:linear-gradient(180deg,#fff,#ffecec)}.item.xitem.wear{background:#c9ffd9}
+.snowbg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.snowbg i,.snowbox i{position:absolute;top:-10px;width:8px;height:8px;background:#fff;border-radius:2px;opacity:.85;animation:snow linear infinite}
+.snowbox{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:16px}
+.studio{position:relative}
+@keyframes snow{to{transform:translateY(110vh) rotate(180deg)}}
+.who,.logo{position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -358,16 +367,18 @@ ICONS.live=`<g ${O}><rect x="4" y="12" width="56" height="40" rx="8" fill="#ff5a
 ICONS.mic=`<g ${O}><rect x="22" y="4" width="20" height="34" rx="10" fill="#ff5fae"/><path d="M12 30 C12 44 20 50 32 50 C44 50 52 44 52 30" fill="none"/><rect x="29" y="50" width="6" height="8" fill="${K}"/><rect x="20" y="56" width="24" height="6" rx="3" fill="#5c6080"/></g>`;
 ICONS.pencil=`<g ${O}><g transform="rotate(45 32 32)"><rect x="24" y="2" width="16" height="44" rx="3" fill="#ffcc2e"/><path d="M24 46 H40 L32 60 Z" fill="#f2d2a9"/><rect x="24" y="2" width="16" height="8" rx="3" fill="#ff8ac4"/></g></g>`;
 ICONS.gear=`<g ${O}>${[0,45,90,135].map(a=>`<rect x="27" y="2" width="10" height="60" rx="3" fill="#9aa0c8" transform="rotate(${a} 32 32)"/>`).join('')}<circle cx="32" cy="32" r="20" fill="#d9dcef"/><circle cx="32" cy="32" r="8" fill="#fff"/></g>`;
+ICONS.tree=`<g ${O}><path d="M32 3 L48 24 H40 L54 42 H10 L24 24 H16 Z" fill="#3ddc6a"/><rect x="27" y="42" width="10" height="16" rx="2" fill="#8a5a2b"/><path d="M32 0 l3 6 6 1 -5 4 1 6 -5 -3 -5 3 1 -6 -5 -4 6 -1z" fill="#ffcc2e"/><circle cx="26" cy="32" r="3" fill="#ff5a5a" stroke="none"/><circle cx="38" cy="36" r="3" fill="#2fa8ff" stroke="none"/><circle cx="34" cy="20" r="2.5" fill="#ffcc2e" stroke="none"/></g>`;
 const RB=I('rbow',20),RBs=I('rbow',15);
 
 /* ---------- customizable blocky owl ---------- */
 const AVOPT={
- body:[{id:'blue',n:'Sky',c:'#2fa8ff',p:0},{id:'orange',n:'Mango',c:'#ff8a2a',p:0},{id:'green',n:'Slime',c:'#3ddc6a',p:2},{id:'red',n:'Lava',c:'#ff5a5a',p:2},{id:'purple',n:'Galaxy',c:'#8b5cff',p:3},{id:'pink',n:'Bubble',c:'#ff5fae',p:3},{id:'gold',n:'Gold',c:'#ffcc2e',p:6},{id:'black',n:'Shadow',c:'#3a3a55',p:6}],
+ body:[{id:'blue',n:'Sky',c:'#2fa8ff',p:0},{id:'orange',n:'Mango',c:'#ff8a2a',p:0},{id:'green',n:'Slime',c:'#3ddc6a',p:2},{id:'red',n:'Lava',c:'#ff5a5a',p:2},{id:'purple',n:'Galaxy',c:'#8b5cff',p:3},{id:'pink',n:'Bubble',c:'#ff5fae',p:3},{id:'gold',n:'Gold',c:'#ffcc2e',p:6},{id:'black',n:'Shadow',c:'#3a3a55',p:6},{id:'snow',n:'Snowy',c:'#eef6ff',p:4,x:1}],
  eyes:[{id:'normal',n:'Classic',p:0},{id:'happy',n:'Happy',p:2},{id:'cool',n:'Shades',p:4},{id:'star',n:'Star eyes',p:5}],
- hat:[{id:'none',n:'None',p:0},{id:'cap',n:'Cap',p:3},{id:'band',n:'Ninja band',p:3},{id:'phones',n:'Headphones',p:4},{id:'wizard',n:'Wizard',p:6},{id:'prop',n:'Propeller',p:6},{id:'crown',n:'Crown',p:10}],
- extra:[{id:'none',n:'None',p:0},{id:'bowtie',n:'Bow tie',p:2},{id:'scarf',n:'Scarf',p:3},{id:'cape',n:'Hero cape',p:5}]
+ hat:[{id:'none',n:'None',p:0},{id:'cap',n:'Cap',p:3},{id:'band',n:'Ninja band',p:3},{id:'phones',n:'Headphones',p:4},{id:'wizard',n:'Wizard',p:6},{id:'prop',n:'Propeller',p:6},{id:'crown',n:'Crown',p:10},{id:'santa',n:'Santa hat',p:4,x:1},{id:'antlers',n:'Reindeer',p:4,x:1},{id:'elf',n:'Elf hat',p:3,x:1}],
+ extra:[{id:'none',n:'None',p:0},{id:'bowtie',n:'Bow tie',p:2},{id:'scarf',n:'Scarf',p:3},{id:'cape',n:'Hero cape',p:5},{id:'sweater',n:'Xmas sweater',p:5,x:1},{id:'xscarf',n:'Candy scarf',p:3,x:1},{id:'bell',n:'Jingle bell',p:2,x:1}]
 };
-const AVCAT=[['body','palette','Colour'],['eyes','star','Eyes'],['hat','crown','Hats'],['extra','sparkle','Extras']];
+const AVCAT=[['xmas','tree','Xmas'],['body','palette','Colour'],['eyes','star','Eyes'],['hat','crown','Hats'],['extra','sparkle','Extras']];
+function ANT(){const a=`M30 18 L24 0 L12 -6 M24 0 L28 -12 M27 9 L36 2`;const one=`<path d="${a}" fill="none" stroke="#1b1b2f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="${a}" fill="none" stroke="#a0662f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;return one+`<g transform="translate(100 0) scale(-1 1)">${one}</g>`}
 function starP(cx,cy,r){let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;p+=(i?'L':'M')+(cx+rr*Math.cos(a)).toFixed(1)+' '+(cy+rr*Math.sin(a)).toFixed(1)}return p+'Z'}
 function OWLC(cfg,s){
  const c=(AVOPT.body.find(b=>b.id===cfg.body)||{c:cfg.body}).c;
@@ -385,11 +396,18 @@ function OWLC(cfg,s){
   phones:`<path d="M10 46 C10 -8 90 -8 90 46" fill="none" stroke="${K}" stroke-width="7"/><rect x="0" y="34" width="16" height="28" rx="6" fill="#ff5a5a" ${SO}/><rect x="84" y="34" width="16" height="28" rx="6" fill="#ff5a5a" ${SO}/>`,
   wizard:`<path d="M26 20 L52 -15 L74 20 Z" fill="#8b5cff" ${SO}/><rect x="16" y="14" width="68" height="10" rx="5" fill="#5b2fd1" ${SO}/><path d="${starP(50,4,6)}" fill="#ffcc2e" ${SO}/>`,
   prop:`<path d="M22 20 C22 0 78 0 78 20 Z" fill="#3ddc6a" ${SO}/><rect x="47" y="-6" width="6" height="10" fill="${K}"/><rect class="prop" x="28" y="-12" width="44" height="8" rx="4" fill="#ffcc2e" ${SO}/>`,
-  crown:`<path d="M22 22 V-4 L36 8 L50 -12 L64 8 L78 -4 V22 Z" fill="#ffcc2e" ${SO}/><rect x="45" y="6" width="10" height="10" rx="2" fill="#ff5a5a" ${SO} transform="rotate(45 50 11)"/>`
+  crown:`<path d="M22 22 V-4 L36 8 L50 -12 L64 8 L78 -4 V22 Z" fill="#ffcc2e" ${SO}/><rect x="45" y="6" width="10" height="10" rx="2" fill="#ff5a5a" ${SO} transform="rotate(45 50 11)"/>`,
+  santa:`<path d="M20 20 C24 -6 56 -14 78 -2 C88 4 94 16 96 30 L80 18 Z" fill="#ff5a5a" ${SO}/><circle cx="95" cy="33" r="7" fill="#fff" ${SO}/><rect x="12" y="13" width="76" height="13" rx="6" fill="#fff" ${SO}/>`,
+  antlers:ANT(''),
+  elf:`<path d="M22 20 L66 -16 L78 20 Z" fill="#3ddc6a" ${SO}/><rect x="16" y="14" width="68" height="10" rx="5" fill="#ff5a5a" ${SO}/><circle cx="66" cy="-16" r="6" fill="#ffcc2e" ${SO}/>`
  }[cfg.hat||'none'];
+ const nose=cfg.hat==='antlers'?`<circle cx="50" cy="61" r="6.5" fill="#ff3b3b" ${SO}/><circle cx="48" cy="59" r="2" fill="#fff"/>`:'';
  const ex=cfg.extra||'none';
  const front={none:'',cape:'',bowtie:`<path d="M50 89 L35 81 V97 Z M50 89 L65 81 V97 Z" fill="#ff5a5a" ${SO}/><rect x="45" y="84" width="10" height="10" rx="2" fill="#c22f2f" ${SO}/>`,
-  scarf:`<rect x="12" y="72" width="76" height="12" rx="5" fill="#3ddc6a" ${SO}/><rect x="62" y="78" width="13" height="22" rx="4" fill="#1f9a45" ${SO}/>`}[ex];
+  scarf:`<rect x="12" y="72" width="76" height="12" rx="5" fill="#3ddc6a" ${SO}/><rect x="62" y="78" width="13" height="22" rx="4" fill="#1f9a45" ${SO}/>`,
+  sweater:`<rect x="12" y="66" width="76" height="26" rx="8" fill="#e8413c" ${SO}/><path d="M16 73 l6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M50 74 l8 12 h-16 z" fill="#3ddc6a" stroke="${K}" stroke-width="2"/><circle cx="50" cy="73" r="2.5" fill="#ffcc2e"/><circle cx="26" cy="84" r="2.5" fill="#fff"/><circle cx="74" cy="84" r="2.5" fill="#fff"/>`,
+  xscarf:`<rect x="12" y="72" width="76" height="12" rx="5" fill="#fff" ${SO}/>${[18,32,46,60,74].map(x=>`<rect x="${x}" y="73.5" width="7" height="9" fill="#ff5a5a"/>`).join('')}<rect x="62" y="78" width="13" height="22" rx="4" fill="#fff" ${SO}/><rect x="63.5" y="84" width="10" height="5" fill="#ff5a5a"/><rect x="63.5" y="93" width="10" height="4" fill="#ff5a5a"/>`,
+  bell:`<rect x="18" y="70" width="64" height="7" rx="3" fill="#ff5a5a" ${SO}/><circle cx="50" cy="83" r="7.5" fill="#ffcc2e" ${SO}/><rect x="44" y="82" width="12" height="2.5" fill="${K}"/><circle cx="50" cy="88" r="1.6" fill="${K}"/>`}[ex];
  return `<svg class="owl" width="${s}" height="${s}" viewBox="-8 -18 116 126">
  ${ex==='cape'?`<path d="M16 40 L-4 106 H104 L84 40 Z" fill="#ff5a5a" ${SO}/>`:''}
  <rect x="14" y="4" width="18" height="18" rx="3" fill="${c}" ${SO} transform="rotate(-12 23 13)"/>
@@ -397,7 +415,7 @@ function OWLC(cfg,s){
  <rect x="2" y="44" width="14" height="34" rx="5" fill="${c}" ${SO}/><rect x="84" y="44" width="14" height="34" rx="5" fill="${c}" ${SO}/>
  <rect x="12" y="14" width="76" height="78" rx="14" fill="${c}" stroke="${K}" stroke-width="3.5"/>
  ${eyes}
- <path d="M43 57 h14 l-7 9 z" fill="#ff8a2a" ${SO}/>
+ <path d="M43 57 h14 l-7 9 z" fill="#ff8a2a" ${SO}/>${nose}
  <rect x="32" y="68" width="36" height="16" rx="5" fill="#fff7e0" stroke="${K}" stroke-width="2.5"/>
  <rect x="30" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/><rect x="56" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/>
  ${front}${hats}</svg>`;
@@ -442,7 +460,7 @@ function defaultData(){
   v:1,day:null,created:Date.now(),
   kids:{lucas:newKid('Lucas','#2fa8ff','blue','normal',LH,3),etan:newKid('Ethan','#ff8a2a','orange','happy',EH,2)},
   parents:{dad:{name:'Papa',hex:'#8b5cff',av:{body:'purple',eyes:'cool',hat:'cap',extra:'none'}},mum:{name:'Mama',hex:'#ff5fae',av:{body:'pink',eyes:'happy',hat:'crown',extra:'bowtie'}}},
-  pins:{dad:null,mum:null},seenTut:{},
+  flags:{},pins:{dad:null,mum:null},seenTut:{},
   team:{goal:300,prize:'Family movie night 🍿'},
   throne:{streak:0,checkedToday:false},
   shirt:{lucas:null,etan:null},
@@ -467,10 +485,10 @@ function defaultData(){
   live:[{id:uid(),from:'mum',to:'both',kind:'sticker',st:'love',t:'',ts:Date.now(),seen:[]}]
  };
 }
-const SHARED=['v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
+const SHARED=['flags','v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
 
 /* ---------- state ---------- */
-const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'body',planTab:'habits',planKid:'etan',post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
+const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'xmas',giftCur:'f',giftAmt:5,planTab:'habits',planKid:'etan',post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
 const $=id=>document.getElementById(id);
 function toast(t){const e=$('toast');e.innerHTML=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2400)}
 function isParent(){return S.user==='dad'||S.user==='mum'}
@@ -509,7 +527,7 @@ function rollover(){
 
 /* ---------- data layer (Firebase or demo) ---------- */
 function pack(){const o={};SHARED.forEach(k=>o[k]=S[k]);return JSON.parse(JSON.stringify(o))}
-function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{}}
+function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{};S.flags=S.flags||{}}
 let BUSY=0;
 async function act(fn){
  let res;try{res=fn()}catch(e){console.error(e)}
@@ -610,7 +628,8 @@ function teamCard(){const t=teamWeek(),pct=Math.min(100,Math.round(t/S.team.goal
  <div class="bar"><i style="width:${pct}%;background:repeating-linear-gradient(45deg,#ffcc2e 0 14px,#ffe07a 14px 28px)"></i></div><small><b>${t} / ${S.team.goal}</b> · Lucas + Ethan</small></div></div>`}
 
 /* ---------- render ---------- */
-function render(){
+function snowify(){document.querySelectorAll('.snowbg i,.snowbox i').forEach(e=>{if(e.dataset.s)return;e.dataset.s=1;e.style.left=Math.random()*100+'%';e.style.animationDuration=(5+Math.random()*7)+'s';e.style.animationDelay=(-Math.random()*10)+'s';const z=4+Math.random()*6;e.style.width=e.style.height=z+'px'})}
+function render(){setTimeout(snowify,0);
  const a=$('app');
  if(!S.ready){a.innerHTML=`<div class="logo" style="padding-top:calc(120px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>Loading… 🦉</p></div>`;return}
  if(!S.fid){a.innerHTML=joinView();return}
@@ -639,12 +658,12 @@ async function joinFamily(){
  if(c.length!==12){$('jcode').classList.add('shake');beep(SND.no);toast('Code has 12 letters/numbers');return}
  toast('Checking…');
  try{const d=await DB.get(c);if(!d){beep(SND.no);toast('❌ Family not found. Check the code');return}
-  S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);beep(SND.win);render();toast('🎉 Joined the Hoo family!')}
+  S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);beep(SND.win);render();toast('🎉 Joined the Hoo family!');xmasGift()}
  catch(e){console.error(e);toast('⚠️ Could not connect. Check internet')}
 }
 async function createFamily(){
  const c=genCode();
- try{const d=defaultData();d.day=todayStr();await DB.create(c,d);S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);render();showCode(true)}
+ try{const d=defaultData();d.day=todayStr();await DB.create(c,d);S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);render();showCode(true);xmasGift()}
  catch(e){console.error(e);toast('⚠️ Could not create. Check internet / Firebase rules')}
 }
 function showCode(first){
@@ -658,7 +677,7 @@ function showCode(first){
 function copyCode(){try{navigator.clipboard.writeText(fmt(S.fid)).then(()=>toast('Copied ✓'),()=>toast('Copy failed, write it down'))}catch(e){toast('Write it down: '+fmt(S.fid))}}
 
 function homeView(){
- return `<div class="logo"><div class="H">HOO<br>DID IT?</div><p>Who's ready to play?</p></div>
+ return `${new Date().getMonth()===11||new Date().getMonth()===10?'<div class="snowbg">'+'<i></i>'.repeat(24)+'</div>':''}<div class="logo"><div class="H">HOO<br>DID IT?</div><p>Who's ready to play?</p></div>
  <div class="who">
   <button style="background:var(--blue)" onclick="pick('lucas')">${AV('lucas',88)}<span class="H">Lucas</span><small>${I('compass',18)} Captain</small>${unseen('lucas').length?`<i class="dot2">${unseen('lucas').length}</i>`:''}</button>
   <button style="background:var(--orange)" onclick="pick('etan')">${AV('etan',88)}<span class="H">Ethan</span><small>${I('bolt',18)} Speedy</small>${unseen('etan').length?`<i class="dot2">${unseen('etan').length}</i>`:''}</button>
@@ -667,7 +686,8 @@ function homeView(){
  </div><div style="display:flex;gap:12px;padding:0 16px"><button class="btn blue" style="flex:1;font-size:17px" onclick="showTut('kid')">❓ HOW TO PLAY</button><button class="btn grey" style="flex:1;font-size:17px" onclick="showTut('parent')">PARENT GUIDE</button></div>`;
 }
 function unseen(k){return S.live.filter(m=>(m.from==='mum'||m.from==='dad')&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k))}
-function pick(k){beep(SND.tick);S.user=k;S.tab='today';LS.set('hoo_user',k);render();
+function pick(k){askPin(k)}
+function enterKid(k){closeModal();beep(SND.tick);S.user=k;S.tab='today';LS.set('hoo_user',k);render();
  if(!S.seenTut[k]){S._afterTut=()=>remoteFx();setTimeout(()=>showTut('kid'),200)}else remoteFx();
 }
 function logout(){S.user=null;LS.set('hoo_user',null);render()}
@@ -764,20 +784,26 @@ function redeem(id){const me=S.user,r=S.rewards.find(x=>x.id===id);if(!r||S.kids
 function suggest(){const v=$('sug').value.trim();if(!v){$('sug').classList.add('shake');beep(SND.no);return}const me=S.user;act(()=>S.suggestions.push({id:uid(),kid:me,n:v,p:null}));celebrate({icon:'sparkle',title:'WISH SENT!',sub:`"${esc(v)}" → Papa & Mama`})}
 
 /* me */
+function studioItems(cat){return cat==='xmas'?['body','hat','extra'].flatMap(sl=>AVOPT[sl].filter(o=>o.x).map(o=>Object.assign({slot:sl},o))):AVOPT[cat].map(o=>Object.assign({slot:cat},o))}
+function studio(who){
+ const par=!S.kids[who],o=P(who),cat=S.avTab,opts=studioItems(cat);
+ return `<div class="blk studio">${cat==='xmas'?'<div class="snowbox">'+'<i></i>'.repeat(14)+'</div>':''}<div class="stage"><div class="bounce">${AV(who,170)}</div><div class="ped"></div></div>
+ ${par?'<div class="rbal">Parents dress up for free 😎</div>':`<div class="rbal">${I('rbow',26)} <b>${o.rainbow}</b> rainbow feathers · 💛 ${o.kindness} kindness</div>`}
+ <div class="segs" style="justify-content:center">${AVCAT.map(c=>`<button class="seg ${cat===c[0]?'on':''} ${c[0]==='xmas'?'xseg':''}" onclick="S.avTab='${c[0]}';render()">${I(c[1],18)} ${c[2]}</button>`).join('')}</div>
+ ${cat==='xmas'?'<div class="tip" style="box-shadow:none;text-align:center">🎄 Christmas collection · limited time!</div>':''}
+ <div class="items">${opts.map(it=>{const key=it.slot+':'+it.id,own=par||(o.owned||[]).includes(key)||it.p===0,wear=o.av[it.slot]===it.id;const prev=Object.assign({},o.av,{[it.slot]:it.id});
+  return `<button class="item ${wear?'wear':''} ${it.x?'xitem':''}" onclick="avPick('${it.slot}','${it.id}',${it.p})">${OWLC(prev,62)}<b>${it.n}</b>${wear?'<span class="tag ok">Wearing</span>':own?'<span class="tag">'+(par?'Free':'Owned')+'</span>':`<span class="price">${RBs} ${it.p}</span>`}</button>`}).join('')}</div></div>`;
+}
 function kidMe(k){
- const cat=S.avTab,opts=AVOPT[cat];
  return `<div class="banner" style="background:var(--purple)">${I('palette',30)} Owl Studio</div>
- <div class="blk studio"><div class="stage"><div class="bounce">${AV(S.user,170)}</div><div class="ped"></div></div>
- <div class="rbal">${I('rbow',26)} <b>${k.rainbow}</b> rainbow feathers · 💛 ${k.kindness} kindness</div>
- <div class="segs" style="justify-content:center">${AVCAT.map(c=>`<button class="seg ${cat===c[0]?'on':''}" onclick="S.avTab='${c[0]}';render()">${I(c[1],18)} ${c[2]}</button>`).join('')}</div>
- <div class="items">${opts.map(o=>{const key=cat+':'+o.id,own=k.owned.includes(key)||o.p===0,wear=k.av[cat]===o.id;const prev=Object.assign({},k.av,{[cat]:o.id});
-  return `<button class="item ${wear?'wear':''}" onclick="avPick('${cat}','${o.id}',${o.p})">${OWLC(prev,62)}<b>${o.n}</b>${wear?'<span class="tag ok">Wearing</span>':own?'<span class="tag">Owned</span>':`<span class="price">${RBs} ${o.p}</span>`}</button>`}).join('')}</div></div>
+ ${studio(S.user)}
  <div class="tip">Earn ${RB}: <b>Perfect day +1 · Duo mission +1 · Level up +2 · Kindness gifts</b></div>
  <div class="banner">${I('chart',30)} My Progress</div>
  ${chartCard([S.user])}`;
 }
 function avPick(cat,id,p){
- const me=S.user,k=S.kids[me],key=cat+':'+id,own=k.owned.includes(key)||p===0;
+ const me=S.user;if(isParent()){act(()=>{S.parents[me].av[cat]=id});beep(SND.tick);return}
+ const k=S.kids[me],key=cat+':'+id,own=k.owned.includes(key)||p===0;
  if(own){act(()=>{S.kids[me].av[cat]=id});beep(SND.tick);return}
  if(k.rainbow<p){beep(SND.no);toast(`Need ${p-k.rainbow} more ${RBs}! Try a DUO mission 🤝`);return}
  act(()=>{const Kd=S.kids[me];if(Kd.rainbow<p||Kd.owned.includes(key))return;Kd.rainbow-=p;Kd.owned.push(key);Kd.av[cat]=id});
@@ -793,7 +819,7 @@ function bubble(m){
  if(m.kind==='sticker'){const s=stkOf(m);body=`<div class="stk">${I(s.ic,64)}<b>${s.t}</b></div>`}
  if(m.kind==='text')body=`<div class="txt">${esc(m.text)}</div>`;
  if(m.kind==='voice')body=`<button class="voice" onclick="playVoice(this,'${m.vid}')">▶<span class="wave">${'<i></i>'.repeat(14)}</span><b>0:${String(m.dur).padStart(2,'0')}</b></button>`;
- if(m.kind==='gift')body=`<div class="giftb">${I(m.gift.cur==='f'?'feather':'rbow',44)}<div><b>KINDNESS GIFT +${m.gift.amt}</b><small>💛 ${esc(m.gift.reason)}</small></div></div>`;
+ if(m.kind==='gift')body=`<div class="giftb">${I(m.gift.cur==='f'?'feather':'rbow',44)}<div><b>${m.gift.reason.startsWith('🎄')?'CHRISTMAS GIFT':'KINDNESS GIFT'} +${m.gift.amt}</b><small>💛 ${esc(m.gift.reason)}</small></div></div>`;
  return `<div class="msg ${mine?'me':''}">${AV(m.from,40)}<div class="bub ${m.kind}"><small class="mt">${who.name} → ${toTxt} · ${timeOf(m)}</small>${body}</div></div>`;
 }
 function liveView(){
@@ -816,7 +842,9 @@ function giftPanel(){
  <div class="blk" style="padding:14px">
  <div class="tip" style="box-shadow:none">Spotted something special, done without being asked? Pick the reason. The boys see it pop up big.</div>
  <div class="reasons">${REASONS.map(r=>`<button class="${S.liveReason===r.id?'on':''}" onclick="S.liveReason='${r.id}';keep('lmsg')">${r.t}</button>`).join('')}</div>
- <div class="segs" style="margin:10px 0">${GIFTS.map((g,i)=>`<button class="seg ${S.liveGift===i?'on':''}" onclick="S.liveGift=${i};keep('lmsg')">+${g.amt} ${g.cur==='f'?I('feather',18):I('rbow',18)}</button>`).join('')}</div>
+ <div class="segs" style="margin:12px 0 6px"><button class="seg big ${S.giftCur==='f'?'on':''}" onclick="S.giftCur='f';keep('lmsg')">${I('feather',22)} Feathers</button><button class="seg big ${S.giftCur==='r'?'on':''}" onclick="S.giftCur='r';keep('lmsg')">${I('rbow',22)} Rainbow</button></div>
+ <div class="erow"><b>How many?</b><div class="stepper"><button onclick="S.giftAmt=Math.max(1,S.giftAmt-1);keep('lmsg')">−</button><b>${S.giftCur==='f'?F:RB}${S.giftAmt}</b><button onclick="S.giftAmt=Math.min(200,S.giftAmt+1);keep('lmsg')">+</button></div></div>
+ <div class="segs">${[1,5,10,20,30,50].map(n=>`<button class="seg ${S.giftAmt===n?'on':''}" onclick="S.giftAmt=${n};keep('lmsg')">${n}</button>`).join('')}</div>
  <button class="btn full gold" onclick="sendGift()">SEND GIFT TO ${to==='both'?'BOTH':S.kids[to].name.toUpperCase()} 🎁</button></div>`;
 }
 function liveTarget(){return isParent()?S.liveTo:'parents'}
@@ -824,7 +852,7 @@ function sendSticker(id){const s=[...STK_P,...STK_K].find(x=>x.id===id);beep(SND
 function sendText(){const v=$('lmsg').value.trim();if(!v){$('lmsg').classList.add('shake');beep(SND.no);return}beep(SND.pop);const m={id:uid(),from:S.user,to:liveTarget(),kind:'text',text:v,ts:Date.now(),seen:[]};S._shown.add(m.id);act(()=>S.live.push(clone(m)))}
 function sendGift(){
  if(!S.liveReason){beep(SND.no);toast('Pick a reason first 💛');return}
- const r=REASONS.find(x=>x.id===S.liveReason).t,g=GIFTS[S.liveGift],to=S.liveTo,tos=to==='both'?KIDS:[to],me=S.user,id=uid();
+ const r=REASONS.find(x=>x.id===S.liveReason).t,g={amt:S.giftAmt,cur:S.giftCur},to=S.liveTo,tos=to==='both'?KIDS:[to],me=S.user,id=uid();
  S._shown.add(id);
  act(()=>{tos.forEach(k=>{if(g.cur==='f')addXP(k,g.amt);else S.kids[k].rainbow+=g.amt;S.kids[k].kindness++});S.live.push({id,from:me,to,kind:'gift',gift:{amt:g.amt,cur:g.cur,reason:r},ts:Date.now(),seen:[]})});
  S.liveReason=null;burst('heart',18);
@@ -861,18 +889,20 @@ async function playVoice(b,vid){
 async function hashPin(who,pin){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(S.fid+':'+who+':'+pin));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
 function askPin(who){S.pin='';S._who=who;S._pinMode=S.pins[who]?'enter':'new';S._pin1=null;drawPin()}
 function drawPin(){
- const t=S._pinMode==='enter'?`${P(S._who).name} PIN`:S._pinMode==='new'?`Set ${P(S._who).name}'s PIN`:'Type it again';
+ const kid=!!S.kids[S._who],nm=P(S._who).name;
+ const t=S._pinMode==='enter'?(kid?`Hi ${nm}! Secret code?`:`${nm} PIN`):S._pinMode==='new'?(kid?`${nm}, make a secret code!`:`Set ${nm}'s PIN`):'Type it again';
  $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" id="pinbox"><div>${AV(S._who,80)}</div><div class="H" style="font-size:24px">${t}</div>
- ${S._pinMode!=='enter'?'<p style="font-weight:600;font-size:13px">4 numbers only you know (not the boys!)</p>':''}
+ ${S._pinMode!=='enter'?`<p style="font-weight:600;font-size:13px">${kid?'4 numbers. Keep it secret from your brother! 🤫':'4 numbers only you know (not the boys!)'}</p>`:(kid?'<p style="font-weight:600;font-size:13px">Forgot? Ask Papa or Mama to reset it.</p>':'')}
  <div class="pin">${[0,1,2,3].map(i=>`<i class="${i<S.pin.length?'f':''}"></i>`).join('')}</div>
  <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="pinKey('${n}')">${n}</button>`).join('')}</div></div></div>`;
 }
 async function pinKey(n){beep([[800,.05]]);if(n==='⌫')S.pin=S.pin.slice(0,-1);else if(S.pin.length<4)S.pin+=n;
  if(S.pin.length===4){const who=S._who,pin=S.pin;S.pin='';
-  if(S._pinMode==='enter'){const h=await hashPin(who,pin);if(h===S.pins[who]){enterParent(who)}else{drawPin();$('pinbox').classList.add('shake');beep(SND.no);toast('Wrong PIN')}return}
+  if(S._pinMode==='enter'){const h=await hashPin(who,pin);if(h===S.pins[who]){enterUser(who)}else{drawPin();$('pinbox').classList.add('shake');beep(SND.no);toast('Wrong PIN')}return}
   if(S._pinMode==='new'){S._pin1=pin;S._pinMode='confirm';drawPin();return}
-  if(S._pinMode==='confirm'){if(pin!==S._pin1){S._pinMode='new';drawPin();beep(SND.no);toast("Didn't match, try again");return}const h=await hashPin(who,pin);await act(()=>{S.pins[who]=h});toast('PIN set ✓');enterParent(who);return}
+  if(S._pinMode==='confirm'){if(pin!==S._pin1){S._pinMode='new';drawPin();beep(SND.no);toast("Didn't match, try again");return}const h=await hashPin(who,pin);await act(()=>{S.pins[who]=h});toast('Code set ✓');if(S.user===who&&isParent()){closeModal();return}enterUser(who);return}
  }drawPin()}
+function enterUser(who){if(S.kids[who])return enterKid(who);enterParent(who)}
 function enterParent(who){closeModal();S.user=who;S.tab='check';LS.set('hoo_user',who);render();S._lastPC=checkCount(false);if(!S.seenTut[who])setTimeout(()=>showTut('parent'),200)}
 function closeModal(){$('modal').innerHTML='';S.editing=null}
 
@@ -1003,6 +1033,7 @@ function pStats(){
  const other0=S.user==='dad'?'mum':'dad';
  return `<div class="banner">${I('chart',30)} Progress</div>${chartCard(KIDS)}
  ${teamCard()}
+ <div class="banner" style="background:var(--purple)">${I('palette',30)} My Owl</div>${studio(S.user)}
  ${KIDS.map(k=>{const K2=S.kids[k],L=level(K2.xp);return `<div class="blk" style="padding:12px;margin-bottom:14px;border-left:12px solid ${K2.hex}">
  <div style="display:flex;align-items:center;gap:10px">${AV(k,64)}<div style="flex:1"><span class="H" style="font-size:22px">${K2.name}</span><br><span class="badge">Lv ${L.n} ${L.name}</span></div><span class="tag" style="background:#fff3c4">💛 ${K2.kindness} kindness</span></div>
  <p style="font-weight:600;margin-top:8px">${F} ${K2.feathers} · ${RB} ${K2.rainbow} · ${I('fire',18)} ${K2.streak} days · today ${doneCount(k)}/${todayHabits(k).length}</p>
@@ -1015,10 +1046,11 @@ function pStats(){
  <div class="erow"><b>Family code</b><button class="btn sm grey" onclick="showCode(false)">SHOW</button></div>
  <div class="erow"><b>My PIN</b><button class="btn sm grey" onclick="S._who='${S.user}';S._pinMode='new';S.pin='';drawPin()">CHANGE</button></div>
  <div class="erow"><b>${P(other0).name}'s PIN</b><button class="btn sm grey" onclick="resetPin('${other0}')">RESET</button></div>
- <small style="font-weight:600;color:var(--muted)">Reset lets ${P(other0).name} set a new PIN next time.</small>
+ ${KIDS.map(k=>`<div class="erow"><b>${S.kids[k].name}'s secret code ${S.pins[k]?'':'<small style="color:var(--muted)">(not set yet)</small>'}</b><button class="btn sm grey" onclick="resetPin('${k}')">RESET</button></div>`).join('')}
+ <small style="font-weight:600;color:var(--muted)">Reset = they make a new code next time they tap their owl.</small>
  <div class="erow" style="margin-top:14px"><b>This phone</b><button class="btn sm red" onclick="leaveFamily()">LOG OUT OF FAMILY</button></div></div>`;
 }
-function resetPin(w){act(()=>{S.pins[w]=null});toast(`${P(w).name}'s PIN reset`)}
+function resetPin(w){act(()=>{S.pins[w]=null});toast(`${P(w).name}'s code reset`)}
 function leaveFamily(){$('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" style="padding:20px;text-align:center"><div class="H" style="font-size:22px">Log out this phone?</div><p style="font-weight:600;margin:8px 0 14px">You'll need the family code to come back. Nothing is deleted.</p><div style="display:flex;gap:10px"><button class="btn grey" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn red" style="flex:1" onclick="LS.set('hoo_fid',null);LS.set('hoo_user',null);location.reload()">Log out</button></div></div></div>`}
 
 /* ---------- TUTORIAL ---------- */
@@ -1073,9 +1105,11 @@ async function boot(){
  if(fid){try{const d=await DB.get(fid);if(d){S.fid=fid;unpack(d);DB.listen(fid,onRemote);const u=LS.get('hoo_user');if(u&&(S.kids[u]||S.parents[u])){S.user=u;S.tab=(u==='dad'||u==='mum')?'check':'today'}}else LS.set('hoo_fid',null)}catch(e){console.error(e);toast('⚠️ Could not load. Check internet')}}
  S.ready=true;render();
  if(S.fid&&S.day!==todayStr())act(()=>{});
+ if(S.fid)xmasGift();
  if(S.user){S._lastPC=checkCount(false);remoteFx()}
  setInterval(()=>{if(S.fid&&S.day!==todayStr()&&!BUSY)act(()=>{})},60000);
 }
+function xmasGift(){if(S.flags&&S.flags.xmas26)return;act(()=>{S.flags=S.flags||{};if(S.flags.xmas26)return;S.flags.xmas26=true;KIDS.forEach(k=>{S.kids[k].rainbow+=30;S.live.push({id:uid(),from:'mum',to:k,kind:'gift',gift:{amt:30,cur:'r',reason:'🎄 Christmas gift! Go to Me → Owl Studio and dress up your owl'},ts:Date.now(),seen:[]})})})}
 function bootFail(msg){S.ready=true;$('app').innerHTML=`<div class="logo" style="padding-top:calc(100px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>${msg}</p><button class="btn" style="margin-top:20px" onclick="location.reload()">TRY AGAIN</button></div>`}
 
 render();
