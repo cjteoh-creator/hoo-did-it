@@ -289,6 +289,7 @@ header{padding-top:calc(16px + env(safe-area-inset-top))}
 .studio{position:relative}
 @keyframes snow{to{transform:translateY(110vh) rotate(180deg)}}
 .who,.logo{position:relative;z-index:1}
+.kcode{font-family:'Lilita One';font-weight:400;letter-spacing:2px;background:#fff3c4;border:2px solid var(--ink);border-radius:8px;padding:0 6px}
 </style>
 </head>
 <body>
@@ -485,7 +486,7 @@ function defaultData(){
   live:[{id:uid(),from:'mum',to:'both',kind:'sticker',st:'love',t:'',ts:Date.now(),seen:[]}]
  };
 }
-const SHARED=['flags','v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
+const SHARED=['kidCodes','flags','v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
 
 /* ---------- state ---------- */
 const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'xmas',giftCur:'f',giftAmt:5,planTab:'habits',planKid:'etan',post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
@@ -527,7 +528,7 @@ function rollover(){
 
 /* ---------- data layer (Firebase or demo) ---------- */
 function pack(){const o={};SHARED.forEach(k=>o[k]=S[k]);return JSON.parse(JSON.stringify(o))}
-function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{};S.flags=S.flags||{}}
+function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{};S.flags=S.flags||{};S.kidCodes=S.kidCodes||{}}
 let BUSY=0;
 async function act(fn){
  let res;try{res=fn()}catch(e){console.error(e)}
@@ -890,7 +891,7 @@ async function hashPin(who,pin){const buf=await crypto.subtle.digest('SHA-256',n
 function askPin(who){S.pin='';S._who=who;S._pinMode=S.pins[who]?'enter':'new';S._pin1=null;drawPin()}
 function drawPin(){
  const kid=!!S.kids[S._who],nm=P(S._who).name;
- const t=S._pinMode==='enter'?(kid?`Hi ${nm}! Secret code?`:`${nm} PIN`):S._pinMode==='new'?(kid?`${nm}, make a secret code!`:`Set ${nm}'s PIN`):'Type it again';
+ const t=S._pinMode==='enter'?(kid?`Hi ${nm}! Secret code?`:`${nm} PIN`):S._pinMode==='new'?(S._setFor?`New code for ${nm}`:kid?`${nm}, make a secret code!`:`Set ${nm}'s PIN`):'Type it again';
  $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" id="pinbox"><div>${AV(S._who,80)}</div><div class="H" style="font-size:24px">${t}</div>
  ${S._pinMode!=='enter'?`<p style="font-weight:600;font-size:13px">${kid?'4 numbers. Keep it secret from your brother! 🤫':'4 numbers only you know (not the boys!)'}</p>`:(kid?'<p style="font-weight:600;font-size:13px">Forgot? Ask Papa or Mama to reset it.</p>':'')}
  <div class="pin">${[0,1,2,3].map(i=>`<i class="${i<S.pin.length?'f':''}"></i>`).join('')}</div>
@@ -898,13 +899,13 @@ function drawPin(){
 }
 async function pinKey(n){beep([[800,.05]]);if(n==='⌫')S.pin=S.pin.slice(0,-1);else if(S.pin.length<4)S.pin+=n;
  if(S.pin.length===4){const who=S._who,pin=S.pin;S.pin='';
-  if(S._pinMode==='enter'){const h=await hashPin(who,pin);if(h===S.pins[who]){enterUser(who)}else{drawPin();$('pinbox').classList.add('shake');beep(SND.no);toast('Wrong PIN')}return}
+  if(S._pinMode==='enter'){const h=await hashPin(who,pin);if(h===S.pins[who]){if(S.kids[who]&&S.kidCodes[who]!==pin)act(()=>{S.kidCodes[who]=pin});enterUser(who)}else{drawPin();$('pinbox').classList.add('shake');beep(SND.no);toast('Wrong PIN')}return}
   if(S._pinMode==='new'){S._pin1=pin;S._pinMode='confirm';drawPin();return}
-  if(S._pinMode==='confirm'){if(pin!==S._pin1){S._pinMode='new';drawPin();beep(SND.no);toast("Didn't match, try again");return}const h=await hashPin(who,pin);await act(()=>{S.pins[who]=h});toast('Code set ✓');if(S.user===who&&isParent()){closeModal();return}enterUser(who);return}
+  if(S._pinMode==='confirm'){if(pin!==S._pin1){S._pinMode='new';drawPin();beep(SND.no);toast("Didn't match, try again");return}const h=await hashPin(who,pin),isKid=!!S.kids[who];await act(()=>{S.pins[who]=h;if(isKid)S.kidCodes[who]=pin});toast('Code set ✓');if(S._setFor||(S.user===who&&isParent())){S._setFor=null;closeModal();render();return}enterUser(who);return}
  }drawPin()}
 function enterUser(who){if(S.kids[who])return enterKid(who);enterParent(who)}
 function enterParent(who){closeModal();S.user=who;S.tab='check';LS.set('hoo_user',who);render();S._lastPC=checkCount(false);if(!S.seenTut[who])setTimeout(()=>showTut('parent'),200)}
-function closeModal(){$('modal').innerHTML='';S.editing=null}
+function closeModal(){$('modal').innerHTML='';S.editing=null;S._setFor=null}
 
 /* ---------- PARENT ---------- */
 function checkCount(withNight=true){return S.missions.filter(m=>m.status==='pending').length+S.redeems.filter(r=>r.status==='pending').length+S.suggestions.filter(s=>s.p===null).length+S.ideas.length+(withNight&&nightNow()?(S.throne.checkedToday?0:1)+KIDS.filter(k=>S.shirt[k]===null).length:0)}
@@ -960,16 +961,19 @@ function planHabits(){
  ${changed?`<div class="tip" style="background:#e9ecff">🌅 <b>Changes start tomorrow</b> so today stays fair.<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm grey" onclick="undoDraft('${k}')">Undo changes</button><button class="btn sm blue" onclick="applyNow('${k}')">Start now instead</button></div></div>`:''}
  <div class="tip" style="box-shadow:none">${list.length} habits · aim for 8–10 max. Tap one to edit.</div>
  ${GROUPS.map(g=>{const items=list.filter(h=>h.g===g.id);if(!items.length)return '';return `<div class="banner" style="background:${g.c}">${I(g.i,26)} ${g.n}</div>${items.map(h=>`<div class="blk mis hrow" onclick="editHabit('${k}','${h.id}')"><div class="em">${I(h.ic,44)}</div><div class="tx"><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small><br><span class="price">${F} ${h.f}</span> <span class="tag">${h.times}× a day</span> <span class="tag">${DAYS[h.days]}</span></div><div>${I('pencil',30)}</div></div>`).join('')}`}).join('')}
- <div style="display:flex;gap:10px;margin-top:6px"><button class="btn blue" style="flex:1" onclick="editHabit('${k}',null)">+ ADD HABIT</button><button class="btn grey" onclick="copyHabits('${k}')">Copy to ${S.kids[other(k)].name}</button></div>`;
+ <div style="display:flex;gap:10px;margin-top:6px"><button class="btn blue" style="flex:1;font-size:16px" onclick="editHabit('${k}',null)">+ FOR ${S.kids[k].name.toUpperCase()}</button><button class="btn gold" style="flex:1;font-size:16px" onclick="editHabit('${k}',null,true)">+ FOR BOTH</button></div>
+ <button class="btn grey full" style="margin-top:12px;font-size:16px" onclick="copyHabits('${k}')">Copy ${S.kids[k].name}'s whole list to ${S.kids[other(k)].name}</button>`;
 }
 function undoDraft(k){act(()=>{S.kids[k].draft=null})}
 function applyNow(k){act(()=>{const K2=S.kids[k];if(K2.draft){K2.habits=K2.draft;K2.draft=null}});toast('Applied ✓')}
 function copyHabits(k){const o=other(k);act(()=>{const src=clone(S.kids[k].draft||S.kids[k].habits).map(h=>Object.assign(h,{id:uid()}));S.kids[o].draft=src});toast(`Copied to ${S.kids[o].name} (starts tomorrow)`)}
-function editHabit(k,id){const d=id?(S.kids[k].draft||S.kids[k].habits).find(h=>h.id===id):null;S.editing={k,id,h:d?clone(d):{g:'other',ic:'star',n:'',s:'',f:1,times:1,days:'all'}};drawEditor()}
+function editHabit(k,id,both){const d=id?(S.kids[k].draft||S.kids[k].habits).find(h=>h.id===id):null;const o=other(k),twin=d&&(S.kids[o].draft||S.kids[o].habits).some(h=>h.n.trim().toLowerCase()===d.n.trim().toLowerCase());S.editing={k,id,orig:d?d.n:null,both:!!both||!!twin,twin:!!twin,h:d?clone(d):{g:'other',ic:'star',n:'',s:'',f:1,times:1,days:'all'}};drawEditor()}
 function drawEditor(){
  const e=S.editing,h=e.h,st=(f,v)=>`S.editing.h.${f}=${typeof v==='string'?`'${v}'`:v};saveEd();drawEditor()`;
  $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk editor">
- <div class="H" style="font-size:22px">${e.id?'Edit':'New'} habit · ${S.kids[e.k].name}</div>
+ <div class="H" style="font-size:22px">${e.id?'Edit':'New'} habit</div>
+ <div class="segs" style="margin:6px 0"><b style="align-self:center">For:</b><button class="seg ${!e.both?'on':''}" onclick="saveEd();S.editing.both=false;drawEditor()">${S.kids[e.k].name} only</button><button class="seg ${e.both?'on':''}" onclick="saveEd();S.editing.both=true;drawEditor()">Both boys</button></div>
+ ${e.id&&e.both&&!e.twin?`<small style="font-weight:600;color:var(--muted)">${S.kids[other(e.k)].name} doesn't have this habit yet, so it will be added for him.</small>`:''}
  <input type="text" id="en" maxlength="30" placeholder="Name, e.g. Make bed" value="${esc(h.n)}"><input type="text" id="es" maxlength="40" placeholder="Hint, e.g. Pillow + blanket" value="${esc(h.s||'')}">
  <div class="icpick">${HICONS.map(n=>`<button class="${h.ic===n?'on':''}" onclick="${st('ic',n)}">${I(n,34)}</button>`).join('')}</div>
  <div class="segs" style="margin-top:10px">${GROUPS.map(g=>`<button class="seg ${h.g===g.id?'on':''}" onclick="${st('g',g.id)}">${g.n}</button>`).join('')}</div>
@@ -981,9 +985,12 @@ function drawEditor(){
 }
 function saveEd(){const n=$('en'),s=$('es');if(n)S.editing.h.n=n.value;if(s)S.editing.h.s=s.value}
 function saveHabit(){saveEd();const e=clone(S.editing);if(!e.h.n.trim()){$('en').classList.add('shake');beep(SND.no);return}
- act(()=>{const K2=S.kids[e.k];if(!K2.draft)K2.draft=clone(K2.habits);const d=K2.draft;if(e.id){const i=d.findIndex(x=>x.id===e.id);if(i>=0)d[i]=Object.assign(clone(e.h),{id:e.id})}else d.push(Object.assign(clone(e.h),{id:e.newId||(e.newId=uid())}))});
+ const ids={};KIDS.forEach(k=>ids[k]=uid());
+ act(()=>{(e.both?KIDS:[e.k]).forEach(k=>{const K2=S.kids[k];if(!K2.draft)K2.draft=clone(K2.habits);const d=K2.draft;
+  let i=-1;if(e.id&&k===e.k)i=d.findIndex(x=>x.id===e.id);else if(e.orig)i=d.findIndex(x=>x.n.trim().toLowerCase()===e.orig.trim().toLowerCase());
+  if(i>=0)d[i]=Object.assign(clone(e.h),{id:d[i].id});else d.push(Object.assign(clone(e.h),{id:ids[k]}))})});
  closeModal();beep(SND.tick);toast('Saved · starts tomorrow 🌅')}
-function delHabit(){const e=clone(S.editing);act(()=>{const K2=S.kids[e.k];if(!K2.draft)K2.draft=clone(K2.habits);K2.draft=K2.draft.filter(x=>x.id!==e.id)});closeModal();toast('Removed · from tomorrow')}
+function delHabit(){const e=clone(S.editing);act(()=>{(e.both?KIDS:[e.k]).forEach(k=>{const K2=S.kids[k];if(!K2.draft)K2.draft=clone(K2.habits);K2.draft=K2.draft.filter(x=>k===e.k?x.id!==e.id:x.n.trim().toLowerCase()!==(e.orig||'').trim().toLowerCase())})});closeModal();toast('Removed · from tomorrow')}
 
 function planBoard(){
  const p=S.post,icons=['broom','robot','bin','plant','shirt','table','toilet','shoe','sponge','car'];
@@ -1046,11 +1053,12 @@ function pStats(){
  <div class="erow"><b>Family code</b><button class="btn sm grey" onclick="showCode(false)">SHOW</button></div>
  <div class="erow"><b>My PIN</b><button class="btn sm grey" onclick="S._who='${S.user}';S._pinMode='new';S.pin='';drawPin()">CHANGE</button></div>
  <div class="erow"><b>${P(other0).name}'s PIN</b><button class="btn sm grey" onclick="resetPin('${other0}')">RESET</button></div>
- ${KIDS.map(k=>`<div class="erow"><b>${S.kids[k].name}'s secret code ${S.pins[k]?'':'<small style="color:var(--muted)">(not set yet)</small>'}</b><button class="btn sm grey" onclick="resetPin('${k}')">RESET</button></div>`).join('')}
- <small style="font-weight:600;color:var(--muted)">Reset = they make a new code next time they tap their owl.</small>
+ ${KIDS.map(k=>{const c=S.kidCodes[k],sh=S['_sc'+k];return `<div class="erow"><b>${S.kids[k].name}'s code: <span class="kcode">${!S.pins[k]?'not set yet':c?(sh?c:'••••'):'?'}</span></b><div style="display:flex;gap:6px">${c?`<button class="btn sm blue" onclick="S['_sc${k}']=!S['_sc${k}'];render()">${sh?'HIDE':'SHOW'}</button>`:''}<button class="btn sm grey" onclick="setKidCode('${k}')">SET</button><button class="btn sm grey" onclick="resetPin('${k}')">RESET</button></div></div>${S.pins[k]&&!c?`<small style="font-weight:600;color:var(--muted)">${S.kids[k].name}'s code will show here after his next login, or tap SET to choose a new one.</small>`:''}`}).join('')}
+ <small style="font-weight:600;color:var(--muted)">SET = you choose his code. RESET = he makes a new one next time he taps his owl.</small>
  <div class="erow" style="margin-top:14px"><b>This phone</b><button class="btn sm red" onclick="leaveFamily()">LOG OUT OF FAMILY</button></div></div>`;
 }
-function resetPin(w){act(()=>{S.pins[w]=null});toast(`${P(w).name}'s code reset`)}
+function setKidCode(k){S._setFor=k;S._who=k;S._pinMode='new';S.pin='';S._pin1=null;drawPin()}
+function resetPin(w){act(()=>{S.pins[w]=null;if(S.kidCodes)delete S.kidCodes[w]});toast(`${P(w).name}'s code reset`)}
 function leaveFamily(){$('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" style="padding:20px;text-align:center"><div class="H" style="font-size:22px">Log out this phone?</div><p style="font-weight:600;margin:8px 0 14px">You'll need the family code to come back. Nothing is deleted.</p><div style="display:flex;gap:10px"><button class="btn grey" style="flex:1" onclick="closeModal()">Cancel</button><button class="btn red" style="flex:1" onclick="LS.set('hoo_fid',null);LS.set('hoo_user',null);location.reload()">Log out</button></div></div></div>`}
 
 /* ---------- TUTORIAL ---------- */
