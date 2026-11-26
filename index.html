@@ -290,6 +290,27 @@ header{padding-top:calc(16px + env(safe-area-inset-top))}
 @keyframes snow{to{transform:translateY(110vh) rotate(180deg)}}
 .who,.logo{position:relative;z-index:1}
 .kcode{font-family:'Lilita One';font-weight:400;letter-spacing:2px;background:#fff3c4;border:2px solid var(--ink);border-radius:8px;padding:0 6px}
+
+.tile .undo{position:absolute;bottom:6px;right:6px;width:32px;height:32px;border-radius:10px;border:2.5px solid var(--ink);background:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 var(--ink);z-index:2}
+.tile .undo:active{transform:translateY(3px);box-shadow:none}
+.mbtns{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.mbtns .btn.sm{font-size:13px;padding:5px 8px}
+.trybadge{display:inline-block;background:var(--ink);color:var(--gold);font-family:'Lilita One';border-radius:10px;padding:2px 10px;animation:pulse 1s infinite}
+.trybar{background:#fff3c4;border:3px solid var(--ink);border-radius:14px;padding:10px;margin:6px 0 10px;font-weight:600;text-align:left}
+.item.trying{background:#fff3c4;outline:3px dashed var(--orange)}
+.mg-spin{animation:mgspin 6s linear infinite}
+@keyframes mgspin{to{transform:rotate(360deg)}}
+.mg-flick{animation:mgflick .5s ease-in-out infinite alternate;transform-origin:50px 108px}
+@keyframes mgflick{from{transform:scaleY(.94) scaleX(1.02)}to{transform:scaleY(1.05) scaleX(.97)}}
+.mg-flap{animation:mgflap .6s ease-in-out infinite alternate;transform-origin:50px 60px}
+@keyframes mgflap{from{transform:scaleX(.9)}to{transform:scaleX(1.06)}}
+.mg-twinkle{animation:mgtw 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes mgtw{50%{transform:scale(.5);opacity:.4}}
+.mg-wave{animation:mgwave 1s ease-in-out infinite alternate}
+@keyframes mgwave{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+.mg-zap{animation:mgzap 1.1s steps(1) infinite}
+@keyframes mgzap{0%,60%{opacity:1}70%{opacity:0}80%{opacity:1}90%{opacity:0}}
+.colrow{display:flex;gap:8px;flex-wrap:wrap}.colrow button{width:38px;height:38px;border-radius:10px;border:3px solid var(--ink);cursor:pointer}.colrow button.on{outline:4px solid var(--gold);transform:scale(1.1)}
 </style>
 </head>
 <body>
@@ -376,9 +397,10 @@ const AVOPT={
  body:[{id:'blue',n:'Sky',c:'#2fa8ff',p:0},{id:'orange',n:'Mango',c:'#ff8a2a',p:0},{id:'green',n:'Slime',c:'#3ddc6a',p:2},{id:'red',n:'Lava',c:'#ff5a5a',p:2},{id:'purple',n:'Galaxy',c:'#8b5cff',p:3},{id:'pink',n:'Bubble',c:'#ff5fae',p:3},{id:'gold',n:'Gold',c:'#ffcc2e',p:6},{id:'black',n:'Shadow',c:'#3a3a55',p:6},{id:'snow',n:'Snowy',c:'#eef6ff',p:4,x:1}],
  eyes:[{id:'normal',n:'Classic',p:0},{id:'happy',n:'Happy',p:2},{id:'cool',n:'Shades',p:4},{id:'star',n:'Star eyes',p:5}],
  hat:[{id:'none',n:'None',p:0},{id:'cap',n:'Cap',p:3},{id:'band',n:'Ninja band',p:3},{id:'phones',n:'Headphones',p:4},{id:'wizard',n:'Wizard',p:6},{id:'prop',n:'Propeller',p:6},{id:'crown',n:'Crown',p:10},{id:'santa',n:'Santa hat',p:4,x:1},{id:'antlers',n:'Reindeer',p:4,x:1},{id:'elf',n:'Elf hat',p:3,x:1}],
+ magic:[{id:'none',n:'None',p:0},{id:'stars',n:'Star swirl',p:4},{id:'wand',n:'Magic wand',p:5},{id:'flame',n:'Fire aura',p:6},{id:'zap',n:'Thunder',p:6},{id:'ice',n:'Ice power',p:6},{id:'wings',n:'Magic wings',p:8},{id:'rainbow',n:'Rainbow aura',p:10}],
  extra:[{id:'none',n:'None',p:0},{id:'bowtie',n:'Bow tie',p:2},{id:'scarf',n:'Scarf',p:3},{id:'cape',n:'Hero cape',p:5},{id:'sweater',n:'Xmas sweater',p:5,x:1},{id:'xscarf',n:'Candy scarf',p:3,x:1},{id:'bell',n:'Jingle bell',p:2,x:1}]
 };
-const AVCAT=[['xmas','tree','Xmas'],['body','palette','Colour'],['eyes','star','Eyes'],['hat','crown','Hats'],['extra','sparkle','Extras']];
+const AVCAT=[['xmas','tree','Xmas'],['magic','bolt','Magic'],['body','palette','Colour'],['eyes','star','Eyes'],['hat','crown','Hats'],['extra','sparkle','Extras']];
 function ANT(){const a=`M30 18 L24 0 L12 -6 M24 0 L28 -12 M27 9 L36 2`;const one=`<path d="${a}" fill="none" stroke="#1b1b2f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="${a}" fill="none" stroke="#a0662f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;return one+`<g transform="translate(100 0) scale(-1 1)">${one}</g>`}
 function starP(cx,cy,r){let p='';for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;p+=(i?'L':'M')+(cx+rr*Math.cos(a)).toFixed(1)+' '+(cy+rr*Math.sin(a)).toFixed(1)}return p+'Z'}
 function OWLC(cfg,s){
@@ -409,7 +431,18 @@ function OWLC(cfg,s){
   sweater:`<rect x="12" y="66" width="76" height="26" rx="8" fill="#e8413c" ${SO}/><path d="M16 73 l6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4 6 -4 6 4" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M50 74 l8 12 h-16 z" fill="#3ddc6a" stroke="${K}" stroke-width="2"/><circle cx="50" cy="73" r="2.5" fill="#ffcc2e"/><circle cx="26" cy="84" r="2.5" fill="#fff"/><circle cx="74" cy="84" r="2.5" fill="#fff"/>`,
   xscarf:`<rect x="12" y="72" width="76" height="12" rx="5" fill="#fff" ${SO}/>${[18,32,46,60,74].map(x=>`<rect x="${x}" y="73.5" width="7" height="9" fill="#ff5a5a"/>`).join('')}<rect x="62" y="78" width="13" height="22" rx="4" fill="#fff" ${SO}/><rect x="63.5" y="84" width="10" height="5" fill="#ff5a5a"/><rect x="63.5" y="93" width="10" height="4" fill="#ff5a5a"/>`,
   bell:`<rect x="18" y="70" width="64" height="7" rx="3" fill="#ff5a5a" ${SO}/><circle cx="50" cy="83" r="7.5" fill="#ffcc2e" ${SO}/><rect x="44" y="82" width="12" height="2.5" fill="${K}"/><circle cx="50" cy="88" r="1.6" fill="${K}"/>`}[ex];
- return `<svg class="owl" width="${s}" height="${s}" viewBox="-8 -18 116 126">
+ const mg=cfg.magic||'none';
+ const back={none:'',
+  flame:`<g class="mg-flick"><g transform="translate(50 58) scale(1.32 1.22) translate(-50 -58)"><path d="M50 108 C10 108 -6 80 4 50 C8 64 14 66 16 58 C10 36 22 18 34 8 C34 22 40 26 44 20 C46 8 56 -2 60 -6 C60 10 66 18 72 14 C80 24 92 40 86 60 C92 58 96 50 96 44 C108 70 96 108 50 108Z" fill="#ff8a2a" opacity=".9"/><path d="M50 104 C22 104 10 84 16 62 C22 70 26 68 26 60 C30 44 40 34 46 28 C48 40 54 42 58 36 C64 46 76 56 76 72 C80 70 84 66 84 60 C92 80 80 104 50 104Z" fill="#ffcc2e"/></g></g>`,
+  wings:`<g class="mg-flap"><path d="M14 50 C-14 30 -24 52 -18 72 C-10 66 -6 70 -12 82 C0 82 6 76 10 74" fill="#bfe9fb" stroke="${K}" stroke-width="3" stroke-linejoin="round"/><path d="M86 50 C114 30 124 52 118 72 C110 66 106 70 112 82 C100 82 94 76 90 74" fill="#bfe9fb" stroke="${K}" stroke-width="3" stroke-linejoin="round"/></g>`,
+  rainbow:`<g class="mg-spin" style="transform-origin:50px 55px">${['#ff5a5a','#ff8a2a','#ffcc2e','#3ddc6a','#2fa8ff','#8b5cff'].map((c2,i)=>`<circle cx="50" cy="55" r="${62-i*4}" fill="none" stroke="${c2}" stroke-width="4" stroke-dasharray="${18+i*3} 10" opacity=".85"/>`).join('')}</g>`,
+  ice:`<g opacity=".9">${[[-2,30],[96,26],[-6,80],[100,78],[48,-14]].map(([x,y],i)=>`<g class="mg-twinkle" style="animation-delay:${i*.3}s;transform-origin:${x}px ${y}px"><path d="M${x} ${y-13} L${x+4} ${y-4} L${x+13} ${y} L${x+4} ${y+4} L${x} ${y+13} L${x-4} ${y+4} L${x-13} ${y} L${x-4} ${y-4}Z" fill="#fff" stroke="#1f7fd0" stroke-width="2.5"/></g>`).join('')}</g>`}[mg]||'';
+ const fx={none:'',flame:'',wings:'',rainbow:'',ice:'',
+  stars:`<g class="mg-spin" style="transform-origin:50px 55px">${[0,72,144,216,288].map(a=>{const r=a*Math.PI/180,x=50+60*Math.cos(r),y=55+60*Math.sin(r);return `<path d="${starP(x,y,8)}" fill="#ffcc2e" stroke="${K}" stroke-width="2"/>`}).join('')}</g>`,
+  wand:`<g class="mg-wave" style="transform-origin:92px 70px"><rect x="89" y="30" width="7" height="44" rx="3" fill="#5b2fd1" stroke="${K}" stroke-width="3" transform="rotate(20 92 52)"/><path d="${starP(103,26,11)}" fill="#ffcc2e" stroke="${K}" stroke-width="3"/><circle class="mg-twinkle" cx="112" cy="14" r="3" fill="#fff"/><circle class="mg-twinkle" cx="94" cy="12" r="2.5" fill="#fff" style="animation-delay:.4s"/></g>`,
+  zap:`<g class="mg-zap"><path d="M-2 20 L10 20 L2 36 L14 36 L-6 62 L0 42 L-10 42Z" fill="#ffcc2e" stroke="${K}" stroke-width="2.5" stroke-linejoin="round"/><path d="M104 28 L92 28 L100 44 L88 44 L108 70 L102 50 L112 50Z" fill="#ffcc2e" stroke="${K}" stroke-width="2.5" stroke-linejoin="round"/></g>`}[mg]||'';
+ return `<svg class="owl" width="${s}" height="${s}" viewBox="-14 -20 128 130">
+ ${back}
  ${ex==='cape'?`<path d="M16 40 L-4 106 H104 L84 40 Z" fill="#ff5a5a" ${SO}/>`:''}
  <rect x="14" y="4" width="18" height="18" rx="3" fill="${c}" ${SO} transform="rotate(-12 23 13)"/>
  <rect x="68" y="4" width="18" height="18" rx="3" fill="${c}" ${SO} transform="rotate(12 77 13)"/>
@@ -419,7 +452,7 @@ function OWLC(cfg,s){
  <path d="M43 57 h14 l-7 9 z" fill="#ff8a2a" ${SO}/>${nose}
  <rect x="32" y="68" width="36" height="16" rx="5" fill="#fff7e0" stroke="${K}" stroke-width="2.5"/>
  <rect x="30" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/><rect x="56" y="92" width="14" height="9" rx="3" fill="#ff8a2a" ${SO}/>
- ${front}${hats}</svg>`;
+ ${front}${hats}${fx}</svg>`;
 }
 function P(k){return S.kids[k]||S.parents[k]}
 function AV(k,s=60){return OWLC(P(k).av,s)}
@@ -442,57 +475,69 @@ const DAYS={all:'Every day',school:'School days',weekend:'Weekends'};
 const HICONS=['bowl','rice','meat','ninja','target','wave','soap','brush','toilet','bag','basket','shirt','shoe','plant','bin','table','sponge','broom','bulb','star'];
 const STK_P=[{id:'love',ic:'heart',t:'LOVE YOU!'},{id:'proud',ic:'trophy',t:'PROUD OF YOU!'},{id:'star',ic:'star',t:'SUPER STAR!'},{id:'fire',ic:'fire',t:'ON FIRE!'},{id:'king',ic:'crown',t:'KING OWL!'},{id:'night',ic:'moon',t:'GOOD NIGHT!'}];
 const STK_K=[{id:'love',ic:'heart',t:'LOVE YOU!'},{id:'thanks',ic:'gift',t:'THANK YOU!'},{id:'hi5',ic:'duo',t:'HIGH FIVE!'},{id:'did',ic:'trophy',t:'I DID IT!'},{id:'miss',ic:'heartM',t:'MISS YOU!'},{id:'knight',ic:'moon',t:'GOOD NIGHT!'}];
-const REASONS=[{id:'help',t:'Helped his brother without being asked'},{id:'kind',t:'Kindness'},{id:'share',t:'Shared without fuss'},{id:'tidy',t:'Tidied up without being told'},{id:'honest',t:'Honest'},{id:'brave',t:'Brave'},{id:'patient',t:'Patient'},{id:'sorry',t:'Said sorry first'}];
+function reasonsList(){return [{id:'help',t:KIDS.length>1?'Helped a sibling without being asked':'Helped without being asked'},{id:'kind',t:'Kindness'},{id:'share',t:'Shared without fuss'},{id:'tidy',t:'Tidied up without being told'},{id:'honest',t:'Honest'},{id:'brave',t:'Brave'},{id:'patient',t:'Patient'},{id:'sorry',t:'Said sorry first'}]}
+Object.defineProperty(window,'REASONS',{get:reasonsList});
 const GIFTS=[{amt:5,cur:'f'},{amt:10,cur:'f'},{amt:1,cur:'r'},{amt:2,cur:'r'}];
-const KIDS=['lucas','etan'];
-const other=k=>k==='lucas'?'etan':'lucas';
+Object.defineProperty(window,'KIDS',{get:()=>Object.keys(S.kids||{}).sort((a,b)=>((S.kids[b].age||0)-(S.kids[a].age||0))||(a<b?-1:1))});
+function PARENTS(){return Object.keys(S.parents||{})}
+function isPid(id){return !!(S.parents&&S.parents[id])}
+function joinNames(n){return n.length<=2?n.join(' & '):n.slice(0,-1).join(', ')+' & '+n[n.length-1]}
+function kidNames(){return joinNames(KIDS.map(k=>S.kids[k].name))}
+function parentNames(){return joinNames(PARENTS().map(k=>S.parents[k].name))}
+function allLabel(){return KIDS.length===2?'Both':'All kids'}
+function others(k){return KIDS.filter(x=>x!==k)}
+function captain(){return KIDS.length>=2?KIDS[0]:null}
+function youngest(){return KIDS.length>=2?KIDS[KIDS.length-1]:null}
+function need(m){return m.type==='team'?KIDS.length:Math.min(2,KIDS.length)}
+function joinedList(m){return KIDS.filter(k=>m.joined&&m.joined[k])}
+function kidTag(k){return k===captain()?`${I('compass',18)} Captain`:k===youngest()?`${I('bolt',18)} Speedy`:`${I('star',18)} Star`}
 
 /* ---------- default family data ---------- */
 function H(g,ic,n,s,f=1,times=1,days='all'){return{id:uid(),g,ic,n,s,f,times,days}}
 function newKid(name,hex,body,eyes,habits,maxM){return{name,hex,feathers:0,rainbow:2,xp:0,streak:0,today:0,kindness:0,maxM,habits,draft:null,cnt:{},perfect:false,hist:{f:[],h:[]},events:[],av:{body,eyes,hat:'none',extra:'none'},owned:['body:blue','body:orange','eyes:normal','hat:none','extra:none']}}
-function defaultData(){
- const LH=[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','rice','Lunch plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe + floor!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
+const BODYC={blue:'#2fa8ff',orange:'#ff8a2a',green:'#3ddc6a',red:'#ff5a5a',purple:'#8b5cff',pink:'#ff5fae'};
+function habitsFor(age){return age<=8?[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
   H('toilet','target','Bullseye!','Pee IN the bowl',1,3),H('toilet','wave','Flush it!','Every time!',1,3),H('toilet','soap','Soap hands','Count to 20',1,3),
-  H('bed','brush','Brush teeth','Shiny!'),H('bed','bag','Bag ready','For tomorrow',1,1,'school'),H('bed','basket','Clothes in','Into the basket!')];
- const EH=[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
+  H('bed','brush','Brush teeth','Shiny!'),H('bed','toilet','Last pee','Before bed')]
+ :[H('meal','bowl','Breakfast plate','Sink + wipe!'),H('meal','rice','Lunch plate','Sink + wipe!'),H('meal','meat','Dinner plate','Sink + wipe + floor!',2),H('meal','ninja','Napkin Ninja','Napkin, not shirt!'),
   H('toilet','target','Bullseye!','Pee IN the bowl',1,3),H('toilet','wave','Flush it!','Every time!',1,3),H('toilet','soap','Soap hands','Count to 20',1,3),
-  H('bed','brush','Brush teeth','Shiny!'),H('bed','toilet','Last pee','Before bed')];
+  H('bed','brush','Brush teeth','Shiny!'),H('bed','bag','Bag ready','For tomorrow',1,1,'school'),H('bed','basket','Clothes in','Into the basket!')]}
+function defaultData(cfg){
+ const kids={},parents={},shirt={};
+ cfg.kids.forEach((k,i)=>{const id='k'+(i+1),kd=newKid(k.name,BODYC[k.body]||'#2fa8ff',k.body,i%2?'happy':'normal',habitsFor(k.age),k.age<=8?2:3);kd.age=k.age;if(!kd.owned.includes('body:'+k.body))kd.owned.push('body:'+k.body);kids[id]=kd;shirt[id]=null});
+ const PAV=[{body:'pink',eyes:'happy',hat:'crown',extra:'bowtie',hex:'#ff5fae'},{body:'purple',eyes:'cool',hat:'cap',extra:'none',hex:'#8b5cff'}];
+ cfg.parents.forEach((p,i)=>{const a=PAV[i%2];parents['p'+(i+1)]={name:p.name,hex:a.hex,av:{body:a.body,eyes:a.eyes,hat:a.hat,extra:a.extra}}});
+ const pr=Object.keys(parents);
  return {
-  v:1,day:null,created:Date.now(),
-  kids:{lucas:newKid('Lucas','#2fa8ff','blue','normal',LH,3),etan:newKid('Ethan','#ff8a2a','orange','happy',EH,2)},
-  parents:{dad:{name:'Papa',hex:'#8b5cff',av:{body:'purple',eyes:'cool',hat:'cap',extra:'none'}},mum:{name:'Mama',hex:'#ff5fae',av:{body:'pink',eyes:'happy',hat:'crown',extra:'bowtie'}}},
-  flags:{},pins:{dad:null,mum:null},seenTut:{},
-  team:{goal:300,prize:'Family movie night 🍿'},
-  throne:{streak:0,checkedToday:false},
-  shirt:{lucas:null,etan:null},
+  v:2,day:null,created:Date.now(),kids,parents,pins:{},seenTut:{},flags:{},kidCodes:{},
+  team:{goal:150*Math.max(1,cfg.kids.length),prize:'Family movie night 🍿'},
+  throne:{streak:0,checkedToday:false},shirt,
   missions:[
    {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Kitchen',price:3,owner:null,status:'open',runs:4,runsDone:0},
    {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Living room',price:3,owner:null,status:'open',runs:4,runsDone:0},
-   {id:uid(),type:'solo',ic:'robot',n:'Vacuum + mop: Bedrooms',price:3,owner:null,status:'open',runs:4,runsDone:0},
    {id:uid(),type:'solo',ic:'bin',n:'Rubbish out',price:4,owner:null,status:'open'},
    {id:uid(),type:'solo',ic:'plant',n:'Water plants',price:3,owner:null,status:'open'},
-   {id:uid(),type:'duo',ic:'car',n:'Wash Papa\'s car',tip:'One soaps, one rinses',price:8,joined:{},parts:{},status:'open'},
-   {id:uid(),type:'duo',ic:'toilet',n:'Toilet team',tip:'One scrubs, one wipes',price:6,joined:{},parts:{},status:'open'},
-   {id:uid(),type:'duo',ic:'table',n:'Dinner crew',tip:'One sets, one clears',price:4,joined:{},parts:{},status:'open'}
+   {id:uid(),type:'duo',ic:'car',n:'Wash the car',tip:cfg.kids.length>1?'One soaps, one rinses':'Do it with a parent!',price:8,joined:{},parts:{},status:'open'},
+   {id:uid(),type:'duo',ic:'table',n:'Dinner crew',tip:cfg.kids.length>1?'One sets, one clears':'Do it with a parent!',price:4,joined:{},parts:{},status:'open'}
   ],
   rewards:[
    {id:1,ic:'noodle',n:'Pick dinner',p:20},{id:2,ic:'icecream',n:'Ice cream trip',p:30},
    {id:3,ic:'moon',n:'Stay up late (Sat)',p:25},{id:4,ic:'flag',n:'Pick weekend fun',p:40},
    {id:5,ic:'cash',n:'RM5 cash',p:30},{id:6,ic:'ticket',n:'Skip-a-chore pass',p:35},
-   {id:7,ic:'heartM',n:'Date with Mama',p:60},{id:8,ic:'heartP',n:'Date with Papa',p:60},
+   ...pr.map((k,i)=>({id:7+i,ic:i?'heartP':'heartM',n:'Date with '+parents[k].name,p:60})),
    {id:9,ic:'tent',n:'Sleepover',p:80},{id:10,ic:'brick',n:'RM20 toy/Lego',p:120}
   ],
   ideas:[],suggestions:[],redeems:[],
-  live:[{id:uid(),from:'mum',to:'both',kind:'sticker',st:'love',t:'',ts:Date.now(),seen:[]}]
+  live:[{id:uid(),from:pr[0],to:'both',kind:'sticker',st:'love',t:'',ts:Date.now(),seen:[]}]
  };
 }
 const SHARED=['kidCodes','flags','v','day','created','kids','parents','pins','seenTut','team','throne','shirt','missions','rewards','ideas','suggestions','redeems','live'];
 
 /* ---------- state ---------- */
-const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'xmas',giftCur:'f',giftAmt:5,planTab:'habits',planKid:'etan',post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
+const S={user:null,tab:null,pin:'',chartMode:'week',chartMetric:'f',avTab:'xmas',giftCur:'f',giftAmt:5,planTab:'habits',planKid:null,post:{ic:'broom',type:'duo',price:5,runs:1},liveTo:'both',liveReason:null,liveGift:0,editing:null,_shown:new Set(),_queue:[],ready:false,fid:null};
 const $=id=>document.getElementById(id);
 function toast(t){const e=$('toast');e.innerHTML=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),2400)}
-function isParent(){return S.user==='dad'||S.user==='mum'}
+function isParent(){return isPid(S.user)}
 function nightNow(){return new Date().getHours()>=19}
 const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
 
@@ -518,7 +563,7 @@ function rollover(){
    Kd.events=Kd.events.filter(e=>!e.seen).slice(-20);
   });
   if(S.throne.checkedToday===false&&gap>=1){}
-  S.shirt={lucas:null,etan:null};S.throne.checkedToday=false;
+  S.shirt=Object.fromEntries(KIDS.map(k=>[k,null]));S.throne.checkedToday=false;
   if(weekKey(S.day)!==weekKey(t))S.missions.forEach(m=>{if(m.runs>1){m.runsDone=0;if(m.status==='done'||m.status==='todo'){m.status='open';m.owner=null;if(m.type==='duo'){m.joined={};m.parts={}}}}});
   S.missions=S.missions.filter(m=>!(m.status==='done'&&!(m.runs>1)&&m.doneDay&&daysBetween(m.doneDay,t)>=3));
   S.live=S.live.slice(-120);
@@ -528,7 +573,7 @@ function rollover(){
 
 /* ---------- data layer (Firebase or demo) ---------- */
 function pack(){const o={};SHARED.forEach(k=>o[k]=S[k]);return JSON.parse(JSON.stringify(o))}
-function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{};S.flags=S.flags||{};S.kidCodes=S.kidCodes||{}}
+function unpack(d){SHARED.forEach(k=>{if(d[k]!==undefined)S[k]=d[k]});KIDS.forEach(k=>{const x=S.kids[k];x.cnt=x.cnt||{};x.events=x.events||[];x.owned=x.owned||[];x.hist=x.hist||{f:[],h:[]}});S.seenTut=S.seenTut||{};S.pins=S.pins||{};S.flags=S.flags||{};S.kidCodes=S.kidCodes||{};const AG={lucas:11,etan:7};KIDS.forEach(k=>{if(!S.kids[k].age)S.kids[k].age=AG[k]||8});S.shirt=S.shirt||{};KIDS.forEach(k=>{if(S.shirt[k]===undefined)S.shirt[k]=null})}
 let BUSY=0;
 async function act(fn){
  let res;try{res=fn()}catch(e){console.error(e)}
@@ -558,15 +603,15 @@ function remoteFx(){
  const k=S.user,Kd=S.kids[k];const q=[];let mark=false;
  Kd.events.filter(e=>!e.seen&&!S._shown.has(e.id)).forEach(e=>{S._shown.add(e.id);mark=true;
   if(e.kind==='approve')q.push({who:k,title:rnd(HYPE),sub:e.sub,gain:`+${e.gain} ${F}`});
-  if(e.kind==='duo')q.push({duo:true,title:'DUO POWER!',sub:e.sub,gain:`+${e.gain} ${F} + 1 ${RB}`,btn:'HIGH FIVE!'});
-  if(e.kind==='redo')q.push({icon:'broom',title:'TRY AGAIN!',sub:`${e.sub}<br>Papa/Mama said: one more go 💪`,btn:'OK!'});
+  if(e.kind==='duo')q.push({duo:true,kids:e.kids,title:'DUO POWER!',sub:e.sub,gain:`+${e.gain} ${F} + 1 ${RB}`,btn:'HIGH FIVE!'});
+  if(e.kind==='redo')q.push({icon:'broom',title:'TRY AGAIN!',sub:`${e.sub}<br>${parentNames()} said: one more go 💪`,btn:'OK!'});
   if(e.kind==='given')q.push({icon:'gift',title:'REWARD TIME!',sub:e.sub,btn:'YAY!'});
   if(e.kind==='level')q.push({who:k,title:'LEVEL UP!',sub:`You are a ${e.sub} now!`,gain:`+2 ${RB}`,btn:'WOOHOO!'});
   if(e.kind==='streak')q.push({icon:'fire',title:`${e.n}-DAY STREAK!`,sub:'Perfect days in a row!',gain:`+10 ${F}`});
   if(e.kind==='throne')q.push({icon:'crown',title:'CLEAN THRONE!',sub:'Toilet clean tonight!',gain:`+3 ${F}`});
   if(e.kind==='ninja')q.push({icon:'ninja',title:'NAPKIN NINJA!',sub:'Clean shirt today!',gain:`+2 ${F}`});
  });
- const lm=S.live.filter(m=>(m.from==='mum'||m.from==='dad')&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k)&&!S._shown.has(m.id));
+ const lm=S.live.filter(m=>isPid(m.from)&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k)&&!S._shown.has(m.id));
  lm.forEach(m=>{S._shown.add(m.id);mark=true;
   if(m.kind==='gift')q.push({who:m.from,title:`GIFT FROM ${P(m.from).name.toUpperCase()}!`,sub:`💛 ${m.gift.reason}`,gain:`+${m.gift.amt} ${m.gift.cur==='f'?F:RB}`,btn:'THANK YOU!'});
   else if(m.kind==='sticker'){const s=stkOf(m);setTimeout(()=>{burst(s.ic,14);beep(SND.pop);toast(`${P(m.from).name}: ${s.t}`)},300)}
@@ -581,9 +626,9 @@ function remoteFx(){
 function floatAt(x,y,t){const e=document.createElement('div');e.className='float';e.innerHTML=t;e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
 function confetti(n=60){const cols=['#ffcc2e','#3ddc6a','#2fa8ff','#ff5fae','#8b5cff','#ff8a2a','#ff5a5a'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=rnd(cols);c.style.animationDuration=(1.6+Math.random()*1.8)+'s';c.style.animationDelay=Math.random()*.4+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}}
 function burst(ic,n=12){for(let i=0;i<n;i++){const e=document.createElement('div');e.className='rise';e.innerHTML=I(ic,30+Math.random()*24);e.style.right=(10+Math.random()*70)+'px';e.style.animationDuration=(1.6+Math.random()*1.4)+'s';e.style.animationDelay=(Math.random()*.6)+'s';e.style.setProperty('--dx',(Math.random()*80-40)+'px');document.body.appendChild(e);setTimeout(()=>e.remove(),3800)}}
-function celebrate({who,duo,icon,title,sub,gain,btn}){
+function celebrate({who,duo,kids,icon,title,sub,gain,btn}){
  beep(duo?SND.duo:SND.win);confetti(duo?100:60);
- const pic=duo?`<div class="big duo"><span>${AV('lucas',120)}</span><span>${AV('etan',120)}</span></div>`:who?`<div class="big">${AV(who,150)}</div>`:`<div class="big">${I(icon||'trophy',150)}</div>`;
+ const dk=(kids&&kids.length?kids:KIDS).filter(k=>S.kids[k]),pic=duo?`<div class="big duo">${dk.map(k=>`<span>${AV(k,dk.length>2?84:120)}</span>`).join('')}</div>`:who?`<div class="big">${AV(who,150)}</div>`:`<div class="big">${I(icon||'trophy',150)}</div>`;
  $('cel').innerHTML=`<div class="cel" onclick="closeCel()"><div class="rays"></div><div class="cbox">${pic}
  <div class="H t">${title||rnd(HYPE)}</div>${sub?`<div class="sub">${sub}</div>`:''}${gain?`<div class="gain">${gain}</div><br>`:''}
  <button class="btn gold" onclick="closeCel()">${btn||rnd(['YEAH!','LET\'S GO!','AWESOME!'])}</button></div></div>`;
@@ -626,14 +671,14 @@ function chartCard(keys){
 }
 function teamCard(){const t=teamWeek(),pct=Math.min(100,Math.round(t/S.team.goal*100));
  return `<div class="blk mis" style="background:#fff3c4"><div class="em ${pct>=100?'bounce':''}">${I('chest')}</div><div class="tx"><span class="H">Team Chest</span><small>Earn ${S.team.goal} together this week → <b>${esc(S.team.prize)}</b></small>
- <div class="bar"><i style="width:${pct}%;background:repeating-linear-gradient(45deg,#ffcc2e 0 14px,#ffe07a 14px 28px)"></i></div><small><b>${t} / ${S.team.goal}</b> · Lucas + Ethan</small></div></div>`}
+ <div class="bar"><i style="width:${pct}%;background:repeating-linear-gradient(45deg,#ffcc2e 0 14px,#ffe07a 14px 28px)"></i></div><small><b>${t} / ${S.team.goal}</b> · ${kidNames()}</small></div></div>`}
 
 /* ---------- render ---------- */
 function snowify(){document.querySelectorAll('.snowbg i,.snowbox i').forEach(e=>{if(e.dataset.s)return;e.dataset.s=1;e.style.left=Math.random()*100+'%';e.style.animationDuration=(5+Math.random()*7)+'s';e.style.animationDelay=(-Math.random()*10)+'s';const z=4+Math.random()*6;e.style.width=e.style.height=z+'px'})}
 function render(){setTimeout(snowify,0);
  const a=$('app');
  if(!S.ready){a.innerHTML=`<div class="logo" style="padding-top:calc(120px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>Loading… 🦉</p></div>`;return}
- if(!S.fid){a.innerHTML=joinView();return}
+ if(!S.fid){a.innerHTML=S.wiz?wizardView():joinView();return}
  if(!S.user){a.innerHTML=homeView();return}
  a.innerHTML=isParent()?parentView():kidView();
  if(S.tab==='live'){const f=$('feed');if(f)f.scrollTop=f.scrollHeight}
@@ -644,7 +689,7 @@ function joinView(){
  return `<div class="logo"><div class="H">HOO<br>DID IT?</div><p>The Hoo family quest game</p></div>
  <div style="padding:16px">
  <div class="blk" style="padding:16px;margin-bottom:18px"><div class="H" style="font-size:22px">Join your family</div>
- <p style="font-weight:600;margin:4px 0 8px">Type the family code (from Papa or Mama's phone).</p>
+ <p style="font-weight:600;margin:4px 0 8px">Type the family code (from a parent's phone).</p>
  <input type="text" id="jcode" placeholder="XXXX-XXXX-XXXX" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:2px;font-family:'Lilita One'">
  <button class="btn full" onclick="joinFamily()">JOIN!</button></div>
  <div class="blk" style="padding:16px"><div class="H" style="font-size:20px">First time? (parents only)</div>
@@ -662,9 +707,27 @@ async function joinFamily(){
   S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);beep(SND.win);render();toast('🎉 Joined the Hoo family!');xmasGift()}
  catch(e){console.error(e);toast('⚠️ Could not connect. Check internet')}
 }
-async function createFamily(){
+function createFamily(){S.wiz={parents:[{name:'Mama'},{name:'Papa'}],kids:[{name:'',age:8,body:'blue'}]};render()}
+function wizardView(){
+ const w=S.wiz,cols=Object.keys(BODYC);
+ return `<div class="logo"><div class="H" style="font-size:38px">NEW FAMILY</div><p>Set up your owls 🦉</p></div><main>
+ <div class="banner" style="background:var(--pink)">${I('heart',30)} Grown-ups (1 or 2)</div>
+ <div class="blk" style="padding:14px">${w.parents.map((p,i)=>`<div class="erow" style="gap:8px"><input type="text" maxlength="14" value="${esc(p.name)}" placeholder="e.g. Mum, Dad, Grandma" oninput="S.wiz.parents[${i}].name=this.value" style="margin:0">${w.parents.length>1?`<button class="btn sm grey" onclick="S.wiz.parents.splice(${i},1);render()">✕</button>`:''}</div>`).join('')}
+ ${w.parents.length<2?`<button class="btn sm blue" onclick="S.wiz.parents.push({name:''});render()">+ ADD GROWN-UP</button>`:''}</div>
+ <div class="banner" style="background:var(--blue)">${I('star',30)} Kids (up to 5)</div>
+ ${w.kids.map((k,i)=>`<div class="blk" style="padding:14px;margin-bottom:12px"><div class="erow" style="gap:8px">${OWLC({body:k.body,eyes:i%2?'happy':'normal',hat:'none',extra:'none'},56)}<input type="text" maxlength="14" value="${esc(k.name)}" placeholder="Kid ${i+1} name" oninput="S.wiz.kids[${i}].name=this.value" style="margin:0">${w.kids.length>1?`<button class="btn sm grey" onclick="S.wiz.kids.splice(${i},1);render()">✕</button>`:''}</div>
+ <div class="erow"><b>Age</b><div class="stepper"><button onclick="S.wiz.kids[${i}].age=Math.max(3,S.wiz.kids[${i}].age-1);render()">−</button><b>${k.age}</b><button onclick="S.wiz.kids[${i}].age=Math.min(17,S.wiz.kids[${i}].age+1);render()">+</button></div></div>
+ <div class="colrow">${cols.map(c=>`<button class="${k.body===c?'on':''}" style="background:${BODYC[c]}" onclick="S.wiz.kids[${i}].body='${c}';render()"></button>`).join('')}</div></div>`).join('')}
+ ${w.kids.length<5?`<button class="btn blue full" onclick="S.wiz.kids.push({name:'',age:8,body:'${cols[1]}'});render()">+ ADD KID</button>`:''}
+ <div class="tip" style="margin-top:16px">Habits are set by age (easier for 8 and under). You can change everything later in Plan.</div>
+ <div style="display:flex;gap:10px;margin-top:6px"><button class="btn grey" onclick="S.wiz=null;render()">BACK</button><button class="btn" style="flex:1" onclick="finishWizard()">CREATE FAMILY!</button></div></main>`;
+}
+async function finishWizard(){
+ const w=clone(S.wiz);w.parents=w.parents.map(p=>({name:p.name.trim()})).filter(p=>p.name);w.kids=w.kids.map(k=>Object.assign(k,{name:k.name.trim()})).filter(k=>k.name);
+ if(!w.parents.length){beep(SND.no);toast('Add at least one grown-up name');return}
+ if(!w.kids.length){beep(SND.no);toast('Add at least one kid name');return}
  const c=genCode();
- try{const d=defaultData();d.day=todayStr();await DB.create(c,d);S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);render();showCode(true);xmasGift()}
+ try{const d=defaultData(w);S.wiz=null;d.day=todayStr();await DB.create(c,d);S.fid=c;LS.set('hoo_fid',c);unpack(d);DB.listen(c,onRemote);render();showCode(true);xmasGift()}
  catch(e){console.error(e);toast('⚠️ Could not create. Check internet / Firebase rules')}
 }
 function showCode(first){
@@ -680,13 +743,11 @@ function copyCode(){try{navigator.clipboard.writeText(fmt(S.fid)).then(()=>toast
 function homeView(){
  return `${new Date().getMonth()===11||new Date().getMonth()===10?'<div class="snowbg">'+'<i></i>'.repeat(24)+'</div>':''}<div class="logo"><div class="H">HOO<br>DID IT?</div><p>Who's ready to play?</p></div>
  <div class="who">
-  <button style="background:var(--blue)" onclick="pick('lucas')">${AV('lucas',88)}<span class="H">Lucas</span><small>${I('compass',18)} Captain</small>${unseen('lucas').length?`<i class="dot2">${unseen('lucas').length}</i>`:''}</button>
-  <button style="background:var(--orange)" onclick="pick('etan')">${AV('etan',88)}<span class="H">Ethan</span><small>${I('bolt',18)} Speedy</small>${unseen('etan').length?`<i class="dot2">${unseen('etan').length}</i>`:''}</button>
-  <button style="background:var(--purple)" onclick="askPin('dad')">${AV('dad',88)}<span class="H">Papa</span><small>${I('lock',18)} Parent</small></button>
-  <button style="background:var(--pink)" onclick="askPin('mum')">${AV('mum',88)}<span class="H">Mama</span><small>${I('lock',18)} Parent</small></button>
+  ${KIDS.map(k=>`<button style="background:${S.kids[k].hex}" onclick="pick('${k}')">${AV(k,88)}<span class="H">${esc(S.kids[k].name)}</span><small>${KIDS.length>1?kidTag(k):'⭐ Superstar'}</small>${unseen(k).length?`<i class="dot2">${unseen(k).length}</i>`:''}</button>`).join('')}
+  ${PARENTS().map(k=>`<button style="background:${S.parents[k].hex}" onclick="askPin('${k}')">${AV(k,88)}<span class="H">${esc(S.parents[k].name)}</span><small>${I('lock',18)} Parent</small></button>`).join('')}
  </div><div style="display:flex;gap:12px;padding:0 16px"><button class="btn blue" style="flex:1;font-size:17px" onclick="showTut('kid')">❓ HOW TO PLAY</button><button class="btn grey" style="flex:1;font-size:17px" onclick="showTut('parent')">PARENT GUIDE</button></div>`;
 }
-function unseen(k){return S.live.filter(m=>(m.from==='mum'||m.from==='dad')&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k))}
+function unseen(k){return S.live.filter(m=>isPid(m.from)&&(m.to===k||m.to==='both')&&!(m.seen||[]).includes(k))}
 function pick(k){askPin(k)}
 function enterKid(k){closeModal();beep(SND.tick);S.user=k;S.tab='today';LS.set('hoo_user',k);render();
  if(!S.seenTut[k]){S._afterTut=()=>remoteFx();setTimeout(()=>showTut('kid'),200)}else remoteFx();
@@ -697,30 +758,37 @@ function logout(){S.user=null;LS.set('hoo_user',null);render()}
 function kidView(){
  const k=S.kids[S.user],L=level(k.xp);
  const tabs=[['today',I('sun',34),'Today'],['quests',I('board',34),'Missions'],['live',I('live',34),'Live'],['shop',I('gift',34),'Shop'],['me',AV(S.user,36),'Me']];
- const body={today:kidToday,quests:kidMissions,live:liveView,shop:kidShop,me:kidMe}[S.tab](k);
+ const VW={today:kidToday,quests:kidMissions,live:liveView,shop:kidShop,me:kidMe};if(!VW[S.tab])S.tab='today';const body=VW[S.tab](k);
  return `<header>
- <div class="blk top"><div class="bounce">${AV(S.user,76)}</div><div class="nm"><div class="H">Hi ${k.name}!</div><span class="badge">Lv ${L.n} · ${L.name}</span>${S.user==='lucas'?` <span class="badge" style="background:var(--gold);color:var(--ink)">${I('compass',16)} Captain</span>`:''}</div><div class="hbtns"><button class="sw help" onclick="showTut('kid')">?</button><button class="sw" onclick="logout()">🔄</button></div></div>
+ <div class="blk top"><div class="bounce">${AV(S.user,76)}</div><div class="nm"><div class="H">Hi ${k.name}!</div><span class="badge">Lv ${L.n} · ${L.name}</span>${S.user===captain()?` <span class="badge" style="background:var(--gold);color:var(--ink)">${I('compass',16)} Captain</span>`:''}</div><div class="hbtns"><button class="sw help" onclick="showTut('kid')">?</button><button class="sw" onclick="logout()">🔄</button></div></div>
  <div class="chips"><div class="blk chip f"><span class="H" id="fc">${I('feather',30)} ${k.feathers}</span><small>Feathers</small></div><div class="blk chip r"><span class="H">${I('rbow',30)} ${k.rainbow}</span><small>Rainbow</small></div><div class="blk chip s"><span class="H">${I('fire',30)} ${k.streak}</span><small>Streak</small></div></div>
  <div class="blk xp"><div class="row"><span>${I('star',22)} ${k.xp} XP</span><span>${L.nextName?`${L.next} more → ${L.nextName}!`:'MAX LEVEL! 👑'}</span></div><div class="bar"><i style="width:${L.pct}%"></i></div></div>
  </header><main>${body}</main>
- <nav class="n5">${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="beep(SND.tick);S.tab='${t[0]}';render()"><span>${t[1]}</span>${t[2]}</button>`).join('')}</nav>`;
+ <nav class="n5">${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="beep(SND.tick);S.tab='${t[0]}';S.tryOn={};render()"><span>${t[1]}</span>${t[2]}</button>`).join('')}</nav>`;
 }
 function kidToday(k){
  const hs=todayHabits(S.user),n=doneCount(S.user),tot=hs.length;
  return `<div class="banner">${I('sun',30)} Today ${n}/${tot}</div>
  <div class="tip">Tap = feathers · All done = +1 ${RB} · 5 perfect days = <b>+10 BONUS!</b></div>
- ${S.user==='lucas'?`<div class="tip" style="background:#ffe7a3">${I('compass',20)} Help Ethan finish ALL his = <b>+5 ${F}</b> for you! (Ethan: ${doneCount('etan')}/${todayHabits('etan').length})</div>`:''}
+ ${S.user===captain()?(()=>{const y=youngest();return `<div class="tip" style="background:#ffe7a3">${I('compass',20)} Captain bonus: help ${esc(S.kids[y].name)} finish ALL today = <b>+5 ${F}</b> for you! (${esc(S.kids[y].name)}: ${doneCount(y)}/${todayHabits(y).length})</div>`})():''}
  ${GROUPS.map(g=>{const items=hs.filter(h=>h.g===g.id);if(!items.length)return '';return `<div class="banner" style="background:${g.c}">${I(g.i,30)} ${g.n}</div>
- <div class="grid">${items.map(h=>{const c=k.cnt[h.id]||0,d=c>=h.times;return `<div class="blk tile ${d?'on':''}" id="t_${h.id}" onclick="tick('${h.id}',event)"><span class="fe">+${h.f}${Fs}</span>${h.times>1?`<span class="cnt">${c}/${h.times}</span>`:''}<span class="em">${I(h.ic)}</span><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small>${h.times>1?`<div class="pips">${Array.from({length:h.times},(_,i)=>`<i class="${i<c?'on':''}"></i>`).join('')}</div>`:''}<span class="tick">✓</span></div>`}).join('')}</div>`}).join('')}
+ <div class="grid">${items.map(h=>{const c=k.cnt[h.id]||0,d=c>=h.times;return `<div class="blk tile ${d?'on':''}" id="t_${h.id}" onclick="tick('${h.id}',event)"><span class="fe">+${h.f}${Fs}</span>${h.times>1?`<span class="cnt">${c}/${h.times}</span>`:''}<span class="em">${I(h.ic)}</span><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small>${h.times>1?`<div class="pips">${Array.from({length:h.times},(_,i)=>`<i class="${i<c?'on':''}"></i>`).join('')}</div>`:''}<span class="tick">✓</span>${c>0?`<button class="undo" onclick="event.stopPropagation();untick('${h.id}')">↩</button>`:''}</div>`}).join('')}</div>`}).join('')}
  <div class="banner" style="background:var(--gold);color:var(--ink);text-shadow:none">${I('crown',30)} Team: Clean Throne</div>
  <div class="blk mis"><div class="em">${I('toilet')}</div><div class="tx"><span class="H">${S.throne.streak} nights in a row!</span><small>Toilet clean tonight = +3 ${Fs} for BOTH!</small></div></div>`;
 }
+function untick(id){
+ const me=S.user,k=S.kids[me],h=k.habits.find(x=>x.id===id);if(!h||!(k.cnt[id]>0))return;
+ act(()=>{const Kd=S.kids[me],hh=Kd.habits.find(z=>z.id===id);if(!hh||!(Kd.cnt[id]>0))return;Kd.cnt[id]--;
+  Kd.feathers=Math.max(0,Kd.feathers-hh.f);Kd.xp=Math.max(0,Kd.xp-hh.f);Kd.today=Math.max(0,Kd.today-hh.f);
+  if(Kd.perfect&&doneCount(me)<todayHabits(me).length){Kd.perfect=false;Kd.rainbow=Math.max(0,Kd.rainbow-1);if(me===youngest()){const L2=S.kids[captain()];L2.feathers=Math.max(0,L2.feathers-5);L2.xp=Math.max(0,L2.xp-5);L2.today=Math.max(0,L2.today-5)}}});
+ beep([[500,.08],[350,.1]]);toast(`↩ Undone: ${esc(h.n)} (-${h.f} ${Fs})`);
+}
 function tick(id,ev0){
  const me=S.user,k=S.kids[me],h=k.habits.find(x=>x.id===id);if(!h)return;const c=k.cnt[id]||0;
- if(c>=h.times){toast('Done already ✓');return}
+ if(c>=h.times){toast('Done already ✓ · tap ↩ to undo');return}
  const x=ev0.clientX,y=ev0.clientY;
  const res=act(()=>{const Kd=S.kids[me],hh=Kd.habits.find(z=>z.id===id);if(!hh)return;const cc=Kd.cnt[id]||0;if(cc>=hh.times)return;Kd.cnt[id]=cc+1;addXP(me,hh.f);
-  if(doneCount(me)===todayHabits(me).length&&!Kd.perfect){Kd.perfect=true;Kd.rainbow++;if(me==='etan')addXP('lucas',5)}});
+  if(doneCount(me)===todayHabits(me).length&&!Kd.perfect){Kd.perfect=true;Kd.rainbow++;if(me===youngest())addXP(captain(),5)}});
  beep(SND.tick);floatAt(x,y,`+${h.f} `+I('feather',30));
  const t=$('t_'+id);if(t)t.classList.add('pop');
  toast(c+1<h.times?`${c+1}/${h.times}! ${rnd(SMALL)}`:rnd(SMALL));
@@ -728,25 +796,27 @@ function tick(id,ev0){
 }
 
 /* missions (kid) */
-function activeCount(k){return S.missions.filter(m=>(m.type==='solo'&&m.owner===k&&m.status!=='done')||(m.type==='duo'&&m.joined[k]&&m.status!=='done')).length}
-function duoSlots(m){return `<div class="slots">${KIDS.map(k=>`<div class="slot ${m.joined[k]?'in':''}">${m.joined[k]?AV(k,44):'<span>?</span>'}${m.parts&&m.parts[k]?'<i>✓</i>':''}</div>`).join('<b class="plus">+</b>')}</div>`}
+function activeCount(k){return S.missions.filter(m=>(m.type==='solo'&&m.owner===k&&m.status!=='done')||(m.type!=='solo'&&m.joined&&m.joined[k]&&m.status!=='done')).length}
+function dtag(m){return `<span class="dtag">${I('duo',16)} ${m.type==='team'?'TEAM':KIDS.length===1?'WITH A PARENT':'DUO'}</span>`}
+function duoSlots(m){const j=joinedList(m),n=need(m),cells=j.map(k=>`<div class="slot in">${AV(k,44)}${m.parts&&m.parts[k]?'<i>✓</i>':''}</div>`);for(let i=j.length;i<n;i++)cells.push('<div class="slot"><span>?</span></div>');if(KIDS.length===1)cells.push(`<div class="slot in">${AV(PARENTS()[0],44)}</div>`);return `<div class="slots">${cells.join('<b class="plus">+</b>')}</div>`}
 function kidMissions(){
- const me=S.user,o=other(me),O2=S.kids[o].name,cap=S.kids[me].maxM,ac=activeCount(me);
- const mine=S.missions.filter(m=>(m.type==='solo'&&m.owner===me)||(m.type==='duo'&&m.joined[me]&&m.status!=='open'));
- const waiting=S.missions.filter(m=>m.type==='duo'&&m.status==='open'&&m.joined[me]);
- const board=S.missions.filter(m=>m.status==='open'&&!(m.type==='duo'&&m.joined[me]));
+ const me=S.user,o='both',O2='your team',cap=S.kids[me].maxM,ac=activeCount(me);
+ const mine=S.missions.filter(m=>(m.type==='solo'&&m.owner===me)||(m.type!=='solo'&&m.joined&&m.joined[me]&&m.status!=='open'));
+ const isTeam=m=>m.type==='duo'||m.type==='team';
+ const waiting=S.missions.filter(m=>isTeam(m)&&m.status==='open'&&m.joined[me]);
+ const board=S.missions.filter(m=>m.status==='open'&&!(m.type!=='solo'&&m.joined&&m.joined[me]));
  const card=m=>{
-  const duo=m.type==='duo';let act0='';
-  if(m.type==='solo'){act0=m.status==='todo'?`<button class="btn" onclick="soloDone('${m.id}')">DONE!</button>`:m.status==='pending'?`<span class="tag">⏳ Checking</span>`:`<span class="tag ok">✅ ${m.runs>1?'Week<br>done!':'Paid!'}</span>`}
-  else{act0=m.status==='active'?(m.parts[me]?`<span class="tag">⏳ Waiting<br>${O2}</span>`:`<button class="btn" onclick="duoPart('${m.id}')">MY PART!</button>`):m.status==='pending'?`<span class="tag">⏳ Checking</span>`:m.status==='done'?`<span class="tag ok">✅ Paid!</span>`:''}
-  return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${dots(m)}${duo?duoSlots(m):''}</div>${act0}</div>`};
+  const duo=m.type!=='solo';let act0='';
+  if(m.type==='solo'){act0=m.status==='todo'?`<div class="mbtns"><button class="btn" onclick="soloDone('${m.id}')">DONE!</button><button class="btn sm grey" onclick="giveBack('${m.id}')">↩ Give back</button></div>`:m.status==='pending'?`<div class="mbtns"><span class="tag">⏳ Checking</span><button class="btn sm grey" onclick="unsend('${m.id}')">↩ Undo</button></div>`:`<span class="tag ok">✅ ${m.runs>1?'Week<br>done!':'Paid!'}</span>`}
+  else{act0=m.status==='active'?(m.parts[me]?`<div class="mbtns"><span class="tag">⏳ Waiting<br>team</span><button class="btn sm grey" onclick="unpart('${m.id}')">↩ Undo</button></div>`:`<button class="btn" onclick="duoPart('${m.id}')">MY PART!</button>`):m.status==='pending'?`<span class="tag">⏳ Checking</span>`:m.status==='done'?`<span class="tag ok">✅ Paid!</span>`:''}
+  return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`${dtag(m)}`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${dots(m)}${duo?duoSlots(m):''}</div>${act0}</div>`};
  return `${teamCard()}
  <div class="banner">${I('swords',30)} My Missions <span class="slotcap">${ac}/${cap}</span></div>
  ${mine.length?mine.map(card).join(''):`<div class="tip">No missions yet. Grab one from the board!</div>`}
- ${waiting.map(m=>`<div class="blk mis duo"><div class="em">${I(m.ic)}</div><div class="tx"><span class="dtag">${I('duo',16)} DUO</span><span class="H">${esc(m.n)}</span>${duoSlots(m)}<small>Waiting for ${O2} to join!</small></div><button class="btn sm blue" onclick="nudge('${o}','${m.id}')">CALL<br>${O2.toUpperCase()}!</button></div>`).join('')}
+ ${waiting.map(m=>`<div class="blk mis duo"><div class="em">${I(m.ic)}</div><div class="tx">${dtag(m)}<span class="H">${esc(m.n)}</span>${duoSlots(m)}<small>Waiting for ${need(m)-joinedList(m).length} more to join!</small></div><div class="mbtns"><button class="btn sm blue" onclick="nudge('both','${m.id}')">CALL<br>${KIDS.length===2?esc(S.kids[others(me)[0]].name.toUpperCase()):'THEM'}!</button><button class="btn sm grey" onclick="leaveDuo('${m.id}')">↩ Leave</button></div></div>`).join('')}
  <div class="banner" style="background:var(--orange)">${I('board',30)} Mission Board</div>
- <div class="tip">${I('duo',20)} <b>DUO</b> = do it together! Both get ${F} + ${RB} + bonus!${ac>=cap?`<br>🛑 You have ${cap} missions. Finish one first!`:''}</div>
- ${board.map(m=>{const duo=m.type==='duo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${duo?duoSlots(m):''}${duo&&m.joined[o]?`<small style="color:var(--grassD)"><b>${O2} is waiting for you!</b></small>`:''}</div>
+ <div class="tip">${I('duo',20)} <b>${KIDS.length===1?'WITH A PARENT':'DUO / TEAM'}</b> = do it together! Everyone gets ${F} + ${RB} + bonus!${ac>=cap?`<br>🛑 You have ${cap} missions. Finish one first!`:''}</div>
+ ${board.map(m=>{const duo=m.type!=='solo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`${dtag(m)}`:''}<span class="H">${esc(m.n)}</span>${m.tip?`<small>${esc(m.tip)}</small><br>`:''}<span class="price">${F} ${m.price}${m.runs>1?' each':''}${duo?' each + '+RBs:''}</span>${m.runs>1?' <small>· every 2 days</small>':''}${duo?duoSlots(m):''}${duo&&joinedList(m).length?`<small style="color:var(--grassD)"><b>${joinNames(joinedList(m).map(k=>S.kids[k].name))} waiting for you!</b></small>`:''}</div>
  <button class="btn ${duo?'gold':'blue'}" ${ac>=cap?'disabled':''} onclick="${duo?`joinDuo('${m.id}')`:`claim('${m.id}')`}">${duo?'JOIN!':"I'LL DO IT!"}</button></div>`}).join('')||`<div class="empty">Board is empty! 🎉</div>`}
  <div class="banner" style="background:var(--grass)">${I('bulb',30)} Mission idea?</div>
  <div class="blk" style="padding:14px"><input type="text" id="csug" maxlength="60" placeholder="e.g. Clean fish tank">
@@ -758,13 +828,17 @@ function dots(c){if(!(c.runs>1))return '';let d='';for(let i=0;i<c.runs;i++)d+=`
 function M(id){return S.missions.find(x=>x.id===id)}
 function claim(id){const me=S.user;if(activeCount(me)>=S.kids[me].maxM){beep(SND.no);toast('Finish a mission first! 💪');return}const m=M(id);if(!m||m.status!=='open'){toast('Too late, taken!');return}
  act(()=>{const mm=M(id);if(mm&&mm.status==='open'&&mm.type==='solo'){mm.owner=me;mm.status='todo'}});celebrate({icon:m.ic,title:'MISSION ON!',sub:esc(m.n),btn:'GO GO GO!'})}
+function giveBack(id){const me=S.user;act(()=>{const m=M(id);if(m&&m.type==='solo'&&m.owner===me&&m.status==='todo'){m.owner=null;m.status='open'}});toast('↩ Back on the board')}
+function unsend(id){const me=S.user;act(()=>{const m=M(id);if(m&&m.owner===me&&m.status==='pending')m.status='todo'});toast('↩ Undone. Tap DONE when ready')}
+function unpart(id){const me=S.user;act(()=>{const m=M(id);if(m&&m.type!=='solo'&&m.status==='active'&&m.parts)delete m.parts[me]});toast('↩ Your part undone')}
+function leaveDuo(id){const me=S.user;act(()=>{const m=M(id);if(m&&m.type!=='solo'&&m.status==='open'&&m.joined)delete m.joined[me]});toast('↩ Left the duo')}
 function soloDone(id){const m=M(id);act(()=>{const mm=M(id);if(mm&&mm.status==='todo')mm.status='pending'});celebrate({icon:m.ic,title:'MISSION DONE!',sub:esc(m.n),gain:`+${m.price} ${F} soon!`,btn:'SEND IT!'})}
 function joinDuo(id){const me=S.user;if(activeCount(me)>=S.kids[me].maxM){beep(SND.no);toast('Finish a mission first! 💪');return}
- act(()=>{const m=M(id);if(!m)return;m.joined[me]=true;if(KIDS.every(k=>m.joined[k]))m.status='active'});
- const m=M(id);if(m&&m.status==='active')celebrate({duo:true,title:'DUO READY!',sub:`${esc(m.n)}<br>${esc(m.tip||'')}`,btn:'TEAM UP!'});else{toast(`Joined! Waiting for ${S.kids[other(me)].name} 🤝`);beep(SND.tick)}}
-function duoPart(id){const me=S.user;act(()=>{const m=M(id);if(!m)return;m.parts[me]=true;if(KIDS.every(k=>m.parts[k]))m.status='pending'});
- const m=M(id);if(m&&m.status==='pending')celebrate({duo:true,title:'DUO DONE!',sub:esc(m.n),gain:`+${m.price} ${F} + ${RB} each!`,btn:'HIGH FIVE!'});else{toast(`Your part done! ${S.kids[other(me)].name}'s turn 💪`);beep(SND.tick)}}
-function nudge(k,id){const m=M(id);beep(SND.tick);act(()=>{S.live.push({id:uid(),from:S.user,to:k,kind:'text',text:`🤝 Join me for DUO: ${m?m.n:'a mission'}!`,ts:Date.now(),seen:[]})});toast(`📣 Called ${S.kids[k].name}!`)}
+ act(()=>{const m=M(id);if(!m||m.status!=='open')return;m.joined=m.joined||{};m.joined[me]=true;if(joinedList(m).length>=need(m))m.status='active'});
+ const m=M(id);if(m&&m.status==='active')celebrate({duo:true,kids:joinedList(m),title:m.type==='team'?'TEAM READY!':'DUO READY!',sub:`${esc(m.n)}<br>${esc(m.tip||'')}`,btn:'TEAM UP!'});else{toast(`Joined! Waiting for ${m?need(m)-joinedList(m).length:1} more 🤝`);beep(SND.tick)}}
+function duoPart(id){const me=S.user;act(()=>{const m=M(id);if(!m)return;m.parts=m.parts||{};m.parts[me]=true;if(joinedList(m).every(k=>m.parts[k]))m.status='pending'});
+ const m=M(id);if(m&&m.status==='pending')celebrate({duo:true,kids:joinedList(m),title:m.type==='team'?'TEAM DONE!':'DUO DONE!',sub:esc(m.n),gain:`+${m.price} ${F} + ${RB} each!`,btn:'HIGH FIVE!'});else{toast(`Your part done! Waiting for the others 💪`);beep(SND.tick)}}
+function nudge(k,id){const m=M(id);beep(SND.tick);act(()=>{S.live.push({id:uid(),from:S.user,to:k==='both'&&KIDS.length===2?others(S.user)[0]:k,kind:'text',text:`🤝 Join me for DUO: ${m?m.n:'a mission'}!`,ts:Date.now(),seen:[]})});toast(`📣 Called them!`)}
 function keep(id){const v=$(id)?$(id).value:'';render();if($(id))$(id).value=v}
 function suggestIdea(){const v=$('csug').value.trim();if(!v){$('csug').classList.add('shake');beep(SND.no);return}const me=S.user,ask=S._ask||5;act(()=>S.ideas.push({id:uid(),kid:me,n:v,ask}));S._ask=5;celebrate({icon:'bulb',title:'GREAT IDEA!',sub:`"${esc(v)}" sent to Papa & Mama`})}
 
@@ -786,14 +860,18 @@ function suggest(){const v=$('sug').value.trim();if(!v){$('sug').classList.add('
 
 /* me */
 function studioItems(cat){return cat==='xmas'?['body','hat','extra'].flatMap(sl=>AVOPT[sl].filter(o=>o.x).map(o=>Object.assign({slot:sl},o))):AVOPT[cat].map(o=>Object.assign({slot:cat},o))}
+function tryCost(o){return Object.entries(S.tryOn||{}).map(([sl,id])=>{const it=AVOPT[sl].find(x=>x.id===id);return {sl,id,n:it.n,p:it.p}}).filter(t=>!(o.owned||[]).includes(t.sl+':'+t.id)&&t.p>0)}
 function studio(who){
  const par=!S.kids[who],o=P(who),cat=S.avTab,opts=studioItems(cat);
- return `<div class="blk studio">${cat==='xmas'?'<div class="snowbox">'+'<i></i>'.repeat(14)+'</div>':''}<div class="stage"><div class="bounce">${AV(who,170)}</div><div class="ped"></div></div>
+ const look=par?o.av:Object.assign({},o.av,S.tryOn||{}),tc=par?[]:tryCost(o),tot=tc.reduce((a,t)=>a+t.p,0);
+ return `<div class="blk studio">${cat==='xmas'?'<div class="snowbox">'+'<i></i>'.repeat(14)+'</div>':''}<div class="stage">${tc.length?'<span class="trybadge">👀 TRYING ON</span>':''}<div class="bounce">${OWLC(look,170)}</div><div class="ped"></div></div>
+ ${tc.length?`<div class="trybar"><div><b>Trying:</b> ${tc.map(t=>t.n).join(' + ')}</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm grey" onclick="S.tryOn={};render()">TAKE OFF</button><button class="btn sm ${o.rainbow>=tot?'gold':'grey'}" style="flex:1" ${o.rainbow>=tot?'':'disabled'} onclick="buyTry()">${o.rainbow>=tot?`BUY ${RBs} ${tot}`:`Need ${tot-o.rainbow} more ${RBs}`}</button></div></div>`:''}
  ${par?'<div class="rbal">Parents dress up for free 😎</div>':`<div class="rbal">${I('rbow',26)} <b>${o.rainbow}</b> rainbow feathers · 💛 ${o.kindness} kindness</div>`}
  <div class="segs" style="justify-content:center">${AVCAT.map(c=>`<button class="seg ${cat===c[0]?'on':''} ${c[0]==='xmas'?'xseg':''}" onclick="S.avTab='${c[0]}';render()">${I(c[1],18)} ${c[2]}</button>`).join('')}</div>
  ${cat==='xmas'?'<div class="tip" style="box-shadow:none;text-align:center">🎄 Christmas collection · limited time!</div>':''}
- <div class="items">${opts.map(it=>{const key=it.slot+':'+it.id,own=par||(o.owned||[]).includes(key)||it.p===0,wear=o.av[it.slot]===it.id;const prev=Object.assign({},o.av,{[it.slot]:it.id});
-  return `<button class="item ${wear?'wear':''} ${it.x?'xitem':''}" onclick="avPick('${it.slot}','${it.id}',${it.p})">${OWLC(prev,62)}<b>${it.n}</b>${wear?'<span class="tag ok">Wearing</span>':own?'<span class="tag">'+(par?'Free':'Owned')+'</span>':`<span class="price">${RBs} ${it.p}</span>`}</button>`}).join('')}</div></div>`;
+ ${par?'':'<div class="tip" style="box-shadow:none;text-align:center">Tap anything to try it on first 👀</div>'}
+ <div class="items">${opts.map(it=>{const key=it.slot+':'+it.id,own=par||(o.owned||[]).includes(key)||it.p===0,wear=o.av[it.slot]===it.id,trying=!par&&(S.tryOn||{})[it.slot]===it.id&&!own;const prev=Object.assign({},look,{[it.slot]:it.id});
+  return `<button class="item ${wear&&!(S.tryOn||{})[it.slot]?'wear':''} ${trying?'trying':''} ${it.x?'xitem':''}" onclick="avPick('${it.slot}','${it.id}',${it.p})">${OWLC(prev,62)}<b>${it.n}</b>${trying?'<span class="tag">👀 Trying</span>':wear?'<span class="tag ok">Wearing</span>':own?'<span class="tag">'+(par?'Free':'Owned')+'</span>':`<span class="price">${RBs} ${it.p}</span>`}</button>`}).join('')}</div></div>`;
 }
 function kidMe(k){
  return `<div class="banner" style="background:var(--purple)">${I('palette',30)} Owl Studio</div>
@@ -805,17 +883,24 @@ function kidMe(k){
 function avPick(cat,id,p){
  const me=S.user;if(isParent()){act(()=>{S.parents[me].av[cat]=id});beep(SND.tick);return}
  const k=S.kids[me],key=cat+':'+id,own=k.owned.includes(key)||p===0;
- if(own){act(()=>{S.kids[me].av[cat]=id});beep(SND.tick);return}
- if(k.rainbow<p){beep(SND.no);toast(`Need ${p-k.rainbow} more ${RBs}! Try a DUO mission 🤝`);return}
- act(()=>{const Kd=S.kids[me];if(Kd.rainbow<p||Kd.owned.includes(key))return;Kd.rainbow-=p;Kd.owned.push(key);Kd.av[cat]=id});
- celebrate({who:me,title:'NEW LOOK!',sub:(AVOPT[cat].find(o=>o.id===id)||{}).n+' unlocked!',gain:`-${p} ${RB}`,btn:'LOOKING GOOD!'});
+ S.tryOn=S.tryOn||{};
+ if(own){delete S.tryOn[cat];act(()=>{S.kids[me].av[cat]=id});beep(SND.tick);return}
+ if(S.tryOn[cat]===id){delete S.tryOn[cat];render();return}
+ S.tryOn[cat]=id;beep(SND.pop);render();
+}
+function buyTry(){
+ const me=S.user,k=S.kids[me],tc=tryCost(k),tot=tc.reduce((a,t)=>a+t.p,0);if(!tc.length)return;
+ if(k.rainbow<tot){beep(SND.no);toast(`Need ${tot-k.rainbow} more ${RBs}! Try a DUO mission 🤝`);return}
+ const look=clone(S.tryOn);S.tryOn={};
+ act(()=>{const Kd=S.kids[me];const c2=tc.filter(t=>!Kd.owned.includes(t.sl+':'+t.id)),sum=c2.reduce((a,t)=>a+t.p,0);if(Kd.rainbow<sum)return;Kd.rainbow-=sum;c2.forEach(t=>Kd.owned.push(t.sl+':'+t.id));Object.assign(Kd.av,look)});
+ celebrate({who:me,title:'NEW LOOK!',sub:tc.map(t=>t.n).join(' + ')+' unlocked!',gain:`-${tot} ${RB}`,btn:'LOOKING GOOD!'});
 }
 
 /* ---------- HOO LIVE ---------- */
 function stkOf(m){return [...STK_P,...STK_K].find(s=>s.id===m.st)||STK_P[0]}
 function timeOf(m){if(!m.ts)return '';const d=new Date(m.ts),t=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});return dstr(d)===todayStr()?t:d.toLocaleDateString([],{day:'numeric',month:'short'})+' '+t}
 function bubble(m){
- const mine=m.from===S.user,who=P(m.from),toTxt=m.to==='both'?'Lucas & Ethan':m.to==='parents'?'Papa & Mama':P(m.to).name;
+ const mine=m.from===S.user,who=P(m.from)||{name:'?'},toTxt=m.to==='both'?kidNames():m.to==='parents'?parentNames():(P(m.to)||{name:'?'}).name;
  let body='';
  if(m.kind==='sticker'){const s=stkOf(m);body=`<div class="stk">${I(s.ic,64)}<b>${s.t}</b></div>`}
  if(m.kind==='text')body=`<div class="txt">${esc(m.text)}</div>`;
@@ -827,37 +912,37 @@ function liveView(){
  const me=S.user,par=isParent();
  const feed=S.live.filter(m=>par||m.from===me||m.to===me||m.to==='both');
  const stk=par?STK_P:STK_K;
- const toSeg=par?`<div class="segs" style="margin-bottom:8px"><b style="align-self:center;color:#fff">To:</b>${['lucas','etan','both'].map(t=>`<button class="seg ${S.liveTo===t?'on':''}" onclick="S.liveTo='${t}';keep('lmsg')">${t==='both'?'Both':S.kids[t].name}</button>`).join('')}</div>`:'';
+ const toSeg=par?`<div class="segs" style="margin-bottom:8px"><b style="align-self:center;color:#fff">To:</b>${(KIDS.length>1?[...KIDS,'both']:KIDS).map(t=>`<button class="seg ${S.liveTo===t?'on':''}" onclick="S.liveTo='${t}';keep('lmsg')">${t==='both'?allLabel():esc(S.kids[t].name)}</button>`).join('')}</div>`:'';
  return `<div class="livebox">
- <div class="livehead"><span class="livepill">● LIVE</span><span class="H">Hoo Live</span><span class="viewers">${AV('lucas',26)}${AV('etan',26)}${AV('dad',26)}${AV('mum',26)}</span></div>
+ <div class="livehead"><span class="livepill">● LIVE</span><span class="H">Hoo Live</span><span class="viewers">${[...KIDS,...PARENTS()].map(k=>AV(k,26)).join('')}</span></div>
  <div class="feed" id="feed">${feed.slice(-60).map(bubble).join('')||'<p class="kidnote">Say hi! 👋</p>'}</div>
  <div class="compose">${toSeg}
  <div class="stkrow">${stk.map(s=>`<button onclick="sendSticker('${s.id}')">${I(s.ic,40)}<b>${s.t}</b></button>`).join('')}</div>
- ${par?`<div class="msgrow"><input type="text" id="lmsg" maxlength="200" placeholder="Say something sweet…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div>`:`<div class="msgrow"><input type="text" id="lmsg" maxlength="120" placeholder="Message Papa & Mama…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div><p class="kidnote">Sticker, message or 🎙 voice, it goes to Papa & Mama 💌</p>`}
+ ${par?`<div class="msgrow"><input type="text" id="lmsg" maxlength="200" placeholder="Say something sweet…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div>`:`<div class="msgrow"><input type="text" id="lmsg" maxlength="120" placeholder="Message ${esc(parentNames())}…"><button class="btn sm" onclick="sendText()">SEND</button><button class="btn sm pinkb" onclick="startRec()">${I('mic',22)}</button></div><p class="kidnote">Sticker, message or 🎙 voice, it goes to ${esc(parentNames())} 💌</p>`}
  </div></div>
  ${par?giftPanel():''}`;
 }
 function giftPanel(){
- const to=S.liveTo;
+ const to=liveTarget();
  return `<div class="banner" style="background:var(--pink)">💛 Kindness Gift</div>
  <div class="blk" style="padding:14px">
- <div class="tip" style="box-shadow:none">Spotted something special, done without being asked? Pick the reason. The boys see it pop up big.</div>
+ <div class="tip" style="box-shadow:none">Spotted something special, done without being asked? Pick the reason. The kids see it pop up big.</div>
  <div class="reasons">${REASONS.map(r=>`<button class="${S.liveReason===r.id?'on':''}" onclick="S.liveReason='${r.id}';keep('lmsg')">${r.t}</button>`).join('')}</div>
  <div class="segs" style="margin:12px 0 6px"><button class="seg big ${S.giftCur==='f'?'on':''}" onclick="S.giftCur='f';keep('lmsg')">${I('feather',22)} Feathers</button><button class="seg big ${S.giftCur==='r'?'on':''}" onclick="S.giftCur='r';keep('lmsg')">${I('rbow',22)} Rainbow</button></div>
  <div class="erow"><b>How many?</b><div class="stepper"><button onclick="S.giftAmt=Math.max(1,S.giftAmt-1);keep('lmsg')">−</button><b>${S.giftCur==='f'?F:RB}${S.giftAmt}</b><button onclick="S.giftAmt=Math.min(200,S.giftAmt+1);keep('lmsg')">+</button></div></div>
  <div class="segs">${[1,5,10,20,30,50].map(n=>`<button class="seg ${S.giftAmt===n?'on':''}" onclick="S.giftAmt=${n};keep('lmsg')">${n}</button>`).join('')}</div>
- <button class="btn full gold" onclick="sendGift()">SEND GIFT TO ${to==='both'?'BOTH':S.kids[to].name.toUpperCase()} 🎁</button></div>`;
+ <button class="btn full gold" onclick="sendGift()">SEND GIFT TO ${to==='both'?allLabel().toUpperCase():esc(S.kids[to].name.toUpperCase())} 🎁</button></div>`;
 }
-function liveTarget(){return isParent()?S.liveTo:'parents'}
+function liveTarget(){if(isParent()&&S.liveTo!=='both'&&!S.kids[S.liveTo])S.liveTo=KIDS.length>1?'both':KIDS[0];return isParent()?S.liveTo:'parents'}
 function sendSticker(id){const s=[...STK_P,...STK_K].find(x=>x.id===id);beep(SND.pop);burst(s.ic,14);const m={id:uid(),from:S.user,to:liveTarget(),kind:'sticker',st:id,ts:Date.now(),seen:[]};S._shown.add(m.id);act(()=>S.live.push(clone(m)))}
 function sendText(){const v=$('lmsg').value.trim();if(!v){$('lmsg').classList.add('shake');beep(SND.no);return}beep(SND.pop);const m={id:uid(),from:S.user,to:liveTarget(),kind:'text',text:v,ts:Date.now(),seen:[]};S._shown.add(m.id);act(()=>S.live.push(clone(m)))}
 function sendGift(){
  if(!S.liveReason){beep(SND.no);toast('Pick a reason first 💛');return}
- const r=REASONS.find(x=>x.id===S.liveReason).t,g={amt:S.giftAmt,cur:S.giftCur},to=S.liveTo,tos=to==='both'?KIDS:[to],me=S.user,id=uid();
+ const r=REASONS.find(x=>x.id===S.liveReason).t,g={amt:S.giftAmt,cur:S.giftCur},to=liveTarget(),tos=to==='both'?KIDS:[to],me=S.user,id=uid();
  S._shown.add(id);
  act(()=>{tos.forEach(k=>{if(g.cur==='f')addXP(k,g.amt);else S.kids[k].rainbow+=g.amt;S.kids[k].kindness++});S.live.push({id,from:me,to,kind:'gift',gift:{amt:g.amt,cur:g.cur,reason:r},ts:Date.now(),seen:[]})});
  S.liveReason=null;burst('heart',18);
- celebrate({icon:'gift',title:'GIFT SENT!',sub:`💛 ${r}<br><small>${to==='both'?'The boys':S.kids[to].name} will see it pop up!</small>`,gain:`+${g.amt} ${g.cur==='f'?F:RB}`,btn:'SO PROUD!'});
+ celebrate({icon:'gift',title:'GIFT SENT!',sub:`💛 ${r}<br><small>${to==='both'?'The kids':esc(S.kids[to].name)} will see it pop up!</small>`,gain:`+${g.amt} ${g.cur==='f'?F:RB}`,btn:'SO PROUD!'});
 }
 /* voice notes */
 let REC=null;
@@ -875,7 +960,7 @@ async function startRec(){
   try{await DB.putVoice(S.fid,vid,{data,mime:blob.type,dur});const m={id:uid(),from:S.user,to:liveTarget(),kind:'voice',vid,dur,ts:Date.now(),seen:[]};S._shown.add(m.id);await act(()=>S.live.push(clone(m)));beep(SND.pop);burst('heart',10)}
   catch(e){console.error(e);toast('⚠️ Voice not sent')}};
  REC={mr,iv:null,cancel:false};mr.start();
- $('modal').innerHTML=`<div class="modal"><div class="blk" style="padding:22px;text-align:center"><div class="bounce">${I('mic',90)}</div><div class="H" style="font-size:26px">Recording…</div><div class="H" id="rect" style="font-size:40px;color:var(--pink)">0:00</div><p style="font-weight:600">Max 10 seconds · To: ${liveTarget()==='parents'?'Papa & Mama':liveTarget()==='both'?'Both':S.kids[liveTarget()].name}</p>
+ $('modal').innerHTML=`<div class="modal"><div class="blk" style="padding:22px;text-align:center"><div class="bounce">${I('mic',90)}</div><div class="H" style="font-size:26px">Recording…</div><div class="H" id="rect" style="font-size:40px;color:var(--pink)">0:00</div><p style="font-weight:600">Max 10 seconds · To: ${liveTarget()==='parents'?parentNames():liveTarget()==='both'?allLabel():S.kids[liveTarget()].name}</p>
  <div style="display:flex;gap:10px;margin-top:12px"><button class="btn grey" onclick="REC.cancel=true;REC.mr.stop()">Cancel</button><button class="btn" style="flex:1" onclick="REC.mr.stop()">SEND ✓</button></div></div></div>`;
  REC.iv=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1000);const e=$('rect');if(e)e.textContent='0:'+String(s).padStart(2,'0');if(s>=10&&mr.state==='recording')mr.stop()},250);
 }
@@ -893,7 +978,7 @@ function drawPin(){
  const kid=!!S.kids[S._who],nm=P(S._who).name;
  const t=S._pinMode==='enter'?(kid?`Hi ${nm}! Secret code?`:`${nm} PIN`):S._pinMode==='new'?(S._setFor?`New code for ${nm}`:kid?`${nm}, make a secret code!`:`Set ${nm}'s PIN`):'Type it again';
  $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk" id="pinbox"><div>${AV(S._who,80)}</div><div class="H" style="font-size:24px">${t}</div>
- ${S._pinMode!=='enter'?`<p style="font-weight:600;font-size:13px">${kid?'4 numbers. Keep it secret from your brother! 🤫':'4 numbers only you know (not the boys!)'}</p>`:(kid?'<p style="font-weight:600;font-size:13px">Forgot? Ask Papa or Mama to reset it.</p>':'')}
+ ${S._pinMode!=='enter'?`<p style="font-weight:600;font-size:13px">${kid?'4 numbers. Keep it secret! 🤫':'4 numbers only you know (not the kids!)'}</p>`:(kid?'<p style="font-weight:600;font-size:13px">Forgot? Ask Papa or Mama to reset it.</p>':'')}
  <div class="pin">${[0,1,2,3].map(i=>`<i class="${i<S.pin.length?'f':''}"></i>`).join('')}</div>
  <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="pinKey('${n}')">${n}</button>`).join('')}</div></div></div>`;
 }
@@ -913,7 +998,7 @@ function parentView(){
  if(S.tab==='live'){const un=S.live.filter(m=>m.to==='parents'&&!(m.seen||[]).includes(S.user));if(un.length&&!S._markP){S._markP=true;const me=S.user;un.forEach(m=>S._shown.add(m.id));setTimeout(()=>act(()=>S.live.forEach(m=>{if(m.to==='parents'){m.seen=m.seen||[];if(!m.seen.includes(me))m.seen.push(me)}})).finally(()=>S._markP=false),500)}}
  const pc=checkCount(),me=P(S.user),kreply=S.live.filter(m=>m.to==='parents'&&!(m.seen||[]).includes(S.user)).length;
  const tabs=[['check','check','Check',pc],['plan','board','Plan'],['live','live','Live',S.tab==='live'?0:kreply],['stats','chart','Stats']];
- const body={check:pCheck,plan:pPlan,live:liveView,stats:pStats}[S.tab]();
+ const VW={check:pCheck,plan:pPlan,live:liveView,stats:pStats};if(!VW[S.tab])S.tab='check';const body=VW[S.tab]();
  return `<header><div class="blk top"><div class="bounce">${AV(S.user,72)}</div><div class="nm"><div class="H">${me.name}</div><span class="badge">Parent</span></div><div class="hbtns"><button class="sw help" onclick="showTut('parent')">?</button><button class="sw" onclick="logout()">🔄</button></div></div></header>
  <main>${body}</main>
  <nav>${tabs.map(t=>`<button class="${S.tab===t[0]?'on':''}" onclick="beep(SND.tick);S.tab='${t[0]}';render()"><span>${I(t[1],38)}</span>${t[2]}${t[3]?`<i class="dot">${t[3]}</i>`:''}</button>`).join('')}</nav>`;
@@ -927,16 +1012,16 @@ function nightBlock(){
 }
 function pCheck(){
  const ms=S.missions.filter(m=>m.status==='pending'),rd=S.redeems.filter(r=>r.status==='pending'),sg=S.suggestions.filter(s=>s.p===null),cs=S.ideas;
- const main=`${ms.length?`<div class="banner">${I('swords',30)} Missions done</div>${ms.map(m=>{const duo=m.type==='duo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span>${duo?duoSlots(m):`<small>${S.kids[m.owner].name}</small> `}<span class="price">${F} ${m.price}${duo?' each + '+RBs:''}</span></div><div style="display:flex;flex-direction:column;gap:10px"><button class="btn sm" onclick="approve('${m.id}',1)">👍 OK</button><button class="btn sm grey" onclick="approve('${m.id}',0)">🔁 Redo</button></div></div>`}).join('')}`:''}
+ const main=`${ms.length?`<div class="banner">${I('swords',30)} Missions done</div>${ms.map(m=>{const duo=m.type!=='solo';return `<div class="blk mis ${duo?'duo':''}"><div class="em">${I(m.ic)}</div><div class="tx">${duo?`${dtag(m)}`:''}<span class="H">${esc(m.n)}</span>${duo?duoSlots(m):`<small>${S.kids[m.owner].name}</small> `}<span class="price">${F} ${m.price}${duo?' each + '+RBs:''}</span></div><div style="display:flex;flex-direction:column;gap:10px"><button class="btn sm" onclick="approve('${m.id}',1)">👍 OK</button><button class="btn sm grey" onclick="approve('${m.id}',0)">🔁 Redo</button></div></div>`}).join('')}`:''}
  ${rd.length?`<div class="banner" style="background:var(--pink)">${I('gift',30)} Rewards to give</div>${rd.map(r=>{const w=S.rewards.find(x=>x.id===r.rid)||{ic:'gift',n:'Reward'};return `<div class="blk mis"><div class="em">${I(w.ic)}</div><div class="tx"><span class="H">${esc(w.n)}</span><small>${S.kids[r.kid].name}</small></div><button class="btn gold sm" onclick="appRedeem('${r.id}')">GIVE 🎉</button></div>`}).join('')}`:''}
- ${cs.length?`<div class="banner" style="background:var(--grass)">${I('bulb',30)} Mission ideas from the boys</div>${cs.map(s=>`<div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('bulb')}</div><div class="tx"><span class="H">${esc(s.n)}</span><small>From ${S.kids[s.kid].name}</small></div><div class="stepper"><button onclick="ideaAsk('${s.id}',-1)">−</button><b>${F}${s.ask}</b><button onclick="ideaAsk('${s.id}',1)">+</button></div><div style="width:100%;display:flex;gap:8px;margin-top:10px"><button class="btn sm blue" style="flex:1" onclick="ideaAdd('${s.id}','solo')">+ SOLO</button><button class="btn sm gold" style="flex:1" onclick="ideaAdd('${s.id}','duo')">+ DUO</button><button class="btn sm grey" onclick="ideaDel('${s.id}')">✕</button></div></div>`).join('')}`:''}
+ ${cs.length?`<div class="banner" style="background:var(--grass)">${I('bulb',30)} Mission ideas from the kids</div>${cs.map(s=>`<div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('bulb')}</div><div class="tx"><span class="H">${esc(s.n)}</span><small>From ${S.kids[s.kid].name}</small></div><div class="stepper"><button onclick="ideaAsk('${s.id}',-1)">−</button><b>${F}${s.ask}</b><button onclick="ideaAsk('${s.id}',1)">+</button></div><div style="width:100%;display:flex;gap:8px;margin-top:10px"><button class="btn sm blue" style="flex:1" onclick="ideaAdd('${s.id}','solo')">+ SOLO</button><button class="btn sm gold" style="flex:1" onclick="ideaAdd('${s.id}','duo')">+ DUO</button><button class="btn sm grey" onclick="ideaDel('${s.id}')">✕</button></div></div>`).join('')}`:''}
  ${sg.length?`<div class="banner" style="background:var(--purple)">${I('sparkle',30)} Reward wishes</div>${sg.map(s=>`<div class="blk mis" style="flex-wrap:wrap"><div class="em">${I('sparkle')}</div><div class="tx"><span class="H">${esc(s.n)}</span><small>From ${S.kids[s.kid].name}</small></div><div class="stepper"><button onclick="S['_p'+'${s.id}']=Math.max(10,(S['_p'+'${s.id}']||50)-10);render()">−</button><b>${F}${S['_p'+s.id]||50}</b><button onclick="S['_p'+'${s.id}']=(S['_p'+'${s.id}']||50)+10;render()">+</button></div><div style="width:100%;display:flex;gap:8px;margin-top:10px"><button class="btn sm" style="flex:1" onclick="sgAdd('${s.id}')">ADD TO SHOP ✓</button><button class="btn sm grey" onclick="sgDel('${s.id}')">✕</button></div></div>`).join('')}`:''}`;
  const empty=!ms.length&&!rd.length&&!sg.length&&!cs.length?`<div class="tip">✨ No approvals waiting.</div>`:'';
  return nightNow()?nightBlock()+main+empty:main+empty+nightBlock();
 }
 function approve(id,ok){const m=M(id);if(!m)return;
- if(!ok){act(()=>{const mm=M(id);if(!mm)return;if(mm.type==='duo'){mm.status='active';mm.parts={};KIDS.forEach(k=>ev(k,{kind:'redo',sub:mm.n}))}else{mm.status='todo';ev(mm.owner,{kind:'redo',sub:mm.n})}});beep(SND.no);toast('🔁 Sent back. They\'ll see it');return}
- if(m.type==='duo'){act(()=>{const mm=M(id);if(!mm||mm.status!=='pending')return;mm.status='done';mm.doneDay=todayStr();KIDS.forEach(k=>{addXP(k,mm.price+2);S.kids[k].rainbow++;ev(k,{kind:'duo',sub:mm.n,gain:mm.price+2})});if(mm.runs>1){mm.runsDone=(mm.runsDone||0)+1;if(mm.runsDone<mm.runs){mm.status='active';mm.parts={}}}});celebrate({duo:true,title:'DUO POWER!',sub:esc(m.n),gain:`+${m.price+2} ${F} + 1 ${RB} each`,btn:'HIGH FIVE!'});return}
+ if(!ok){act(()=>{const mm=M(id);if(!mm)return;if(mm.type!=='solo'){mm.status='active';mm.parts={};joinedList(mm).forEach(k=>ev(k,{kind:'redo',sub:mm.n}))}else{mm.status='todo';ev(mm.owner,{kind:'redo',sub:mm.n})}});beep(SND.no);toast('🔁 Sent back. They\'ll see it');return}
+ if(m.type!=='solo'){const jk=joinedList(m);act(()=>{const mm=M(id);if(!mm||mm.status!=='pending')return;mm.status='done';mm.doneDay=todayStr();joinedList(mm).forEach(k=>{addXP(k,mm.price+2);S.kids[k].rainbow++;ev(k,{kind:'duo',sub:mm.n,gain:mm.price+2,kids:joinedList(mm)})});if(mm.runs>1){mm.runsDone=(mm.runsDone||0)+1;if(mm.runsDone<mm.runs){mm.status='active';mm.parts={}}}});celebrate({duo:true,kids:jk,title:m.type==='team'?'TEAM POWER!':'DUO POWER!',sub:esc(m.n),gain:`+${m.price+2} ${F} + 1 ${RB} each`,btn:'HIGH FIVE!'});return}
  act(()=>{const mm=M(id);if(!mm||mm.status!=='pending')return;if(mm.runs>1){mm.runsDone=(mm.runsDone||0)+1;mm.status=mm.runsDone>=mm.runs?'done':'todo'}else mm.status='done';mm.doneDay=todayStr();addXP(mm.owner,mm.price);ev(mm.owner,{kind:'approve',sub:mm.n,gain:mm.price})});
  celebrate({who:m.owner,title:rnd(HYPE),sub:`${S.kids[m.owner].name}: ${esc(m.n)}`,gain:`+${m.price} ${F}`});
 }
@@ -956,24 +1041,24 @@ function pPlan(){
  ${{habits:planHabits,board:planBoard,shop:planShop}[t]()}`;
 }
 function planHabits(){
- const k=S.planKid,K2=S.kids[k],list=K2.draft||K2.habits,changed=!!K2.draft;
+ const k=S.kids[S.planKid]?S.planKid:(S.planKid=KIDS[KIDS.length-1]),K2=S.kids[k],list=K2.draft||K2.habits,changed=!!K2.draft;
  return `<div class="segs">${KIDS.map(x=>`<button class="seg big ${k===x?'on':''}" onclick="S.planKid='${x}';render()">${AV(x,30)} ${S.kids[x].name}</button>`).join('')}</div>
  ${changed?`<div class="tip" style="background:#e9ecff">🌅 <b>Changes start tomorrow</b> so today stays fair.<div style="display:flex;gap:8px;margin-top:8px"><button class="btn sm grey" onclick="undoDraft('${k}')">Undo changes</button><button class="btn sm blue" onclick="applyNow('${k}')">Start now instead</button></div></div>`:''}
  <div class="tip" style="box-shadow:none">${list.length} habits · aim for 8–10 max. Tap one to edit.</div>
  ${GROUPS.map(g=>{const items=list.filter(h=>h.g===g.id);if(!items.length)return '';return `<div class="banner" style="background:${g.c}">${I(g.i,26)} ${g.n}</div>${items.map(h=>`<div class="blk mis hrow" onclick="editHabit('${k}','${h.id}')"><div class="em">${I(h.ic,44)}</div><div class="tx"><span class="H">${esc(h.n)}</span><small>${esc(h.s||'')}</small><br><span class="price">${F} ${h.f}</span> <span class="tag">${h.times}× a day</span> <span class="tag">${DAYS[h.days]}</span></div><div>${I('pencil',30)}</div></div>`).join('')}`}).join('')}
- <div style="display:flex;gap:10px;margin-top:6px"><button class="btn blue" style="flex:1;font-size:16px" onclick="editHabit('${k}',null)">+ FOR ${S.kids[k].name.toUpperCase()}</button><button class="btn gold" style="flex:1;font-size:16px" onclick="editHabit('${k}',null,true)">+ FOR BOTH</button></div>
- <button class="btn grey full" style="margin-top:12px;font-size:16px" onclick="copyHabits('${k}')">Copy ${S.kids[k].name}'s whole list to ${S.kids[other(k)].name}</button>`;
+ <div style="display:flex;gap:10px;margin-top:6px"><button class="btn blue" style="flex:1;font-size:16px" onclick="editHabit('${k}',null)">+ FOR ${S.kids[k].name.toUpperCase()}</button>${KIDS.length>1?`<button class="btn gold" style="flex:1;font-size:16px" onclick="editHabit('${k}',null,true)">+ FOR ${allLabel().toUpperCase()}</button>`:''}</div>
+ ${KIDS.length>1?`<button class="btn grey full" style="margin-top:12px;font-size:16px" onclick="copyHabits('${k}')">Copy ${esc(S.kids[k].name)}'s whole list to ${esc(joinNames(others(k).map(x=>S.kids[x].name)))}</button>`:''}`;
 }
 function undoDraft(k){act(()=>{S.kids[k].draft=null})}
 function applyNow(k){act(()=>{const K2=S.kids[k];if(K2.draft){K2.habits=K2.draft;K2.draft=null}});toast('Applied ✓')}
-function copyHabits(k){const o=other(k);act(()=>{const src=clone(S.kids[k].draft||S.kids[k].habits).map(h=>Object.assign(h,{id:uid()}));S.kids[o].draft=src});toast(`Copied to ${S.kids[o].name} (starts tomorrow)`)}
-function editHabit(k,id,both){const d=id?(S.kids[k].draft||S.kids[k].habits).find(h=>h.id===id):null;const o=other(k),twin=d&&(S.kids[o].draft||S.kids[o].habits).some(h=>h.n.trim().toLowerCase()===d.n.trim().toLowerCase());S.editing={k,id,orig:d?d.n:null,both:!!both||!!twin,twin:!!twin,h:d?clone(d):{g:'other',ic:'star',n:'',s:'',f:1,times:1,days:'all'}};drawEditor()}
+function copyHabits(k){const os=others(k);act(()=>{os.forEach(o=>{S.kids[o].draft=clone(S.kids[k].draft||S.kids[k].habits).map(h=>Object.assign(h,{id:uid()}))})});toast(`Copied (starts tomorrow)`)}
+function editHabit(k,id,both){const d=id?(S.kids[k].draft||S.kids[k].habits).find(h=>h.id===id):null;const twin=d&&others(k).some(o=>(S.kids[o].draft||S.kids[o].habits).some(h=>h.n.trim().toLowerCase()===d.n.trim().toLowerCase()));S.editing={k,id,orig:d?d.n:null,both:!!both||!!twin,twin:!!twin,h:d?clone(d):{g:'other',ic:'star',n:'',s:'',f:1,times:1,days:'all'}};drawEditor()}
 function drawEditor(){
  const e=S.editing,h=e.h,st=(f,v)=>`S.editing.h.${f}=${typeof v==='string'?`'${v}'`:v};saveEd();drawEditor()`;
  $('modal').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="blk editor">
  <div class="H" style="font-size:22px">${e.id?'Edit':'New'} habit</div>
- <div class="segs" style="margin:6px 0"><b style="align-self:center">For:</b><button class="seg ${!e.both?'on':''}" onclick="saveEd();S.editing.both=false;drawEditor()">${S.kids[e.k].name} only</button><button class="seg ${e.both?'on':''}" onclick="saveEd();S.editing.both=true;drawEditor()">Both boys</button></div>
- ${e.id&&e.both&&!e.twin?`<small style="font-weight:600;color:var(--muted)">${S.kids[other(e.k)].name} doesn't have this habit yet, so it will be added for him.</small>`:''}
+ ${KIDS.length>1?'':'<!--'}<div class="segs" style="margin:6px 0"><b style="align-self:center">For:</b><button class="seg ${!e.both?'on':''}" onclick="saveEd();S.editing.both=false;drawEditor()">${S.kids[e.k].name} only</button><button class="seg ${e.both?'on':''}" onclick="saveEd();S.editing.both=true;drawEditor()">${allLabel()==='Both'?'Both kids':'All kids'}</button></div>${KIDS.length>1?'':'-->'}
+ ${e.id&&e.both&&!e.twin?`<small style="font-weight:600;color:var(--muted)">Kids who don't have this habit yet will get it added.</small>`:''}
  <input type="text" id="en" maxlength="30" placeholder="Name, e.g. Make bed" value="${esc(h.n)}"><input type="text" id="es" maxlength="40" placeholder="Hint, e.g. Pillow + blanket" value="${esc(h.s||'')}">
  <div class="icpick">${HICONS.map(n=>`<button class="${h.ic===n?'on':''}" onclick="${st('ic',n)}">${I(n,34)}</button>`).join('')}</div>
  <div class="segs" style="margin-top:10px">${GROUPS.map(g=>`<button class="seg ${h.g===g.id?'on':''}" onclick="${st('g',g.id)}">${g.n}</button>`).join('')}</div>
@@ -995,22 +1080,22 @@ function delHabit(){const e=clone(S.editing);act(()=>{(e.both?KIDS:[e.k]).forEac
 function planBoard(){
  const p=S.post,icons=['broom','robot','bin','plant','shirt','table','toilet','shoe','sponge','car'];
  const live=S.missions.filter(m=>m.status!=='done'||m.runs>1);
- const st=m=>m.type==='duo'?(m.status==='open'?`${KIDS.filter(k=>m.joined[k]).length}/2 joined`:m.status==='active'?'In progress':m.status==='done'?'Done this week':'⏳ Check'):m.status==='open'?'On board':m.status==='todo'?S.kids[m.owner].name:m.status==='done'?'Done this week':'⏳ Check';
+ const st=m=>m.type!=='solo'?(m.status==='open'?`${joinedList(m).length}/${need(m)} joined`:m.status==='active'?'In progress':m.status==='done'?'Done this week':'⏳ Check'):m.status==='open'?'On board':m.status==='todo'?S.kids[m.owner].name:m.status==='done'?'Done this week':'⏳ Check';
  return `<div class="banner" style="background:var(--orange)">${I('board',30)} Post a mission</div>
  <div class="blk" style="padding:14px">
- <div class="segs" style="margin-bottom:10px"><button class="seg big ${p.type==='duo'?'on':''}" onclick="S.post.type='duo';keep2()">${I('duo',22)} DUO</button><button class="seg big ${p.type==='solo'?'on':''}" onclick="S.post.type='solo';keep2()">${I('star',22)} SOLO</button></div>
- <div class="tip" style="box-shadow:none">${p.type==='duo'?'DUO = both boys together. Each gets the feathers + 1 rainbow + 2 bonus.':'SOLO = first boy to grab it.'}</div>
- <input type="text" id="pn" maxlength="40" placeholder="${p.type==='duo'?'e.g. Wash Papa\'s car together':'e.g. Feed the fish'}">
- ${p.type==='duo'?`<input type="text" id="ptip" maxlength="40" placeholder="Roles, e.g. One soaps, one rinses">`:''}
+ <div class="segs" style="margin-bottom:10px"><button class="seg big ${p.type==='duo'?'on':''}" onclick="S.post.type='duo';keep2()">${I('duo',22)} ${KIDS.length===1?'WITH PARENT':'DUO'}</button>${KIDS.length>2?`<button class="seg big ${p.type==='team'?'on':''}" onclick="S.post.type='team';keep2()">${I('crown',22)} TEAM</button>`:''}<button class="seg big ${p.type==='solo'?'on':''}" onclick="S.post.type='solo';keep2()">${I('star',22)} SOLO</button></div>
+ <div class="tip" style="box-shadow:none">${p.type==='team'?'TEAM = ALL kids together. Each gets the feathers + 1 rainbow + 2 bonus.':p.type==='duo'?(KIDS.length===1?'WITH A PARENT = do it together with Mum/Dad. Gets the feathers + 1 rainbow + 2 bonus.':'DUO = any 2 kids pair up. Each gets the feathers + 1 rainbow + 2 bonus.'):'SOLO = first kid to grab it.'}</div>
+ <input type="text" id="pn" maxlength="40" placeholder="${p.type!=='solo'?'e.g. Wash the car together':'e.g. Feed the fish'}">
+ ${p.type!=='solo'?`<input type="text" id="ptip" maxlength="40" placeholder="Roles, e.g. One soaps, one rinses">`:''}
  <div class="icpick">${icons.map(n=>`<button class="${p.ic===n?'on':''}" onclick="S.post.ic='${n}';keep2()">${I(n,40)}</button>`).join('')}</div>
  <div class="erow"><b>Reward each:</b><div class="stepper"><button onclick="S.post.price=Math.max(1,S.post.price-1);keep2()">−</button><b>${F}${p.price}</b><button onclick="S.post.price++;keep2()">+</button></div></div>
  <div class="segs" style="margin-bottom:12px"><button class="seg ${p.runs===1?'on':''}" onclick="S.post.runs=1;keep2()">Once</button><button class="seg ${p.runs===4?'on':''}" onclick="S.post.runs=4;keep2()">Every 2 days (4× a week)</button></div>
  <button class="btn full" onclick="postMission()">POST TO BOARD!</button></div>
  <div class="banner" style="background:var(--blue)">${I('swords',30)} Max missions at once</div>
  <div class="blk" style="padding:12px">${KIDS.map(k=>`<div class="erow">${AV(k,40)}<b style="flex:1;margin-left:8px">${S.kids[k].name}</b><div class="stepper"><button onclick="setMax('${k}',-1)">−</button><b>${S.kids[k].maxM}</b><button onclick="setMax('${k}',1)">+</button></div></div>`).join('')}
- <small style="font-weight:600;color:var(--muted)">Stops one boy grabbing everything. Duo missions count for both.</small></div>
+ <small style="font-weight:600;color:var(--muted)">Stops one kid grabbing everything. Duo/team missions count too.</small></div>
  <div class="banner">${I('swords',30)} On the board now</div>
- ${live.map(m=>`<div class="blk mis ${m.type==='duo'?'duo':''}" style="flex-wrap:wrap"><div class="em">${I(m.ic,44)}</div><div class="tx">${m.type==='duo'?`<span class="dtag">${I('duo',16)} DUO</span>`:''}<span class="H">${esc(m.n)}</span><small>${st(m)}${m.runs>1?` · ${m.runsDone||0}/${m.runs} this week`:''}</small></div>
+ ${live.map(m=>`<div class="blk mis ${m.type!=='solo'?'duo':''}" style="flex-wrap:wrap"><div class="em">${I(m.ic,44)}</div><div class="tx">${m.type!=='solo'?dtag(m):''}<span class="H">${esc(m.n)}</span><small>${st(m)}${m.runs>1?` · ${m.runsDone||0}/${m.runs} this week`:''}</small></div>
  <div class="stepper"><button onclick="mPrice('${m.id}',-1)">−</button><b>${F}${m.price}</b><button onclick="mPrice('${m.id}',1)">+</button></div><button class="btn sm grey" style="margin-left:6px" onclick="mDel('${m.id}')">✕</button></div>`).join('')}`;
 }
 function setMax(k,d){act(()=>{S.kids[k].maxM=Math.min(6,Math.max(1,S.kids[k].maxM+d))})}
@@ -1019,8 +1104,8 @@ function mDel(id){act(()=>{S.missions=S.missions.filter(x=>x.id!==id)})}
 function keep2(){const a=$('pn')?$('pn').value:'',b=$('ptip')?$('ptip').value:'';render();if($('pn'))$('pn').value=a;if($('ptip'))$('ptip').value=b}
 function postMission(){const n=$('pn').value.trim();if(!n){$('pn').classList.add('shake');beep(SND.no);return}const p=clone(S.post),tip=$('ptip')?$('ptip').value.trim():'',id=uid();
  const base={id,ic:p.ic,n,price:p.price,status:'open'};if(p.runs>1){base.runs=p.runs;base.runsDone=0}
- act(()=>S.missions.unshift(p.type==='duo'?Object.assign({type:'duo',tip,joined:{},parts:{}},base):Object.assign({type:'solo',owner:null},base)));
- celebrate({icon:p.type==='duo'?'duo':p.ic,title:'POSTED!',sub:`"${esc(n)}" is on the board`,btn:'NICE!'})}
+ act(()=>S.missions.unshift(p.type!=='solo'?Object.assign({type:p.type,tip,joined:{},parts:{}},base):Object.assign({type:'solo',owner:null},base)));
+ celebrate({icon:p.type!=='solo'?'duo':p.ic,title:'POSTED!',sub:`"${esc(n)}" is on the board`,btn:'NICE!'})}
 function planShop(){
  const ricons=['noodle','icecream','moon','flag','cash','ticket','heartM','heartP','tent','brick','gift','star','car','trophy'];
  S._ric=S._ric||'gift';
@@ -1037,7 +1122,7 @@ function rwDel(id){act(()=>{S.rewards=S.rewards.filter(x=>x.id!==id)})}
 function addReward(){const n=$('rn').value.trim();if(!n){$('rn').classList.add('shake');beep(SND.no);return}const ic=S._ric,p=S._rp||30;act(()=>S.rewards.push({id:uid(),ic,n,p}));toast(`"${esc(n)}" added 🎁`)}
 
 function pStats(){
- const other0=S.user==='dad'?'mum':'dad';
+ const ops=PARENTS().filter(x=>x!==S.user);
  return `<div class="banner">${I('chart',30)} Progress</div>${chartCard(KIDS)}
  ${teamCard()}
  <div class="banner" style="background:var(--purple)">${I('palette',30)} My Owl</div>${studio(S.user)}
@@ -1052,7 +1137,7 @@ function pStats(){
  <hr style="margin:14px 0;border:0;border-top:2px dashed #d9dcef">
  <div class="erow"><b>Family code</b><button class="btn sm grey" onclick="showCode(false)">SHOW</button></div>
  <div class="erow"><b>My PIN</b><button class="btn sm grey" onclick="S._who='${S.user}';S._pinMode='new';S.pin='';drawPin()">CHANGE</button></div>
- <div class="erow"><b>${P(other0).name}'s PIN</b><button class="btn sm grey" onclick="resetPin('${other0}')">RESET</button></div>
+ ${ops.map(o=>`<div class="erow"><b>${esc(P(o).name)}'s PIN</b><button class="btn sm grey" onclick="resetPin('${o}')">RESET</button></div>`).join('')}
  ${KIDS.map(k=>{const c=S.kidCodes[k],sh=S['_sc'+k];return `<div class="erow"><b>${S.kids[k].name}'s code: <span class="kcode">${!S.pins[k]?'not set yet':c?(sh?c:'••••'):'?'}</span></b><div style="display:flex;gap:6px">${c?`<button class="btn sm blue" onclick="S['_sc${k}']=!S['_sc${k}'];render()">${sh?'HIDE':'SHOW'}</button>`:''}<button class="btn sm grey" onclick="setKidCode('${k}')">SET</button><button class="btn sm grey" onclick="resetPin('${k}')">RESET</button></div></div>${S.pins[k]&&!c?`<small style="font-weight:600;color:var(--muted)">${S.kids[k].name}'s code will show here after his next login, or tap SET to choose a new one.</small>`:''}`}).join('')}
  <small style="font-weight:600;color:var(--muted)">SET = you choose his code. RESET = he makes a new one next time he taps his owl.</small>
  <div class="erow" style="margin-top:14px"><b>This phone</b><button class="btn sm red" onclick="leaveFamily()">LOG OUT OF FAMILY</button></div></div>`;
@@ -1063,22 +1148,22 @@ function leaveFamily(){$('modal').innerHTML=`<div class="modal" onclick="if(even
 
 /* ---------- TUTORIAL ---------- */
 const TUT_K=[
- {art:()=>`<div class="bounce">${AV(S.user&&!isParent()?S.user:'lucas',150)}</div>`,t:'HI, LITTLE OWL!',d:'Do good stuff → earn feathers → level up!'},
+ {art:()=>`<div class="bounce">${AV(S.user&&!isParent()?S.user:KIDS[0],150)}</div>`,t:'HI, LITTLE OWL!',d:'Do good stuff → earn feathers → level up!'},
  {art:()=>`<div class="blk tile mock"><span class="cnt">2/3</span><span class="em">${I('target')}</span><span class="H">Bullseye!</span><div class="pips"><i class="on"></i><i class="on"></i><i></i></div></div>`,t:'TAP YOUR HABITS',d:'Did it? Tap it! Some need 3 taps a day.'},
  {art:()=>`<div class="blk tile mock" style="width:220px"><span class="em">${I('board')}</span><span class="H">Mission Board</span><br><span class="btn sm blue" style="display:inline-block;margin-top:6px">I'LL DO IT!</span></div>`,t:'GRAB A MISSION',d:'Pick one → do it → tap DONE! Papa or Mama checks it.'},
- {art:()=>`<div class="slots" style="justify-content:center">${AV('lucas',80)}<b class="plus">+</b>${AV('etan',80)}</div>`,t:'DUO MISSIONS',d:'Team up with your brother. You BOTH win + a rainbow feather!'},
+ {art:()=>`<div class="slots" style="justify-content:center">${AV(KIDS[0],80)}<b class="plus">+</b>${AV(KIDS[1]||PARENTS()[0],80)}</div>`,t:'DUO MISSIONS',get d(){return KIDS.length>1?'Team up with your brother or sister. You BOTH win + a rainbow feather!':'Team up with Mum or Dad. You win + a rainbow feather!'}},
  {art:()=>`<div>${I('gift',120)}</div><span class="price" style="font-size:22px">${F} 30</span>`,t:'FEATHER SHOP',d:'Spend feathers on real treats. Make a wish for new ones!'},
  {art:()=>`<div class="bounce">${OWLC({body:'gold',eyes:'star',hat:'crown',extra:'cape'},150)}</div>`,t:'DRESS YOUR OWL',d:'Rainbow feathers buy hats, eyes, capes and colours.'},
- {art:()=>`<div>${I('live',110)}</div><div>${I('heart',50)}${I('heartM',50)}${I('star',50)}</div>`,t:'HOO LIVE',d:'Send stickers and messages to Papa & Mama. Be kind → surprise gifts!'}
+ {art:()=>`<div>${I('live',110)}</div><div>${I('heart',50)}${I('heartM',50)}${I('star',50)}</div>`,t:'HOO LIVE',get d(){return `Send stickers, messages and voice notes to ${parentNames()}. Be kind → surprise gifts!`}}
 ];
 const TUT_P=[
- {art:()=>`<div class="slots" style="justify-content:center">${AV('dad',100)}${AV('mum',100)}</div>`,t:'Welcome, Parent Owl',d:'Papa and Mama have the same powers. It takes about 1 minute a day.'},
- {art:()=>I('check',110),t:'1 · Check',d:'Approve missions (OK or Redo), hand out rewards, price the boys\' ideas, and do the 1-min night check. After 7pm the night check jumps to the top.'},
- {art:()=>I('sun',110),t:'2 · Plan → Habits',d:'Set each boy\'s own daily habits: feathers, times a day, which days. Changes start tomorrow so today stays fair.'},
- {art:()=>I('duo',110),t:'3 · Plan → Missions',d:'Post missions to the board. Prefer DUO: they must cooperate and both earn a rainbow feather. Set a max per boy so nobody hogs.'},
- {art:()=>I('gift',110),t:'4 · Plan → Shop',d:'Set reward prices or add new ones. Wishes from the boys land in Check for you to price.'},
+ {art:()=>`<div class="slots" style="justify-content:center">${PARENTS().map(k=>AV(k,100)).join('')}</div>`,t:'Welcome, Parent Owl',d:'Every parent has the same powers. It takes about 1 minute a day.'},
+ {art:()=>I('check',110),t:'1 · Check',d:'Approve missions (OK or Redo), hand out rewards, price the kids\' ideas, and do the 1-min night check. After 7pm the night check jumps to the top.'},
+ {art:()=>I('sun',110),t:'2 · Plan → Habits',d:'Set each kid\'s own daily habits: feathers, times a day, which days. Changes start tomorrow so today stays fair.'},
+ {art:()=>I('duo',110),t:'3 · Plan → Missions',d:'Post missions to the board. Prefer DUO: they must cooperate and both earn a rainbow feather. Set a max per kid so nobody hogs.'},
+ {art:()=>I('gift',110),t:'4 · Plan → Shop',d:'Set reward prices or add new ones. Wishes from the kids land in Check for you to price.'},
  {art:()=>I('live',110),t:'5 · Hoo Live',d:'Stickers, messages and voice notes. Catch them being kind without being asked → send a Kindness Gift with the reason.'},
- {art:()=>I('chart',110),t:'6 · Stats',d:'Week and month charts for both boys, kindness count, and the shared Team Chest goal.'},
+ {art:()=>I('chart',110),t:'6 · Stats',d:'Week and month charts for every kid, kindness count, and the shared Team Chest goal.'},
  {art:()=>I('heart',110),t:'Golden rules',d:'Praise more than you correct. Never take feathers away as punishment. Keep screen-time rules outside the game.'}
 ];
 function showTut(role){S.tut={role,i:0};drawTut()}
@@ -1110,14 +1195,14 @@ function mockDB(){
 }
 async function boot(){
  const fid=LS.get('hoo_fid');
- if(fid){try{const d=await DB.get(fid);if(d){S.fid=fid;unpack(d);DB.listen(fid,onRemote);const u=LS.get('hoo_user');if(u&&(S.kids[u]||S.parents[u])){S.user=u;S.tab=(u==='dad'||u==='mum')?'check':'today'}}else LS.set('hoo_fid',null)}catch(e){console.error(e);toast('⚠️ Could not load. Check internet')}}
+ if(fid){try{const d=await DB.get(fid);if(d){S.fid=fid;unpack(d);DB.listen(fid,onRemote);const u=LS.get('hoo_user');if(u&&(S.kids[u]||S.parents[u])){S.user=u;S.tab=isPid(u)?'check':'today'}}else LS.set('hoo_fid',null)}catch(e){console.error(e);toast('⚠️ Could not load. Check internet')}}
  S.ready=true;render();
  if(S.fid&&S.day!==todayStr())act(()=>{});
  if(S.fid)xmasGift();
  if(S.user){S._lastPC=checkCount(false);remoteFx()}
  setInterval(()=>{if(S.fid&&S.day!==todayStr()&&!BUSY)act(()=>{})},60000);
 }
-function xmasGift(){if(S.flags&&S.flags.xmas26)return;act(()=>{S.flags=S.flags||{};if(S.flags.xmas26)return;S.flags.xmas26=true;KIDS.forEach(k=>{S.kids[k].rainbow+=30;S.live.push({id:uid(),from:'mum',to:k,kind:'gift',gift:{amt:30,cur:'r',reason:'🎄 Christmas gift! Go to Me → Owl Studio and dress up your owl'},ts:Date.now(),seen:[]})})})}
+function xmasGift(){if(S.flags&&S.flags.xmas26)return;act(()=>{S.flags=S.flags||{};if(S.flags.xmas26)return;S.flags.xmas26=true;KIDS.forEach(k=>{S.kids[k].rainbow+=30;S.live.push({id:uid(),from:S.parents.mum?'mum':PARENTS()[0],to:k,kind:'gift',gift:{amt:30,cur:'r',reason:'🎄 Christmas gift! Go to Me → Owl Studio and dress up your owl'},ts:Date.now(),seen:[]})})})}
 function bootFail(msg){S.ready=true;$('app').innerHTML=`<div class="logo" style="padding-top:calc(100px + env(safe-area-inset-top))"><div class="H">HOO<br>DID IT?</div><p>${msg}</p><button class="btn" style="margin-top:20px" onclick="location.reload()">TRY AGAIN</button></div>`}
 
 render();
